@@ -223,6 +223,8 @@ const LocaleSelector = () => {
 
 #### Use Undo
 
+`useUndo` returns a function that allows us to step our configuration back by any number of steps per increment.
+
 ```javascript
 import { hooks } from './threekit';
 
@@ -240,6 +242,8 @@ const UndoButton = () => {
 ```
 
 #### Use Redo
+
+`useRedo` returns a function that allows us to step our configuration forward by any number of steps per increment after it has been stepped backwards.
 
 ```javascript
 import { hooks } from './threekit';
@@ -312,7 +316,7 @@ const Component = () => {
 
 #### Undo
 
-The `<Undo />` component renders out a undo button.
+The `<Undo />` component renders a button that allows us to step our configuration backward.
 
 ```javascript
 import { Widgets } from './threekit';
@@ -331,7 +335,7 @@ const Component = () => {
 
 #### Redo
 
-The `<Redo />` component renders out a undo button.
+The `<Redo />` component renders a button that allows us to step our configuration forward, after it has been stepped backward by any number of steps.
 
 ```javascript
 import { Widgets } from './threekit';
