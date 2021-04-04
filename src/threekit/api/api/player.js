@@ -441,7 +441,7 @@ export const getBom = () => {
 };
 
 //  Wrappers for interaction with configuration service
-export const saveConfiguration = (data, options) =>
+export const saveConfiguration = (data = {}, options = {}) =>
   new Promise(async (resolve) => {
     const { productVersion, metadata, thumbnail } = Object.assign(
       {

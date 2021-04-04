@@ -11,7 +11,7 @@ The Threekit React Boilerplate is a feature-rich codebase, containing a vast set
     - [How to use this Boilerpate](#how-to-use-this-boilerpate)
       - [Project Setup](#project-setup)
       - [Boilerplate Overview](#boilerplate-overview)
-  - [Scripts](#scripts)
+  - [Scripts and Deployment Strategies](#scripts-and-deployment-strategies)
     - [Development Server Scripts](#development-server-scripts)
       - [`yarn start`](#yarn-start)
       - [`yarn storybook`](#yarn-storybook)
@@ -37,7 +37,7 @@ The Threekit React Boilerplate is a feature-rich codebase, containing a vast set
       - [Await Loader](#await-loader)
       - [Attribute](#attribute)
   - [API](#api)
-    - [Player API](#player-api)
+    - [Player](#player-1)
       - [Launch](#launch)
       - [Add Player To Component (MOVE TO INTERNAL)](#add-player-to-component-move-to-internal)
       - [Get State](#get-state)
@@ -49,7 +49,9 @@ The Threekit React Boilerplate is a feature-rich codebase, containing a vast set
       - [Step Backward (Undo)](#step-backward-undo)
       - [Step Forward (Redo)](#step-forward-redo)
       - [Zoom](#zoom-1)
-    - [Threekit API](#threekit-api)
+    - [Tools](#tools)
+      - [Tooltip](#tooltip)
+    - [Threekit](#threekit)
 
 ## Installation
 
@@ -87,7 +89,7 @@ Some common best practices in setting up the boilerplate for a project:
 
 Our React Boilerplate follows a Provider Pattern where you wrap all the React code that will interact with the Threekit API inside the ThreekitProvider. Within the ThreekitProvider context all our components and hooks have complete flexibility in where and how they are used while still being fully connected to the Threekit API, the 3D Player, and each other.
 
-## Scripts
+## Scripts and Deployment Strategies
 
 All scripts are expected to be run from the project root directory. These include:
 
@@ -406,7 +408,7 @@ import threekitApi from './threekit';
 const { player, threekit } = threekitApi;
 ```
 
-### Player API
+### Player
 
 The player API has all the higher-level functionality to interact with the 3D.
 
@@ -574,7 +576,57 @@ player.zoomOut();
 player.zoomOut(8);
 ```
 
-### Threekit API
+### Tools
+
+Tools add functionality to the 3D-player beyond the out-of-the-box features such as scroll to zoom, drag to rotate, and right-click to pan the camera. To implement a tool it needs to be added to the array of `additionalTools` that is passed to the `<ThreekitProvider>` as part of it config object.
+
+```javascript
+import { threekit } from './threekit';
+
+const { exampleTool } = threekit.tools;
+
+const config = {
+  authToken: '3fb4asd5d-ea38-4a05-a1c3-6cf9d8dd3d48',
+  assetId: 'a9a66218-bkid-4106-96fe-a0709fdc3dc1',
+  orgId: '20df501b-1ef8-4bh0-sfda-2b99426624de',
+  threekitEnv: 'preview',
+  additionalTools: [exampleTool()],
+};
+
+const ThreekitApp = () => {
+  return (
+    <ThreekitProvider config={threekitConfig}>
+      // App code comes here
+    </ThreekitProvider>
+  );
+};
+```
+
+#### Tooltip
+
+```javascript
+import { threekit } from './threekit';
+
+const { exampleTool } = threekit.tools;
+
+const config = {
+  authToken: '3fb4asd5d-ea38-4a05-a1c3-6cf9d8dd3d48',
+  assetId: 'a9a66218-bkid-4106-96fe-a0709fdc3dc1',
+  orgId: '20df501b-1ef8-4bh0-sfda-2b99426624de',
+  threekitEnv: 'preview',
+  additionalTools: [tooltip({ metadataField: productName })],
+};
+
+const ThreekitApp = () => {
+  return (
+    <ThreekitProvider config={threekitConfig}>
+      // App code comes here
+    </ThreekitProvider>
+  );
+};
+```
+
+### Threekit
 
 ```javascript
 import { threekit } from './threekit';
