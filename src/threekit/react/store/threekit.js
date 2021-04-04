@@ -87,7 +87,7 @@ export const launch = (config) => async (dispatch) => {
     threekitEnv: config.threekitEnv,
   });
 
-  await threekit.player.launch(config.assetId);
+  await threekit.player.launch(config);
 
   if (config.locale) dispatch(setLocale(config.locale));
   const stateOptions = Object.assign(

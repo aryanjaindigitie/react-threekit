@@ -2,15 +2,6 @@ import { validate as uuidValidate } from 'uuid';
 import { connect } from './connect';
 import http from '../http';
 
-//  Query Example
-const query = {
-  id: 'value',
-  assetId: 'value',
-  name: 'value',
-  tags: 'value',
-  'metadata.key': 'value',
-};
-
 export const saveFiles = (files, options) =>
   new Promise((resolve) => {
     //   if (!AUTH_TOKEN && !options?.connection?.authToken) {

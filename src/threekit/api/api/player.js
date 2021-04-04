@@ -243,9 +243,24 @@ export const launch = (initializationObj) => {
 
   return new Promise((resolve) => {
     const scriptOnLoad = async () => {
+      //  Pre launch
+      if (typeof initializationObj !== 'string' && initializationObj?.preLaunch)
+        initializationObj.preLaunch();
+
+      //  Initialization & Product Fetching
       fetchProductsData();
-      await initializePlayer(callbackArgs);
-      resolve();
+      const threekitApi = await initializePlayer(callbackArgs);
+
+      //  Post Launch
+      if (typeof initializationObj !== 'string') {
+        if (initializationObj.additionalTools?.length)
+          initializationObj.additionalTools.forEach((tool) =>
+            threekitApi.api.tools.addTool(tool(threekitApi.api))
+          );
+        if (initializationObj?.postLaunch)
+          initializationObj.postLaunch(threekitApi.api);
+      }
+      resolve(threekitApi);
     };
 
     const scriptEl = createThreekitScript(
@@ -426,12 +441,22 @@ export const getBom = () => {
 };
 
 //  Wrappers for interaction with configuration service
-export const saveConfiguration = (
-  data = { productVersion: 'v1', metadata, thumbnail: '' },
-  options = { returnResumeLink: false }
-) =>
+export const saveConfiguration = (data, options) =>
   new Promise(async (resolve) => {
-    const { productVersion, metadata, thumbnail } = data;
+    const { productVersion, metadata, thumbnail } = Object.assign(
+      {
+        productVersion: 'v1',
+        metadata: {},
+        thumbnail: '',
+      },
+      data
+    );
+    const { returnResumeLink } = Object.assign(
+      {
+        returnResumeLink: false,
+      },
+      options
+    );
     const configuration = window.threekit.configurator.getConfiguration();
     const config = await configurations.save({
       assetId: ASSET_ID,

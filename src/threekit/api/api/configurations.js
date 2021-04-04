@@ -41,7 +41,7 @@ export const save = ({
 export const fetch = (configurationId) =>
   new Promise(async (resolve, reject) => {
     if (!configurationId || !uuidValidate(configurationId)) {
-      console.error('no asset Id / configuration');
+      console.error('no configurationId provided');
       reject();
     }
 
