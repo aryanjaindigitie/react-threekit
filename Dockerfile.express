@@ -1,0 +1,14 @@
+#   React build stage
+FROM node:15-alpine3.10 as react-build
+
+WORKDIR /app
+
+COPY package.json /app/
+
+RUN yarn install
+
+COPY ./ /app/
+
+RUN yarn build
+
+CMD yarn start:server -p 3000
