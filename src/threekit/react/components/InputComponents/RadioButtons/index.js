@@ -16,19 +16,24 @@ export const RadioButtons = ({
   if (!options || !options.filter((el) => !el.disabled).length) return null;
 
   return (
-    <Wrapper>
-      {title && <RadioButtonsHeader>{title}</RadioButtonsHeader>}
-      <Buttons>
+    <Wrapper className="tk-radio-buttons">
+      {title && (
+        <RadioButtonsHeader className="tk-radio-btn-header">
+          {title}
+        </RadioButtonsHeader>
+      )}
+      <Buttons className="tk-radio-btn-content">
         {options.map((option, i) => {
           if (option.disabled && hideDisabled) return null;
           return (
             <ButtonWrapper
+              className="tk-radio-btn"
               key={i}
               disabled={option.disabled && !hideDisabled}
               selected={option.assetId === (selected?.assetId || selected)}
               onClick={() => handleClick(option.assetId)}
             >
-              <div>{option.name}</div>
+              <div className="tk-radio-btn-label">{option.name}</div>
             </ButtonWrapper>
           );
         })}

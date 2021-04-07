@@ -7,6 +7,9 @@ import store from '../../store';
 
 import { Provider } from 'react-redux';
 
+import { ThemeProvider } from 'styled-components';
+import theme from '../../theme';
+
 const Loader = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -20,7 +23,9 @@ const Loader = (props) => {
 const ThreekitProvider = (props) => {
   return (
     <Provider store={store}>
-      <Loader config={props.config}>{props.children}</Loader>
+      <ThemeProvider theme={Object.assign(theme, props?.config?.theme)}>
+        <Loader config={props.config}>{props.children}</Loader>
+      </ThemeProvider>
     </Provider>
   );
 };

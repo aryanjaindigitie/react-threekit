@@ -1,34 +1,43 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-export const Wrapper = styled.div``
+export const Wrapper = styled.div``;
 
 export const RadioButtonsHeader = styled.div`
-    padding-bottom: 5px;
-`
+  padding-bottom: 5px;
+`;
 
 export const Buttons = styled.div`
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 
-    & > div {
-        margin-right: 5px;
-    }
-`
+  & > div {
+    margin-right: 5px;
+  }
+`;
 
 export const ButtonWrapper = styled.div`
-    width: max-content;
-    height: max-content;
-    padding: 6px 12px;
+  width: max-content;
+  height: max-content;
+  padding: 6px 12px;
 
-    border: 1px solid ${(props) => (props.selected ? 'red' : 'lightgrey')};
-    border-radius: 3px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: ${(props) =>
+    props.selected ? props.theme.primaryColor : props.theme.borderColorBase};
+  border-radius: ${(props) => props.theme.borderRadius};
 
-    cursor: pointer;
+  color: ${(props) => (props.selected ? '#fff' : props.theme.headingColor)};
+  font-size: ${(props) => props.theme.fontBaseSize};
 
-    transition: all 0.3s;
+  background-color: ${(props) =>
+    props.selected ? props.theme.primaryColor : '#fff'};
 
-    &:hover {
-        border: 1px solid #1890ff;
-        color: #1890ff;
-    }
-`
+  cursor: pointer;
+
+  transition: all 0.3s;
+
+  &:hover {
+    border: 1px solid ${(props) => props.theme.primaryColor};
+    color: ${(props) => (props.selected ? '#fff' : props.theme.primaryColor)};
+  }
+`;
