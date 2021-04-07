@@ -25,8 +25,15 @@ const appPackageJson = require(paths.appPackageJson);
 const config = configFactory('development');
 const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
 
+const argv = process.argv.slice(2);
+
+//  Port setup
+const portIdx =
+  argv.indexOf('--port') !== -1 ? argv.indexOf('--port') : argv.indexOf('-p');
+const PORT = process.env.PORT || portIdx !== -1 ? argv[portIdx + 1] : 3000;
+
 const HOST = process.env.HOST || '0.0.0.0';
-const PORT = process.env.PORT || 3000;
+// const PORT = process.env.PORT || 3000;
 
 const urls = prepareUrls(protocol, HOST, PORT, '');
 const devSocket = {
