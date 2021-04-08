@@ -66,8 +66,8 @@
     "storybook": "start-storybook -p 6006 -c config/storybook",
     "build": "node config/build.js",
     "build:compact": "node config/build.js --compact",
-    "build:storybook": "build-storybook",
-    "deploy:storybook": "gh-pages -b storybook -d storybook-static -c config/storybook",
+    "build:storybook": "build-storybook -c config/storybook",
+    "deploy:storybook": "gh-pages -b storybook -d storybook-static",
     "publish:storybook": "yarn build:storybook && yarn deploy:storybook"
   },
   "eslintConfig": {
