@@ -16,6 +16,12 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 app.use(morgan('tiny'));
 app.use(cors());
 
+//  Postmark email service
+// app.use('/email', require('./routes/email.mjs'));
+
+//  Twilio API based sms service
+// app.use('/sms', require('./routes/sms.mjs'));
+
 //  React build
 app.use(express.static(path.join(__dirname, '../build')));
 app.get('*', (req, res) => {
