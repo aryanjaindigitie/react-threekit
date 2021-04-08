@@ -43,81 +43,50 @@ export const Dropdown = (props) => {
   };
 
   const className = attribute
-    ? regularToKebabCase(attribute)
+    ? 'tk-input-' + regularToKebabCase(attribute)
     : title
-    ? regularToKebabCase(title)
-    : classNameRaw;
+    ? 'tk-input-' + regularToKebabCase(title)
+    : classNameRaw || '';
 
   return (
-    <div className={`tk-dropdown ${className ? `tk-input-${className}` : ''}`}>
+    <div className={`tk-dropdown ${className}`}>
       {title && (
-        <Header
-          className={`tk-dropdown-header ${
-            className ? `tk-input-${className}` : ''
-          }`}
-        >
-          {title}
-        </Header>
+        <Header className={`tk-dropdown-header ${className}`}>{title}</Header>
       )}
       <Wrapper
         active={!hide}
         ref={ref}
-        className={`tk-dropdown-outer ${
-          className ? `tk-input-${className}` : ''
-        }`}
+        className={`tk-dropdown-outer ${className}`}
       >
         <Main
           active={!hide}
-          className={`tk-dropdown-main ${
-            className ? `tk-input-${className}` : ''
-          }`}
+          className={`tk-dropdown-main ${className}`}
           onClick={() => setHide(!hide)}
           hasPlaceholder={!selected && !!placeholder}
         >
-          <div
-            className={`tk-dropdown-selected ${
-              className ? `tk-input-${className}` : ''
-            }`}
-          >
+          <div className={`tk-dropdown-selected ${className}`}>
             {options.find((el) => el.value === selected)?.name ||
               placeholder ||
               ''}
           </div>
-          <div
-            className={`tk-dropdown-caret ${
-              className ? `tk-input-${className}` : ''
-            }`}
-          >
+          <div className={`tk-dropdown-caret ${className}`}>
             <DownOutlined />
           </div>
         </Main>
-        <Options
-          hide={hide}
-          className={`tk-dropdown-options ${
-            className ? `tk-input-${className}` : ''
-          }`}
-        >
+        <Options hide={hide} className={`tk-dropdown-options ${className}`}>
           <OptionsContent
-            className={`tk-dropdown-options-content ${
-              className ? `tk-input-${className}` : ''
-            }`}
+            className={`tk-dropdown-options-content ${className}`}
           >
             {options.map((option, i) => {
               if (option.disabled && hideDisabled) return null;
               return (
                 <Option
                   key={i}
-                  className={`tk-dropdown-option ${
-                    className ? `tk-input-${className}` : ''
-                  }`}
+                  className={`tk-dropdown-option ${className}`}
                   selected={selected === option.value}
                   onClick={() => handleClick(option.value)}
                 >
-                  <div
-                    className={`tk-dropdown-option-label ${
-                      className ? `tk-input-${className}` : ''
-                    }`}
-                  >
+                  <div className={`tk-dropdown-option-label ${className}`}>
                     {option.name}
                   </div>
                 </Option>
@@ -131,18 +100,48 @@ export const Dropdown = (props) => {
 };
 
 Dropdown.propTypes = {
+  /**
+   * Is the attribute name on the initialized asset that we are
+   * using this component for
+   */
   attribute: PropTypes.string,
+  /**
+   * Used to add a title to the input
+   */
   title: PropTypes.string,
-  placholder: PropTypes.string,
+  /**
+   * Used to add a custom class name to each of the components html elements
+   */
+  placeholder: PropTypes.string,
+  /**
+   * Used to display a placeholder on the Dropdown when no value is selected
+   */
   className: PropTypes.string,
+  /**
+   * Selected value from the option set. Should match the 'value' property
+   * of one of the items in the options array.
+   */
   selected: PropTypes.string,
+  /**
+   * NOTE: Input wide hide disabled will be deprecated in favour of option
+   * specific control of both 'disabled' and 'visible'.
+   *
+   * Used to hide the options that have the 'disabled' equal to true.
+   */
   hideDisabled: PropTypes.bool,
+  /**
+   * Change handler function. Passes on the 'value' property of the option
+   * selected by the user to the function.
+   */
   handleClick: PropTypes.func,
+  /**
+   * The options set to be displayed for the user
+   */
   options: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
       value: PropTypes.string,
-      colorValue: PropTypes.string,
+      disabled: PropTypes.bool,
     })
   ),
 };

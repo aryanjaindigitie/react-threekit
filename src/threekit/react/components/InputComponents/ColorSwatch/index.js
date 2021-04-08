@@ -22,45 +22,35 @@ export const ColorSwatch = (props) => {
   if (!options || !options.filter((el) => !el.disabled).length) return null;
 
   const className = attribute
-    ? regularToKebabCase(attribute)
+    ? 'tk-input-' + regularToKebabCase(attribute)
     : title
-    ? regularToKebabCase(title)
-    : classNameRaw;
+    ? 'tk-input-' + regularToKebabCase(title)
+    : classNameRaw || '';
 
   return (
-    <div
-      className={`tk-color-swatch ${className ? `tk-input-${className}` : ''}`}
-    >
+    <div className={`tk-color-swatch ${className}`.trim()}>
       {title && (
-        <Header
-          className={`tk-color-swatch-header ${
-            className ? `tk-input-${className}` : ''
-          }`}
-        >
+        <Header className={`tk-color-swatch-header ${className}`.trim()}>
           {title}
         </Header>
       )}
-      <Content
-        className={`tk-color-swatch-content ${
-          className ? `tk-input-${className}` : ''
-        }`}
-      >
+      <Content className={`tk-color-swatch-content ${className}`.trim()}>
         {options.map((option, i) => {
           if (option.disabled && hideDisabled) return null;
           return (
             <Tooltip key={i} placement="top" title={option.name}>
               <Option
-                className={`tk-color-swatch-option ${
-                  className ? `tk-input-${className}` : ''
-                } option-${i + 1}`}
+                className={`tk-color-swatch-option ${className} option-${
+                  i + 1
+                }`.trim()}
                 color={option.colorValue}
                 onClick={() => handleClick(option.value)}
               >
                 {option.value === selected && (
                   <div
-                    className={`tk-color-swatch-option-selected ${
-                      className ? `tk-input-${className}` : ''
-                    } option-${i + 1}`}
+                    className={`tk-color-swatch-option-selected ${className} option-${
+                      i + 1
+                    }`.trim()}
                   >
                     <CheckOutlined />
                   </div>
@@ -75,17 +65,45 @@ export const ColorSwatch = (props) => {
 };
 
 ColorSwatch.propTypes = {
+  /**
+   * Is the attribute name on the initialized asset that we are
+   * using this component for
+   */
   attribute: PropTypes.string,
+  /**
+   * Used to add a title to the input
+   */
   title: PropTypes.string,
+  /**
+   * Used to add a custom class name to each of the components html elements
+   */
   className: PropTypes.string,
+  /**
+   * Selected value from the option set. Should match the 'value' property
+   * of one of the items in the options array.
+   */
   selected: PropTypes.string,
+  /**
+   * NOTE: Input wide hide disabled will be deprecated in favour of option
+   * specific control of both 'disabled' and 'visible'.
+   *
+   * Used to hide the options that have the 'disabled' equal to true.
+   */
   hideDisabled: PropTypes.bool,
+  /**
+   * Change handler function. Passes on the 'value' property of the option
+   * selected by the user to the function.
+   */
   handleClick: PropTypes.func,
+  /**
+   * The options set to be displayed for the user
+   */
   options: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
       value: PropTypes.string,
       colorValue: PropTypes.string,
+      disabled: PropTypes.bool,
     })
   ),
 };
