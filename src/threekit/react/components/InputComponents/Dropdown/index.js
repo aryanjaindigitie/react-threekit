@@ -15,6 +15,7 @@ export const Dropdown = ({
   title,
   placeholder,
   options,
+  className: classNameRaw,
   handleClick: onClick,
   selected,
   hideDisabled,

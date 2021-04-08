@@ -19,12 +19,17 @@ const Template = (args) => <SwatchComponent {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  title: 'Swatch Title',
   options,
 };
 
 export const Selected = Template.bind({});
 Selected.args = {
+  options,
+  selected: options[1].value,
+};
+
+export const WithTitle = Template.bind({});
+WithTitle.args = {
   title: 'Swatch Title',
   options,
   selected: options[1].value,

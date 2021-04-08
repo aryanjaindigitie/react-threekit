@@ -23,16 +23,25 @@ export const SwatchOption = styled.div`
   min-width: 80px;
   padding: 12px 5px;
 
-  border: 1px solid ${(props) => (props.selected ? 'red' : 'lightgrey')};
-  border-radius: 3px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: ${(props) =>
+    props.selected ? props.theme.primaryColor : props.theme.borderColorBase};
+  border-radius: ${(props) => props.theme.borderRadius};
+
+  color: ${(props) => (props.selected ? '#fff' : props.theme.headingColor)};
+  font-size: ${(props) => props.theme.fontBaseSize};
+
+  background-color: ${(props) =>
+    props.selected ? props.theme.primaryColor : '#fff'};
 
   cursor: pointer;
 
   transition: all 0.3s;
 
   &:hover {
-    border: 1px solid #1890ff;
-    color: #1890ff;
+    border: 1px solid ${(props) => props.theme.primaryColor};
+    color: ${(props) => (props.selected ? '#fff' : props.theme.primaryColor)};
   }
 
   & > div {

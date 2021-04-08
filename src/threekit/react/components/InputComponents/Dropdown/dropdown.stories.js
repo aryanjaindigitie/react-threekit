@@ -20,13 +20,19 @@ const Template = (args) => <Dropdown {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  title: 'Dropdown Title',
   options,
   placeholder: 'Select a color!',
 };
 
 export const Selected = Template.bind({});
 Selected.args = {
+  options,
+  placeholder: 'Select a color!',
+  selected: options[1].value,
+};
+
+export const WithTitle = Template.bind({});
+WithTitle.args = {
   title: 'Dropdown Title',
   options,
   placeholder: 'Select a color!',

@@ -12,6 +12,7 @@ export const RadioButtons = ({
   title,
   options,
   selected,
+  className: classNameRaw,
   hideDisabled,
   handleClick,
 }) => {

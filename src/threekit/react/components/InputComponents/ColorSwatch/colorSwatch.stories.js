@@ -20,12 +20,17 @@ const Template = (args) => <ColorSwatch {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  title: 'Color Swatch Title',
   options,
 };
 
 export const Selected = Template.bind({});
 Selected.args = {
+  options,
+  selected: options[1].value,
+};
+
+export const WithTitle = Template.bind({});
+WithTitle.args = {
   title: 'Color Swatch Title',
   options,
   selected: options[1].value,

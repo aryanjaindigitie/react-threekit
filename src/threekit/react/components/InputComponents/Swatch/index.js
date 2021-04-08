@@ -11,6 +11,7 @@ export const Swatch = ({
   attribute,
   title,
   options,
+  className: classNameRaw,
   handleClick,
   selected,
   hideDisabled,
