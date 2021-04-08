@@ -1,12 +1,14 @@
 import React from 'react';
 import {
   Wrapper,
-  RadioButtonsHeader,
+  RadioButtonsHeader as Header,
   Buttons,
   ButtonWrapper,
 } from './radioButtons.styles';
+import { regularToKebabCase } from '../../../utils';
 
 export const RadioButtons = ({
+  attribute,
   title,
   options,
   selected,
@@ -15,25 +17,49 @@ export const RadioButtons = ({
 }) => {
   if (!options || !options.filter((el) => !el.disabled).length) return null;
 
+  const className = attribute
+    ? regularToKebabCase(attribute)
+    : title
+    ? regularToKebabCase(title)
+    : classNameRaw;
+
   return (
-    <Wrapper className="tk-radio-buttons">
+    <Wrapper
+      className={`tk-radio-buttons ${className ? `tk-input-${className}` : ''}`}
+    >
       {title && (
-        <RadioButtonsHeader className="tk-radio-btn-header">
+        <Header
+          className={`tk-radio-btn-header ${
+            className ? `tk-input-${className}` : ''
+          }`}
+        >
           {title}
-        </RadioButtonsHeader>
+        </Header>
       )}
-      <Buttons className="tk-radio-btn-content">
+      <Buttons
+        className={`tk-radio-btn-content ${
+          className ? `tk-input-${className}` : ''
+        }`}
+      >
         {options.map((option, i) => {
           if (option.disabled && hideDisabled) return null;
           return (
             <ButtonWrapper
-              className="tk-radio-btn"
+              className={`tk-radio-btn ${
+                className ? `tk-input-${className}` : ''
+              } option-${i + 1}`}
               key={i}
-              disabled={option.disabled && !hideDisabled}
-              selected={option.assetId === (selected?.assetId || selected)}
-              onClick={() => handleClick(option.assetId)}
+              disabled={option.disabled}
+              selected={option.value === selected}
+              onClick={() => handleClick(option.value)}
             >
-              <div className="tk-radio-btn-label">{option.name}</div>
+              <div
+                className={`tk-radio-btn-label ${
+                  className ? `tk-input-${className}` : ''
+                } option-${i + 1}`}
+              >
+                {option.name}
+              </div>
             </ButtonWrapper>
           );
         })}

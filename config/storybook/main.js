@@ -6,6 +6,8 @@ module.exports = {
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
+    '@storybook/addon-actions',
+    'storybook-addon-styled-component-theme/dist/preset',
     {
       name: '@storybook/addon-storysource',
       options: {

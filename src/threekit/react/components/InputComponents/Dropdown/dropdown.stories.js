@@ -1,6 +1,7 @@
 import React from 'react';
+import 'antd/dist/antd.css';
 
-import { Swatch as SwatchComponent } from './index';
+import { Dropdown } from './index';
 
 const options = [
   { name: 'blue', value: 'blue' },
@@ -10,22 +11,24 @@ const options = [
 ];
 
 export default {
-  title: 'Input Components/Swatch',
-  component: SwatchComponent,
+  title: 'Input Components/Dropdown',
+  component: Dropdown,
   argTypes: { handleClick: { action: 'clicked' } },
 };
 
-const Template = (args) => <SwatchComponent {...args} />;
+const Template = (args) => <Dropdown {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  title: 'Swatch Title',
+  title: 'Dropdown Title',
   options,
+  placeholder: 'Select a color!',
 };
 
 export const Selected = Template.bind({});
 Selected.args = {
-  title: 'Swatch Title',
+  title: 'Dropdown Title',
   options,
+  placeholder: 'Select a color!',
   selected: options[1].value,
 };

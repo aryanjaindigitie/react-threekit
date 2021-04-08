@@ -18,3 +18,10 @@ export const getParams = () => {
     return output;
   }, {});
 };
+
+export const regularToKebabCase = (str) =>
+  str
+    .split(' ')
+    .filter((word) => word?.length)
+    .map((word) => word.trim().toLowerCase())
+    .join('-');

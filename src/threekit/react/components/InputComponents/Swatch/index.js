@@ -1,72 +1,87 @@
 import React from 'react';
 import {
-  Wrapper,
-  ItemWrapper,
-  SwatchWrapper,
-  SwatchHeader,
-  SwatchBody,
+  SwatchWrapper as Wrapper,
+  SwatchContent as Content,
+  SwatchOption as Option,
+  SwatchHeader as Header,
 } from './swatch.styles';
-
-const Item = (props) => {
-  const { selected, onClick: handleClick } = props;
-  return (
-    <ItemWrapper
-      onClick={handleClick}
-      color={props.type !== 'Asset' ? props.color : undefined}
-      selected={selected}
-    >
-      <div>
-        <div>{props.imgUrl && <img src={props.imgUrl} alt={props.name} />}</div>
-        {props.name && <div>{props.name}</div>}
-      </div>
-    </ItemWrapper>
-  );
-};
+import { regularToKebabCase } from '../../../utils';
 
 export const Swatch = ({
+  attribute,
   title,
   options,
   handleClick,
   selected,
-  imgFromMetadata,
-  colorFromMetadata,
-  imgBaseUrl,
   hideDisabled,
 }) => {
   if (!options || !options.filter((el) => !el.disabled).length) return null;
-  return (
-    <SwatchWrapper>
-      {title && <SwatchHeader>{title}</SwatchHeader>}
-      <SwatchBody>
-        <Wrapper>
-          {options.map((option, i) => {
-            if (option.disabled && hideDisabled) return null;
 
-            const propsFromMetadata = Object.assign(
-              {},
-              imgFromMetadata
-                ? {
-                    imgUrl:
-                      (imgBaseUrl || '') + option.metadata[imgFromMetadata],
-                  }
-                : {},
-              colorFromMetadata
-                ? { color: option.metadata[colorFromMetadata] }
-                : {}
-            );
-            return (
-              <Item
-                key={i}
-                {...option}
-                {...propsFromMetadata}
-                selected={option.assetId === (selected?.assetId || selected)}
-                onClick={() => handleClick(option.assetId)}
-              />
-            );
-          })}
-        </Wrapper>
-      </SwatchBody>
-    </SwatchWrapper>
+  const className = attribute
+    ? regularToKebabCase(attribute)
+    : title
+    ? regularToKebabCase(title)
+    : classNameRaw;
+
+  return (
+    <Wrapper
+      className={`tk-swatch ${className ? `tk-input-${className}` : ''}`}
+    >
+      {title && (
+        <Header
+          className={`tk-swatch-header ${
+            className ? `tk-input-${className}` : ''
+          }`}
+        >
+          {title}
+        </Header>
+      )}
+      <Content
+        className={`tk-swatch-content ${
+          className ? `tk-input-${className}` : ''
+        }`}
+      >
+        {options.map((option, i) => {
+          if (option.disabled && hideDisabled) return null;
+          return (
+            <Option
+              key={i}
+              className={`tk-swatch-item ${
+                className ? `tk-input-${className}` : ''
+              } option-${i + 1}`}
+              onClick={() => handleClick(option.value)}
+              color={option.colorValue}
+              selected={option.value === selected}
+            >
+              <div
+                className={`tk-swatch-content ${
+                  className ? `tk-input-${className}` : ''
+                } option-${i + 1}`}
+              >
+                <div
+                  className={`tk-swatch-image ${
+                    className ? `tk-input-${className}` : ''
+                  } option-${i + 1}`}
+                >
+                  {option.imageUrl && (
+                    <img src={option.imageUrl} alt={option.name} />
+                  )}
+                </div>
+                {option.name && (
+                  <div
+                    className={`tk-swatch-item-label ${
+                      className ? `tk-input-${className}` : ''
+                    } option-${i + 1}`}
+                  >
+                    {option.name}
+                  </div>
+                )}
+              </div>
+            </Option>
+          );
+        })}
+      </Content>
+    </Wrapper>
   );
 };
 

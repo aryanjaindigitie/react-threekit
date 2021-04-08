@@ -9,7 +9,13 @@ const Player = () => {
     return;
   }, []);
 
-  return <div style={{ height: '500px' }} id="threekit-player" />;
+  return (
+    <div
+      style={{ height: '500px' }}
+      className="tk-player"
+      id="threekit-player"
+    />
+  );
 };
 
 export default Player;
