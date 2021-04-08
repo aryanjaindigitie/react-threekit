@@ -42,7 +42,7 @@ export const DropdownMain = styled.div`
     color: ${(props) =>
       props.active
         ? props.theme.disabledColor
-        : props.placeholder
+        : props.hasPlaceholder
         ? props.theme.disabledColor
         : props.theme.headingColor};
   }

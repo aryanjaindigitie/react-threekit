@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   ColorSwatchContent as Content,
   ColorSwatchHeader as Header,
@@ -8,15 +9,16 @@ import { Tooltip } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 import { regularToKebabCase } from '../../../utils';
 
-export const ColorSwatch = ({
-  attribute,
-  title,
-  className: classNameRaw,
-  options,
-  selected,
-  hideDisabled,
-  handleClick,
-}) => {
+export const ColorSwatch = (props) => {
+  const {
+    attribute,
+    title,
+    className: classNameRaw,
+    options,
+    selected,
+    hideDisabled,
+    handleClick,
+  } = props;
   if (!options || !options.filter((el) => !el.disabled).length) return null;
 
   const className = attribute
@@ -70,6 +72,32 @@ export const ColorSwatch = ({
       </Content>
     </div>
   );
+};
+
+ColorSwatch.propTypes = {
+  attribute: PropTypes.string,
+  title: PropTypes.string,
+  className: PropTypes.string,
+  selected: PropTypes.string,
+  hideDisabled: PropTypes.bool,
+  handleClick: PropTypes.func,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      value: PropTypes.string,
+      colorValue: PropTypes.string,
+    })
+  ),
+};
+
+ColorSwatch.defaultProps = {
+  attribute: undefined,
+  title: undefined,
+  className: undefined,
+  selected: undefined,
+  hideDisabled: undefined,
+  handleClick: undefined,
+  options: [],
 };
 
 export default ColorSwatch;

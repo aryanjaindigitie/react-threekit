@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   SwatchWrapper as Wrapper,
   SwatchContent as Content,
@@ -7,15 +8,16 @@ import {
 } from './swatch.styles';
 import { regularToKebabCase } from '../../../utils';
 
-export const Swatch = ({
-  attribute,
-  title,
-  options,
-  className: classNameRaw,
-  handleClick,
-  selected,
-  hideDisabled,
-}) => {
+export const Swatch = (props) => {
+  const {
+    attribute,
+    title,
+    options,
+    className: classNameRaw,
+    handleClick,
+    selected,
+    hideDisabled,
+  } = props;
   if (!options || !options.filter((el) => !el.disabled).length) return null;
 
   const className = attribute
@@ -84,6 +86,33 @@ export const Swatch = ({
       </Content>
     </Wrapper>
   );
+};
+
+Swatch.propTypes = {
+  attribute: PropTypes.string,
+  title: PropTypes.string,
+  className: PropTypes.string,
+  selected: PropTypes.string,
+  hideDisabled: PropTypes.bool,
+  handleClick: PropTypes.func,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      value: PropTypes.string,
+      colorValue: PropTypes.string,
+      imageUrl: PropTypes.string,
+    })
+  ),
+};
+
+Swatch.defaultProps = {
+  attribute: undefined,
+  title: undefined,
+  className: undefined,
+  selected: undefined,
+  hideDisabled: undefined,
+  handleClick: undefined,
+  options: [],
 };
 
 export default Swatch;

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
   DropdownHeader as Header,
   DropdownMain as Main,
@@ -10,16 +11,17 @@ import {
 import { DownOutlined } from '@ant-design/icons';
 import { regularToKebabCase } from '../../../utils';
 
-export const Dropdown = ({
-  attribute,
-  title,
-  placeholder,
-  options,
-  className: classNameRaw,
-  handleClick: onClick,
-  selected,
-  hideDisabled,
-}) => {
+export const Dropdown = (props) => {
+  const {
+    attribute,
+    title,
+    placeholder,
+    options,
+    className: classNameRaw,
+    handleClick: onClick,
+    selected,
+    hideDisabled,
+  } = props;
   if (!options || !options.filter((el) => !el.disabled).length) return null;
   const [hide, setHide] = useState(true);
   const ref = useRef(null);
@@ -70,7 +72,7 @@ export const Dropdown = ({
             className ? `tk-input-${className}` : ''
           }`}
           onClick={() => setHide(!hide)}
-          placeholder={!selected && !!placeholder}
+          hasPlaceholder={!selected && !!placeholder}
         >
           <div
             className={`tk-dropdown-selected ${
@@ -126,6 +128,34 @@ export const Dropdown = ({
       </Wrapper>
     </div>
   );
+};
+
+Dropdown.propTypes = {
+  attribute: PropTypes.string,
+  title: PropTypes.string,
+  placholder: PropTypes.string,
+  className: PropTypes.string,
+  selected: PropTypes.string,
+  hideDisabled: PropTypes.bool,
+  handleClick: PropTypes.func,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      value: PropTypes.string,
+      colorValue: PropTypes.string,
+    })
+  ),
+};
+
+Dropdown.defaultProps = {
+  attribute: undefined,
+  title: undefined,
+  placholder: undefined,
+  className: undefined,
+  selected: undefined,
+  hideDisabled: undefined,
+  handleClick: undefined,
+  options: [],
 };
 
 export default Dropdown;
