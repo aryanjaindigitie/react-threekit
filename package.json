@@ -38,7 +38,6 @@
     "reselect": "^4.0.0",
     "style-loader": "^2.0.0",
     "styled-components": "^5.2.1",
-    "twilio": "^3.60.0",
     "url-loader": "^4.1.0",
     "uuid": "^8.3.2",
     "web-vitals": "^1.0.1",
@@ -63,7 +62,7 @@
   },
   "scripts": {
     "start": "node config/start.js",
-    "start:server": "node --experimental-modules server/index.mjs",
+    "start:server": "node --experimental-json-modules server/index.mjs",
     "storybook": "start-storybook -p 6006 -c config/storybook",
     "build": "node config/build.js",
     "build:compact": "node config/build.js --compact",

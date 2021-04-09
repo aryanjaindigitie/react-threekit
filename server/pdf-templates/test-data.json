@@ -1,0 +1,45 @@
+{
+  "companyLogo": "https://www.threekit.com/hubfs/Logos%20and%20Trademarks/threekit_logo_black.png",
+  "companyPhone": "+1 (215) 497-0224",
+  "companyEmail": "email@company.com",
+  "projectName": "Test Project",
+  "date": "Fri, 09 Apr 2021",
+  "requiredBy": "Fri, 20 Apr 2021",
+  "name": "Clark Kent",
+  "contact": "Miles Morales",
+  "address": "123 Metcalf St",
+  "phone": "+1 (221) 845-2747",
+  "email": "bob@email.com",
+  "table": [
+    {
+      "value": "This is a product",
+      "quantity": 10,
+      "price": 200,
+      "total": 2000
+    },
+    {
+      "value": "This is another product",
+      "quantity": 20,
+      "price": 100,
+      "total": 2000
+    },
+    {
+      "value": "This is a third product",
+      "quantity": 30,
+      "price": 500,
+      "total": 1500
+    },
+    {
+      "value": "This is a repeated product",
+      "quantity": 2,
+      "price": 550,
+      "total": 1100
+    },
+    {
+      "value": "This is the last product",
+      "quantity": 30,
+      "price": 90,
+      "total": 1800
+    }
+  ]
+}
