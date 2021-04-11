@@ -5,7 +5,7 @@ import testData from '../pdf-templates/test-data.json';
 const router = express.Router();
 
 router.route('/dev').get(async (req, res) => {
-  const pdfData = await pdf.compileTemplate(testData, 'template-01');
+  const pdfData = await pdf.compile(testData, 'template-01');
 
   try {
     res.set({ 'Content-type': 'application/pdf' });
@@ -19,7 +19,7 @@ router.route('/').post(async (req, res) => {
   const data = req.body;
   if (!data) return res.status(422).send();
 
-  const pdfData = await pdf.compileTemplate(data, 'template-01');
+  const pdfData = await pdf.compile(data, 'template-01');
 
   try {
     res.set(
