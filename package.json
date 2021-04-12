@@ -1,6 +1,6 @@
 {
-  "name": "threekit-react",
-  "homepage": "https://threekit.github.io/boilerplate-react",
+  "name": "threekit-react-development-kit",
+  "homepage": "https://threekit.github.io/react-development-kit",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
