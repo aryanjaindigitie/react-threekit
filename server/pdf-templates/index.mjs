@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-// import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
@@ -9,15 +9,33 @@ const OPERATIONS = {
   conditional: 'conditional',
 };
 
-const literalPattern = /{{\s*([a-zA-Z_]+[a-zA-Z0-9_-]*)+(\.[a-zA-Z_]+[a-zA-Z0-9_-]*)*\s*}}/g;
+const variableRe = `([a-zA-Z_]+[a-zA-Z0-9_-]*)`;
+const nestedVariableRe = `(.[a-zA-Z_]+[a-zA-Z0-9_-]*)`;
+const literalRe = `${variableRe}+${nestedVariableRe}*`;
+const conditionsRe = `(==|!=|>|<|>=|<=|contains)`;
+const stringRe = `(('[^']*')|("[^"]*"))`;
+const numberRe = `(\\d*\.?\\d*)`;
+
+const patternsRaw = {
+  loopStart: `for\\s*${variableRe}+\\s*in\\s*${literalRe}`,
+  loopEnd: `endfor`,
+  conditionalStart: `if\\s*${literalRe}(\\s*${conditionsRe}\\s*(${stringRe}|${numberRe}|${literalRe}))?`,
+  conditionalEnd: `endif`,
+};
+
+const getLiteralPatter = (re, flags) => new RegExp(`{{\\s*${re}\\s*}}`, flags);
+const getOpPattern = (re, flags) => new RegExp(`{%\\s*${re}\\s*%}`, flags);
+
+const literalPattern = getLiteralPatter(literalRe, 'g');
+
 const patterns = {
   [OPERATIONS.forLoop]: {
-    start: /{%\s*?for\s+([a-zA-Z_]+[a-zA-Z0-9_-]*)+\sin\s+([a-zA-Z_]+[a-zA-Z0-9_-]*)+(\.[a-zA-Z_]+[a-zA-Z0-9_-]*)*\s*%}/,
-    end: /{%\s*endfor\s*%}/,
+    start: getOpPattern(patternsRaw.loopStart),
+    end: getOpPattern(patternsRaw.loopEnd),
   },
   [OPERATIONS.conditional]: {
-    start: /{%\s*if\s+([a-zA-Z_]+[a-zA-Z0-9_-]*)+(\.[a-zA-Z_]+[a-zA-Z0-9_-]*)*(\s(==|!=|>|<|>=|<=)\s((('[^']*')|("[^"]*"))|(\d*\.?\d*)|([a-zA-Z_]+[a-zA-Z0-9_-]*)+(\.[a-zA-Z_]+[a-zA-Z0-9_-]*)*))?\s*%}/,
-    end: /{%\s*endif\s*%}/,
+    start: getOpPattern(patternsRaw.conditionalStart),
+    end: getOpPattern(patternsRaw.conditionalEnd),
   },
 };
 
@@ -45,7 +63,6 @@ const evaluators = {
     return output;
   },
   [OPERATIONS.conditional]: (data, string) => {
-    console.log('conditional support coming soon...');
     const [statement] = string.match(patterns[OPERATIONS.conditional].start);
     const endMatches = string.match(
       new RegExp(patterns[OPERATIONS.conditional].end, 'g')
@@ -57,7 +74,8 @@ const evaluators = {
       .replace('%}', '')
       .replace('if', '')
       .trim()
-      .split(' ');
+      .split(' ')
+      .filter((el) => el.length);
 
     const address = operation[0].split('.');
     const value = address.reduce((output, idx) => {
@@ -66,12 +84,13 @@ const evaluators = {
 
     let isTrue;
 
-    if (!value) isTrue = false;
+    if (value === undefined || value === null) isTrue = false;
     else if (operation.length === 1) {
       isTrue = true;
     } else {
-      const checkVal = operation[2].substr(1, operation[2].length - 2);
-      console.log(checkVal);
+      let checkVal = operation[2].substr(1, operation[2].length - 2);
+      if (checkVal === 'true') checkVal = true;
+      if (checkVal === 'false') checkVal = false;
       switch (operation[1]) {
         case '==':
           if (value === checkVal || value === parseFloat(checkVal))
@@ -92,6 +111,9 @@ const evaluators = {
           break;
         case '<':
           if (parseFloat(value) && value < parseFloat(checkVal)) isTrue = true;
+          break;
+        case 'contains':
+          if (value.includes(checkVal)) isTrue = true;
           break;
         default:
           break;
@@ -250,7 +272,7 @@ const compile = async (data, templateName) => {
 
   const output = compileBlock(data, template);
   return output;
-  // return htmlToPdf(output);
+  return htmlToPdf(output);
 };
 
 export default { compile };
