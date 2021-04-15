@@ -5,6 +5,7 @@ const commonConfig = require('./webpack.common.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
+const Dotenv = require('dotenv-webpack');
 
 const webpackDevClientEntry = require.resolve(
   'react-dev-utils/webpackHotDevClient'
@@ -45,5 +46,6 @@ module.exports = () =>
           sockIntegration: false,
         },
       }),
+      new Dotenv({ path: './.env', systemvars: true }),
     ],
   });

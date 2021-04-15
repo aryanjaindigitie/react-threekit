@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const safePostCssParser = require('postcss-safe-parser');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = (buildType) =>
   merge(commonConfig, {
@@ -91,6 +92,7 @@ module.exports = (buildType) =>
       },
     },
     plugins: [
+      new Dotenv({ path: './.env', systemvars: true }),
       // new webpack.DefinePlugin({
       //   'process.env.NODE_ENV': JSON.stringify('development'),
       // }),
