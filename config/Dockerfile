@@ -3,11 +3,11 @@ FROM node:15-alpine3.10 as react-build
 
 WORKDIR /app
 
-COPY package.json /app/
+COPY ../package.json /app/
 
 RUN yarn install
 
-COPY ./ /app/
+COPY ../ /app/
 
 RUN npm run build
 
