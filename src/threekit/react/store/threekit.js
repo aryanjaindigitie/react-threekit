@@ -64,20 +64,13 @@ export const setState = (config) => async (dispatch, getState) => {
   dispatch(setInternalState(updatedState));
 };
 
-export const stepBackward = (step = 1) => async (dispatch, getState) => {
+export const stepHistory = (step) => async (dispatch, getState) => {
+  if (typeof step !== 'number') return;
   const state = getState();
-  const updatedState = await controller.stepBackward(step, {
+  const updatedState = await controller.updateHistoryPosition(step, {
     locale: state.threekit.locale,
   });
-  dispatch(setInternalState(updatedState));
-};
-
-export const stepForward = (step = 1) => async (dispatch, getState) => {
-  const state = getState();
-  const updatedState = await controller.stepForward(step, {
-    locale: state.threekit.locale,
-  });
-  dispatch(setInternalState(updatedState));
+  if (updatedState) dispatch(setInternalState(updatedState));
 };
 
 export const launch = (config) => async (dispatch) => {

@@ -475,35 +475,25 @@ export const resumeConfiguration = (configurationId) =>
     resolve();
   });
 
-//  Undo/Redo
-export const stepBackward = (step = 1, options) =>
+//  History - undo/redo
+export const updateHistoryPosition = (step, options) =>
   new Promise(async (resolve) => {
-    if (step < 1) return;
-    if (POSITION - step < 0) return;
-    POSITION -= step;
-    const pastConfiguration = HISTORY[POSITION];
-    await window.threekit.configurator.setConfiguration(pastConfiguration[1]);
-    const state = await getState(options);
-    resolve(state);
-  });
-
-export const stepForward = (step = 1, options) =>
-  new Promise(async (resolve) => {
-    if (step < 1) return;
-    if (POSITION + step > HISTORY.length - 1) return;
+    if (typeof step !== 'number' || step === 0) return resolve();
+    if (POSITION + step < 0 || POSITION + step > HISTORY.length - 1)
+      return resolve();
     POSITION += step;
-    const forwardConfiguration = HISTORY[POSITION];
+    const updatedConfiguration = HISTORY[POSITION];
     await window.threekit.configurator.setConfiguration(
-      forwardConfiguration[1]
+      updatedConfiguration[1]
     );
     const state = await getState(options);
     resolve(state);
   });
 
 //  Zoom
-export const zoom = (increment) => {
-  if (typeof increment !== 'number') return;
-  window.threekit.api.camera.zoom(increment);
+export const zoom = (step) => {
+  if (typeof step !== 'number' || step === 0) return;
+  window.threekit.api.camera.zoom(step);
 };
 
 export const zoomIn = (increment) => zoom(increment ? Math.abs(increment) : 1);

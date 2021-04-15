@@ -1,14 +1,11 @@
 import React from 'react';
 import { Wrapper } from './undo.styles';
 import { RedoOutlined } from '@ant-design/icons';
-import { useRedo } from '../../../hooks';
+import { useHistory } from '../../../hooks';
 
 export const Redo = () => {
-  const redo = useRedo();
-
-  const handleClick = () => {
-    redo();
-  };
+  const stepHistory = useHistory();
+  const handleClick = () => stepHistory(1);
 
   return (
     <Wrapper onClick={handleClick}>

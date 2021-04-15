@@ -7,8 +7,7 @@ import {
   getLocale,
   getLocaleOptions,
   setLocale,
-  stepBackward,
-  stepForward,
+  stepHistory,
 } from '../store/threekit';
 import { controller } from '../../api';
 
@@ -81,19 +80,13 @@ export const useLocale = () => {
 export const hasLoaded = () => useSelector(isPlayerLoaded);
 
 export const useZoom = () => {
-  const zoomIn = (increment) => controller.zoomIn(increment || 1);
-  const zoomOut = (increment) =>
-    controller.zoomOut(increment ? -1 * Math.abs(increment) : -1);
+  const zoomIn = (step) => controller.zoom(step || 1);
+  const zoomOut = (step) => controller.zoom(step ? -1 * Math.abs(step) : -1);
 
   return [zoomIn, zoomOut];
 };
 
-export const useUndo = () => {
+export const useHistory = () => {
   const dispatch = useDispatch();
-  return (step) => dispatch(stepBackward(step));
-};
-
-export const useRedo = () => {
-  const dispatch = useDispatch();
-  return (step) => dispatch(stepForward(step));
+  return (step) => dispatch(stepHistory(step));
 };
