@@ -1,12 +1,14 @@
 import axios from 'axios';
 import { getConnection } from '../connect';
 
-const objectToQueryStr = (obj) =>
-  Object.entries(obj).reduce((output, [key, val], i) => {
+export const objectToQueryStr = (obj) => {
+  if (!obj || !Object.keys(obj).length) return '';
+  return Object.entries(obj).reduce((output, [key, val], i) => {
     if (i) output += '&';
     if (val !== undefined) output += `${key}=${val}`;
     return output;
   }, '?');
+};
 
 export const threekitRequest = (request) => {
   const { url, method, data, params, config } = Object.assign(

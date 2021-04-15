@@ -4,5 +4,7 @@ const CATALOG_API_ROUTE = `/api/catalog/products`;
 
 export const getAllItems = () => threekitRequest(CATALOG_API_ROUTE);
 
-export const getItemById = (catalogId) =>
+export const getItemById = (catalogId) => {
+  if (!catalogId) throw new Error('Requires Catalog Item ID');
   threekitRequest(`${CATALOG_API_ROUTE}/${catalogId}`);
+};
