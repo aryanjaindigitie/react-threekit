@@ -1,4 +1,4 @@
-import threekit from '../../api';
+import { connect, controller } from '../../api';
 import { createSlice } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 
@@ -37,12 +37,12 @@ export const isPlayerLoaded = (state) => state.threekit.loaded;
 //  Locale and Translations
 export const getLocale = (state) => state.threekit.locale;
 
-export const getLocaleOptions = () => threekit.player.LOCALE_OPTIONS;
+export const getLocaleOptions = () => controller.LOCALE_OPTIONS;
 
 export const setLocale = (locale) => async (dispatch) => {
   if (!locale) return;
   dispatch(updateLocaleState(locale));
-  const state = await threekit.player.getState({
+  const state = await controller.getState({
     locale,
   });
   dispatch(setInternalState(state));
@@ -57,8 +57,8 @@ export const getState = (attribute) =>
 
 export const setState = (config) => async (dispatch, getState) => {
   const state = getState();
-  await threekit.player.setState(config);
-  const updatedState = await threekit.player.getState({
+  await controller.setState(config);
+  const updatedState = await controller.getState({
     locale: state.threekit.locale,
   });
   dispatch(setInternalState(updatedState));
@@ -66,7 +66,7 @@ export const setState = (config) => async (dispatch, getState) => {
 
 export const stepBackward = (step = 1) => async (dispatch, getState) => {
   const state = getState();
-  const updatedState = await threekit.player.stepBackward(step, {
+  const updatedState = await controller.stepBackward(step, {
     locale: state.threekit.locale,
   });
   dispatch(setInternalState(updatedState));
@@ -74,27 +74,27 @@ export const stepBackward = (step = 1) => async (dispatch, getState) => {
 
 export const stepForward = (step = 1) => async (dispatch, getState) => {
   const state = getState();
-  const updatedState = await threekit.player.stepForward(step, {
+  const updatedState = await controller.stepForward(step, {
     locale: state.threekit.locale,
   });
   dispatch(setInternalState(updatedState));
 };
 
 export const launch = (config) => async (dispatch) => {
-  threekit.connect({
+  connect({
     orgId: config.orgId,
     authToken: config.authToken,
     threekitEnv: config.threekitEnv,
   });
 
-  await threekit.player.launch(config);
+  await controller.launch(config);
 
   if (config.locale) dispatch(setLocale(config.locale));
   const stateOptions = Object.assign(
     {},
     config.locale ? { locale: config.locale } : undefined
   );
-  const state = await threekit.player.getState(stateOptions);
+  const state = await controller.getState(stateOptions);
 
   dispatch(setLoaded(true));
   dispatch(setInternalState(state));

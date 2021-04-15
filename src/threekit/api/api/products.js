@@ -1,7 +1,7 @@
 // import fs from 'fs'
 // import path from 'path'
 import { validate as uuidValidate } from 'uuid';
-import { connect, getConnection } from './connect';
+import { connect, getConnection } from '../connect';
 import http from '../http';
 // import FormData from 'form-data'
 // import csvParser from 'csv-parser'
@@ -57,8 +57,8 @@ export const find = (query, returnFieldsString, options) =>
       console.error('Please connect to threekit');
       reject();
     }
-    
-try {
+
+    try {
       const response = await http.catalog.getAllItems();
       if (response.status !== 200) {
         console.error(response.data);

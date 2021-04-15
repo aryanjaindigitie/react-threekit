@@ -1,8 +1,7 @@
-import { getConnection } from './connect';
-import * as products from './products';
-import * as configurations from './configurations';
 import { validate as isUuid } from 'uuid';
 import { deepCompare } from '../utils';
+import api from '../api';
+import connect from '../connect';
 
 let PRODUCTS;
 let TRANSLATION_MAP;
@@ -20,10 +19,10 @@ const fetchProductsData = () =>
     let itemsArr;
     try {
       if (!TRANSLATION_MAP) {
-        TRANSLATION_MAP = await products.getTranslationMap();
+        TRANSLATION_MAP = await api.products.getTranslationMap();
         LOCALE_OPTIONS = Object.keys(Object.values(TRANSLATION_MAP)[1]);
       }
-      itemsArr = await products.find();
+      itemsArr = await api.products.find();
       if (!itemsArr) return reject('no items');
       PRODUCTS = itemsArr.reduce(
         (output, item) => Object.assign(output, { [item.id]: item }),
@@ -220,7 +219,7 @@ const initializePlayer = (initializationObj) =>
 export const launch = (initializationObj) => {
   if (window.threekit) return;
 
-  const connectionObj = getConnection();
+  const connectionObj = connect.getConnection();
   if (!connectionObj) {
     throw new Error('Please connect to threekit');
   }
@@ -458,7 +457,7 @@ export const saveConfiguration = (data = {}, options = {}) =>
       options
     );
     const configuration = window.threekit.configurator.getConfiguration();
-    const config = await configurations.save({
+    const config = await api.configurations.save({
       assetId: ASSET_ID,
       configuration,
       productVersion,
@@ -471,7 +470,7 @@ export const saveConfiguration = (data = {}, options = {}) =>
 export const resumeConfiguration = (configurationId) =>
   new Promise(async (resolve) => {
     if (!configurationId) return;
-    const config = await configurations.fetch(configurationId);
+    const config = await api.configurations.fetch(configurationId);
     setState(config.variant);
     resolve();
   });

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import threekit from '../../../api';
+import { controller } from '../../../api';
 
 const Player = () => {
   useEffect(() => {
     (() => {
-      threekit.player.addPlayerToComponent('threekit-player');
+      controller.addPlayerToComponent('threekit-player');
     })();
     return;
   }, []);

@@ -1,19 +1,9 @@
-import ThreekitProvider from './components/ThreekitProvider';
-import * as Wrappers from './components/Wrappers';
-import Player from './components/Player';
-import * as InputComponents from './components/InputComponents';
-import * as Widgets from './components/Widgets';
 import * as hooks from './hooks';
+import * as components from './components';
 
-export { ThreekitProvider, Wrappers, Player, InputComponents, Widgets, hooks };
+export { hooks, components };
 
-const threekitReact = {
-  ThreekitProvider,
-  Wrappers,
-  Player,
-  InputComponents,
-  Widgets,
+export default {
+  components,
   hooks,
 };
-
-export default threekitReact;

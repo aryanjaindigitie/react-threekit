@@ -1,10 +1,8 @@
-import threekitApi from './api';
+import api from './api';
 import react from './react';
+export * from './api';
 export * from './react';
 
-export const player = threekitApi.player;
-export const threekit = threekitApi;
+export const { ThreekitProvider } = react.components;
 
-const api = { player, threekit, ...react };
-
-export default api;
+export default { ...api, ...react, ThreekitProvider };

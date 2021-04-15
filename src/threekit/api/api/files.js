@@ -1,5 +1,5 @@
 import { validate as uuidValidate } from 'uuid';
-import { connect } from './connect';
+import { connect } from '../connect';
 import http from '../http';
 
 export const saveFiles = (files, options) =>

@@ -1,18 +1,15 @@
-import axios from 'axios';
-import { getConnection } from '../api/connect';
+// import axios from 'axios';
+// import { getConnection } from '../api/connect';
+import { threekitRequest } from './utils';
 
 const FILES_API_ROUTE = `/api/files`;
 
-// export const postFile = (file) => {
-//     const connectionObj = getConnection()
-//     if (!connectionObj) throw new Error('Please connect to threekit')
-//     const url = `${connectionObj.threekitEnv}${FILES_API_ROUTE}`
-//     return axios.post(url)
-// }
+// export const postFile = (file) =>
+//   threekitRequest({ method: 'POST', url: FILES_API_ROUTE });
 
-export const getFile = (fileId) => {
-  const connectionObj = getConnection();
-  if (!connectionObj) throw new Error('Please connect to threekit');
-  const url = `${connectionObj.threekitEnv}${FILES_API_ROUTE}/${fileId}`;
-  return axios.get(url);
-};
+export const getFile = (fileId) =>
+  threekitRequest({
+    method: 'GET',
+    url: `${FILES_API_ROUTE}/${fileId}`,
+    params: { bearer_token: undefined },
+  });

@@ -10,7 +10,7 @@ import {
   stepBackward,
   stepForward,
 } from '../store/threekit';
-import threekit from '../../api';
+import { controller } from '../../api';
 
 export const useAttribute = (attribute) => {
   const dispatch = useDispatch();
@@ -81,9 +81,9 @@ export const useLocale = () => {
 export const hasLoaded = () => useSelector(isPlayerLoaded);
 
 export const useZoom = () => {
-  const zoomIn = (increment) => threekit.player.zoomIn(increment || 1);
+  const zoomIn = (increment) => controller.zoomIn(increment || 1);
   const zoomOut = (increment) =>
-    threekit.player.zoomOut(increment ? -1 * Math.abs(increment) : -1);
+    controller.zoomOut(increment ? -1 * Math.abs(increment) : -1);
 
   return [zoomIn, zoomOut];
 };

@@ -1,8 +1,9 @@
-export const tooltip = (config = {}) => {
-  const { duration, metadataField } = Object.assign(
+const tooltip = (config = {}) => {
+  const { duration, metadataField, prepOutput } = Object.assign(
     {
       duration: 0.7,
       metadataField: '_tooltip',
+      prepOutput: undefined,
     },
     config
   );
@@ -136,7 +137,9 @@ export const tooltip = (config = {}) => {
               tooltipEl.style.display = 'block';
               tooltipEl.style.top = event.clientY + 'px';
               tooltipEl.style.left = event.clientX + 'px';
-              tooltipInnerEl.innerHTML = tooltip.defaultValue;
+              tooltipInnerEl.innerHTML = prepOutput
+                ? prepOutput(tooltip.defaultValue)
+                : tooltip.defaultValue;
 
               //
               timeout = setTimeout(() => hideTooltip(), duration * 1000);
@@ -148,3 +151,5 @@ export const tooltip = (config = {}) => {
     },
   });
 };
+
+export default tooltip;

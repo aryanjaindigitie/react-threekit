@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { getConnection } from '../api/connect';
+import { getConnection } from '../connect';
+import { threekitRequest } from './utils';
 
 const PRODUCTS_API_ROUTE = `/api/products`;
 
@@ -39,9 +40,5 @@ export const populateItems = (data) => {
   });
 };
 
-export const getTranslations = (catalogId) => {
-  const connectionObj = getConnection();
-  if (!connectionObj) throw new Error('Please connect to threekit');
-  const url = `${connectionObj.threekitEnv}${PRODUCTS_API_ROUTE}/translations?orgId=${connectionObj.orgId}&bearer_token=${connectionObj.authToken}`;
-  return axios.get(url);
-};
+export const getTranslations = () =>
+  threekitRequest(`${PRODUCTS_API_ROUTE}/translations`);
