@@ -3,7 +3,12 @@ import { useAttribute } from '../../hooks';
 import { METADATA_RESERVED } from '../../../constants';
 
 const container = (WrappedComponent) => (props) => {
-  const { attribute, imgFromMetadata, colorFromMetadata } = props;
+  const {
+    attribute,
+    imgFromMetadata,
+    colorFromMetadata,
+    showAttributeTitle,
+  } = props;
   if (!attribute) return <WrappedComponent {...props} />;
 
   const [attributeData, setAttribute] = useAttribute(attribute);
@@ -35,9 +40,12 @@ const container = (WrappedComponent) => (props) => {
 
   const handleSetAttribute = (assetId) => setAttribute({ assetId });
 
+  let preppedProps = { ...props };
+  if (showAttributeTitle) preppedProps.title = attributeData.label;
+
   return (
     <WrappedComponent
-      {...props}
+      {...preppedProps}
       attribute={attribute}
       selected={attributeData.selected?.assetId}
       handleClick={handleSetAttribute}

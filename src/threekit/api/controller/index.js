@@ -117,6 +117,10 @@ const hydrateAttributes = (attributes, configuration, options = {}) => {
 
     return {
       ...attribute,
+      label:
+        locale?.length && TRANSLATION_MAP[attribute.name]?.[locale]
+          ? TRANSLATION_MAP[attribute.name]?.[locale]
+          : attribute.name,
       values,
       selected: selectedAsset
         ? Object.assign({}, selectedAsset, {
