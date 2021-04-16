@@ -1,9 +1,8 @@
 import express from 'express';
-import {
-  POSTMARK_TEMPLATE_ID,
-  POSTMARK_TOKEN,
-  POSTMARK_FROM,
-} from '../constants.mjs';
+
+const POSTMARK_TEMPLATE_ID = process.env.POSTMARK_TEMPLATE_ID;
+const POSTMARK_TOKEN = process.env.POSTMARK_TOKEN;
+const POSTMARK_FROM = process.env.POSTMARK_FROM;
 
 const router = express.Router();
 router.route('/').post(async (req, res) => {

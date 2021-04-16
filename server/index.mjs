@@ -2,16 +2,18 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import morgan from 'morgan';
+import dotenv from 'dotenv';
 
 // import smsRoutes from "./routes/sms.mjs"
 // import emailRoutes from "./routes/email.mjs"
 // import pdfRoutes from './routes/pdf.mjs';
 
 //  Port setup
+dotenv.config();
 const argv = process.argv.slice(2);
 const portIdx =
   argv.indexOf('--port') !== -1 ? argv.indexOf('--port') : argv.indexOf('-p');
-const PORT = process.env.PORT || portIdx !== -1 ? argv[portIdx + 1] : 5000;
+const PORT = process.env.PORT || (portIdx > 0 ? argv[portIdx + 1] : 5000);
 
 const app = express();
 
