@@ -11,8 +11,9 @@ export const objectToQueryStr = (obj) => {
 };
 
 export const threekitRequest = (request) => {
-  const { url, method, data, params, config } = Object.assign(
+  const { url, authToken, method, data, params, config } = Object.assign(
     {
+      authToken: undefined,
       method: 'GET',
       params: {},
       config: undefined,
@@ -27,17 +28,28 @@ export const threekitRequest = (request) => {
     ? url
     : `${connectionObj.threekitEnv}${url}`;
 
-  const query = objectToQueryStr({
-    bearer_token: connectionObj.authToken,
-    ...params,
-  });
-  const urlPrepped = `${urlRaw}${query}`;
+  const token = authToken || connectionObj.authToken;
+
+  const query = objectToQueryStr(params);
+  let urlPrepped = `${urlRaw}${query}`;
+  let configPrepped = { ...config };
+
+  if (connectionObj.isServerEnv)
+    configPrepped.headers = Object.assign({}, configPrepped.headers || {}, {
+      authorization: `Bearer ${token}`,
+    });
+  else urlPrepped += (query.length ? `&` : `?`) + `bearer_token=${token}`;
 
   switch (method) {
     case 'GET':
-      return axios.get(urlPrepped, config);
+    case 'get':
+      return axios.get(urlPrepped, configPrepped);
     case 'POST':
-      return axios.post(urlPrepped, data, config);
+    case 'post':
+      return axios.post(urlPrepped, data, configPrepped);
+    case 'put':
+    case 'PUT':
+      return axios.put(urlPrepped, data, configPrepped);
     default:
       return;
   }
