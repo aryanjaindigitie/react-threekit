@@ -4,5 +4,6 @@ import ThreekitProvider from './ThreekitProvider';
 export * from './InputComponents';
 export * from './Wrappers';
 export * from './Widgets';
+export * from './Sections';
 
 export { Player, ThreekitProvider };
