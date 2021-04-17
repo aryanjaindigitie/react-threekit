@@ -7,7 +7,7 @@ const checkRuntime = new Function(
 let AUTH_TOKEN;
 let ORG_ID;
 let THREEKIT_ENV = 'https://admin.threekit.com';
-const BROWSER_RUNTIME = checkRuntime();
+const IS_SERVER_ENV = !checkRuntime();
 
 export const connect = (config) => {
   const { authToken, orgId, threekitEnv } = config;
@@ -34,7 +34,7 @@ export const getConnection = (config) => {
     authToken: AUTH_TOKEN,
     orgId: ORG_ID,
     threekitEnv: THREEKIT_ENV,
-    // browserEnvironment: BROWSER_RUNTIME,
+    isServerEnv: IS_SERVER_ENV,
   };
 };
 
