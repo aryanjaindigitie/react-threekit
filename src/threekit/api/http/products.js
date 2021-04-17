@@ -42,3 +42,17 @@ export const populateItems = (data) => {
 
 export const getTranslations = () =>
   threekitRequest(`${PRODUCTS_API_ROUTE}/translations`);
+
+export const postTranslations = (data) => {
+  if (!data) throw new Error('Requires Translations Data');
+  return threekitRequest({
+    method: 'POST',
+    url: `${PRODUCTS_API_ROUTE}/translations`,
+    data,
+    config: {
+      headers: {
+        'content-type': `multipart/form-data; boundary=${data._boundary}`,
+      },
+    },
+  });
+};
