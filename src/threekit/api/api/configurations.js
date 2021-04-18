@@ -1,4 +1,5 @@
 import http from '../http';
+import { getConnection } from '../connect';
 import { validate as uuidValidate } from 'uuid';
 import FormData from 'form-data';
 
@@ -59,4 +60,17 @@ export const fetch = (configurationId) =>
       console.error(err);
       reject();
     }
+  });
+
+export const fetchAll = () =>
+  new Promise(async (resolve, reject) => {
+    const connectionObj = getConnection();
+    if (!connectionObj.orgId) {
+      reject('missing Org ID');
+    }
+
+    const response = await http.configurations.getConfigurations(
+      connectionObj.orgId
+    );
+    resolve(response.data.configurations);
   });

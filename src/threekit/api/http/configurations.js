@@ -20,3 +20,12 @@ export const getSavedConfiguration = (configurationId) => {
   if (!configurationId) throw new Error('Requires Configuration ID');
   return threekitRequest(`${CONFIGURATIONS_API_ROUTE}/${configurationId}`);
 };
+
+export const getConfigurations = (orgId) => {
+  if (!orgId) throw new Error('Requires Org ID');
+  return threekitRequest({
+    method: 'GET',
+    url: `${CONFIGURATIONS_API_ROUTE}`,
+    params: { orgId },
+  });
+};
