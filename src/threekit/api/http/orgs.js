@@ -7,7 +7,7 @@ export const getOrgById = (orgId) => {
   return threekitRequest(`${ORGS_API_ROUTE}/${orgId}`);
 };
 
-export const updateOrgById = (orgId, data) => {
+export const putOrgById = (orgId, data) => {
   if (!orgId) throw new Error('Requires Org ID');
   return threekitRequest({
     method: 'PUT',
