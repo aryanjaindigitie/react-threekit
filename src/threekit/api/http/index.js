@@ -4,7 +4,16 @@ import * as files from './files';
 import * as configurations from './configurations';
 import * as orgs from './orgs';
 import * as datatables from './datatables';
+import * as assets from './assets';
 
-const http = { orgs, products, catalog, files, configurations, datatables };
+const http = {
+  orgs,
+  products,
+  catalog,
+  files,
+  configurations,
+  datatables,
+  assets,
+};
 
 export default http;

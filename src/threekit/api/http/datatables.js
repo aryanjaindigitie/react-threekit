@@ -51,3 +51,17 @@ export const postDatatable = (formData) => {
     },
   });
 };
+
+export const putDatatable = (datatableId, formData) => {
+  if (!formData) throw new Error('Requires DataTable Form');
+  return threekitRequest({
+    method: 'PUT',
+    url: `${DATATABLES_API_ROUTE}/${datatableId}`,
+    data: formData,
+    config: {
+      headers: {
+        'content-type': `multipart/form-data; boundary=${formData._boundary}`,
+      },
+    },
+  });
+};

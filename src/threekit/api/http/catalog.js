@@ -8,3 +8,11 @@ export const getItemById = (catalogId) => {
   if (!catalogId) throw new Error('Requires Catalog Item ID');
   return threekitRequest(`${CATALOG_API_ROUTE}/${catalogId}`);
 };
+
+export const getItemsByTag = (tags) => {
+  return threekitRequest({
+    method: 'GET',
+    url: `${CATALOG_API_ROUTE}`,
+    params: { tags },
+  });
+};

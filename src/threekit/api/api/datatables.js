@@ -101,3 +101,26 @@ export const uploadDatatable = ({ name, columnInfo, data }) =>
       reject(e);
     }
   });
+
+export const updateDatatable = ({ datatableId, name, columnInfo, data }) =>
+  new Promise(async (resolve, reject) => {
+    const connectionObj = getConnection();
+    if (!connectionObj.orgId) {
+      reject('missing Org ID');
+    }
+
+    const fd = new FormData();
+    fd.append('orgId', connectionObj.orgId);
+    fd.append('name', name);
+    fd.append('columnInfo', JSON.stringify(columnInfo));
+    fd.append('file', Buffer.from(data), { filename: 'datatable.csv' });
+    try {
+      const response = await http.datatables.putDatatable(datatableId, fd);
+      if (response.status !== 200) {
+        return reject(response.data);
+      }
+      resolve(response.data);
+    } catch (e) {
+      reject(e);
+    }
+  });
