@@ -19,7 +19,7 @@ const fetchProductsData = () =>
     let itemsArr;
     try {
       if (!TRANSLATION_MAP) {
-        TRANSLATION_MAP = await api.products.getTranslationMap();
+        TRANSLATION_MAP = await api.products.fetchTranslations();
         LOCALE_OPTIONS = Object.keys(Object.values(TRANSLATION_MAP)[1]);
       }
       itemsArr = await api.products.find();

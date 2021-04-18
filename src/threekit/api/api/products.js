@@ -1,19 +1,7 @@
-// import fs from 'fs'
-// import path from 'path'
 import { validate as uuidValidate } from 'uuid';
 import { connect, getConnection } from '../connect';
 import http from '../http';
-// import FormData from 'form-data'
-// import csvParser from 'csv-parser'
-
-//  Query Example
-const query = {
-  id: 'value',
-  assetId: 'value',
-  name: 'value',
-  tags: 'value',
-  'metadata.key': 'value',
-};
+import FormData from 'form-data';
 
 // export const findById = (
 //     productId: string,
@@ -203,7 +191,22 @@ export const find = (query, returnFieldsString, options) =>
 //         }
 //     })
 
-export const getTranslationMap = () =>
+export const uploadTranslation = (data) =>
+  new Promise(async (resolve) => {
+    const fd = new FormData();
+    fd.append('file', Buffer.from(data), { filename: 'translations.csv' });
+    try {
+      const response = await http.products.postTranslations(fd);
+      if (response.status !== 200) {
+        return reject(response.data);
+      }
+      resolve(response.data);
+    } catch (e) {
+      reject(e);
+    }
+  });
+
+export const fetchTranslations = (format = 'json') =>
   new Promise(async (resolve, reject) => {
     let response;
     try {
@@ -211,6 +214,9 @@ export const getTranslationMap = () =>
     } catch (e) {
       reject(e);
     }
+
+    if (format.toLowerCase() === 'csv') return resolve(response.data);
+
     const csvData = response.data
       .replaceAll('"', '')
       .split('\n')
