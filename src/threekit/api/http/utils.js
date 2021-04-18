@@ -11,6 +11,7 @@ export const objectToQueryStr = (obj) => {
 };
 
 export const threekitRequest = (request) => {
+  if (!request) throw new Error('Request missing');
   const { url, authToken, method, data, params, config } = Object.assign(
     {
       authToken: undefined,
