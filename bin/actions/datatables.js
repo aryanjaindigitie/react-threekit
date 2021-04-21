@@ -1,9 +1,9 @@
-import api from '../src/threekit/api';
+import api from '../../src/threekit/api';
 import fs from 'fs';
 import chalk from 'chalk';
 import Table from 'cli-table';
 import { Select, prompt } from 'enquirer';
-import { PATHS } from './constants';
+import { PATHS } from '../constants';
 
 export const uploadDatatable = async (config) => {
   const { name, filepath } = Object.assign(
@@ -21,6 +21,11 @@ export const uploadDatatable = async (config) => {
     const filteredFiles = files.filter(
       (el) => el.includes('.json') || el.includes('csv')
     );
+
+    if (!filteredFiles.length)
+      return console.log(
+        chalk.yellow('No datatables found in ', PATHS.datatables)
+      );
 
     const select1 = new Select({
       name: 'upload-datatable',
@@ -146,26 +151,29 @@ export const listDatatables = async () => {
   );
 };
 
-export const downloadDatatable = async (config) => {
-  const { name, format } = Object.assign(
+export const downloadDatatable = async (name, config) => {
+  const { filepath, format } = Object.assign(
     {
-      name: undefined,
+      filepath: undefined,
       format: 'json',
     },
     config
   );
+
   const list = await api.datatables.fetchList();
+  if (!list.length) return console.log(chalk.yellow('No datatables found.'));
   const tablesMap = list.reduce(
     (output, table) => Object.assign(output, { [table.name]: table.id }),
     {}
   );
 
-  let datatableId;
+  let tablename;
   let message;
 
   if (!name) message = 'Which datatable would you like to download?';
   else if (!tablesMap[name])
     message = `'${name}' does not exist. Pick another datatable to download...`;
+  else tablename = tablesMap[name];
 
   if (message) {
     const select = new Select({
@@ -174,40 +182,47 @@ export const downloadDatatable = async (config) => {
       choices: Object.keys(tablesMap),
     });
     const answer = await select.run();
-    datatableId = tablesMap[answer];
-  } else {
-    datatableId = tablesMap[name];
+    tablename = tablesMap[answer];
   }
 
   let datatableData;
   let filename;
+  let fileFormat = filepath
+    ? filepath.split('.')[filepath.split('.').length - 1]
+    : format;
 
-  switch (format) {
+  switch (fileFormat) {
     case 'json':
-      const dataJSON = await api.datatables.fetchDatatable(datatableId, {
-        format: 'json',
+      const dataJSON = await api.datatables.fetchDatatable(tablename, {
+        format: fileFormat,
       });
       datatableData = JSON.stringify(dataJSON);
       filename = dataJSON.name;
       break;
 
     case 'csv':
-    default:
-      const dataCSV = await api.datatables.fetchDatatable(datatableId, {
-        format: 'csv',
+      const dataCSV = await api.datatables.fetchDatatable(tablename, {
+        format: fileFormat,
       });
       datatableData = dataCSV.data;
       filename = dataCSV.name;
       break;
+    default:
+      return console.log(
+        chalk.red('Unknown file format') +
+          `\n\n` +
+          `Available formats are: ${chalk.blue('json')}, ${chalk.blue('csv')}}`
+      );
   }
 
-  const filepath = `${PATHS.datatables}/${filename}.${format}`;
+  const preppedFilePath =
+    filepath || `${PATHS.datatables}/${filename}.${format}`;
   fs.mkdirSync(PATHS.datatables, { recursive: true });
-  const writer = fs.createWriteStream(filepath);
+  const writer = fs.createWriteStream(preppedFilePath);
   writer.write(datatableData);
   console.log(
     chalk.green(
-      `Table '${filename}' was successfully downloaded to ${filepath}`
+      `Table '${filename}' was successfully downloaded to ${preppedFilePath}`
     )
   );
 };

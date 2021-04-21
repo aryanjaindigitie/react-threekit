@@ -1,4 +1,34 @@
 import http from '../http';
+import FormData from 'form-data';
+
+export const downloadAll = () =>
+  new Promise(async (resolve) => {
+    const response = await http.products.downloadAllItems();
+    resolve(response.data);
+  });
+
+export const uploadItems = (items) =>
+  new Promise(async (resolve) => {
+    const form = new FormData();
+    form.append('file', Buffer.from(JSON.stringify(items)), {
+      filename: 'products-upload.json',
+    });
+    const response = await http.products.uploadItems(form);
+    resolve(response.data);
+  });
+
+export const editItem = (assetId, data) =>
+  new Promise(async (resolve) => {
+    const response = await http.assets.putAsset(assetId, data);
+    resolve(response.data);
+  });
+
+export const deleteItems = (assetIds) =>
+  new Promise(async (resolve) => {
+    const assets = Array.isArray(assetIds) ? assetIds : [assetIds];
+    await Promise.all(assets.map((id) => http.assets.deleteAsset(id)));
+    resolve();
+  });
 
 export const fetchTags = () =>
   new Promise(async (resolve) => {

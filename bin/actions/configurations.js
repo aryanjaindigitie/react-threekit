@@ -1,8 +1,8 @@
-import api from '../src/threekit/api/index';
+import api from '../../src/threekit/api/index';
 import chalk from 'chalk';
 import Table from 'cli-table';
 
-export const printConfigurations = async () => {
+export const listConfigurations = async () => {
   const configurations = await api.configurations.fetchAll();
 
   const table = new Table({

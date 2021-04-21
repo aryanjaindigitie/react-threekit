@@ -4,6 +4,34 @@ import { threekitRequest } from './utils';
 
 const PRODUCTS_API_ROUTE = `/api/products`;
 
+export const downloadAllItems = (orgId) => {
+  const connectionObj = getConnection();
+  if (!connectionObj) throw new Error('Please connect to threekit');
+  if (!orgId && !connectionObj.orgId) throw new Error('Org ID is missing');
+  return threekitRequest({
+    method: 'GET',
+    url: `${PRODUCTS_API_ROUTE}/export/json`,
+    params: { orgId: orgId || connectionObj.orgId },
+  });
+};
+
+export const uploadItems = (formData, orgId) => {
+  const connectionObj = getConnection();
+  if (!connectionObj) throw new Error('Please connect to threekit');
+  if (!orgId && !connectionObj.orgId) throw new Error('Org ID is missing');
+  return threekitRequest({
+    method: 'POST',
+    url: `${PRODUCTS_API_ROUTE}/import`,
+    params: { orgId: orgId || connectionObj.orgId },
+    data: formData,
+    config: {
+      headers: {
+        'content-type': `multipart/form-data; boundary=${formData._boundary}`,
+      },
+    },
+  });
+};
+
 export const getAllItems = () => {
   const connectionObj = getConnection();
   if (!connectionObj) throw new Error('Please connect to threekit');

@@ -51,6 +51,9 @@ export const threekitRequest = (request) => {
     case 'put':
     case 'PUT':
       return axios.put(urlPrepped, data, configPrepped);
+    case 'delete':
+    case 'DELETE':
+      return axios.delete(urlPrepped, configPrepped);
     default:
       return;
   }
