@@ -21,8 +21,8 @@ export const Dropdown = (props) => {
     handleClick: onClick,
     selected,
     hideDisabled,
+    loading,
   } = props;
-  if (!options || !options.filter((el) => !el.disabled).length) return null;
   const [hide, setHide] = useState(true);
   const ref = useRef(null);
 
@@ -54,6 +54,7 @@ export const Dropdown = (props) => {
         <Header className={`tk-dropdown-header ${className}`}>{title}</Header>
       )}
       <Wrapper
+        loading={loading}
         active={!hide}
         ref={ref}
         className={`tk-dropdown-outer ${className}`}

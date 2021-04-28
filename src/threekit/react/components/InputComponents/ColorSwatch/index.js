@@ -18,8 +18,8 @@ export const ColorSwatch = (props) => {
     selected,
     hideDisabled,
     handleClick,
+    loading,
   } = props;
-  if (!options || !options.filter((el) => !el.disabled).length) return null;
 
   const className = attribute
     ? 'tk-input-' + regularToKebabCase(attribute)
@@ -43,6 +43,7 @@ export const ColorSwatch = (props) => {
                 className={`tk-color-swatch-option ${className} option-${
                   i + 1
                 }`.trim()}
+                loading={loading}
                 color={option.colorValue}
                 onClick={() => handleClick(option.value)}
               >

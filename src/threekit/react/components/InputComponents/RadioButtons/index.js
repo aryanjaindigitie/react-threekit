@@ -17,8 +17,8 @@ export const RadioButtons = (props) => {
     className: classNameRaw,
     hideDisabled,
     handleClick,
+    loading,
   } = props;
-  if (!options || !options.filter((el) => !el.disabled).length) return null;
 
   const className = attribute
     ? regularToKebabCase(attribute)
@@ -52,6 +52,7 @@ export const RadioButtons = (props) => {
                 className ? `tk-input-${className}` : ''
               } option-${i + 1}`}
               key={i}
+              loading={loading}
               disabled={option.disabled}
               selected={option.value === selected}
               onClick={() => handleClick(option.value)}

@@ -17,8 +17,8 @@ export const Swatch = (props) => {
     handleClick,
     selected,
     hideDisabled,
+    loading,
   } = props;
-  if (!options || !options.filter((el) => !el.disabled).length) return null;
 
   const className = attribute
     ? regularToKebabCase(attribute)
@@ -54,6 +54,7 @@ export const Swatch = (props) => {
               } option-${i + 1}`}
               onClick={() => handleClick(option.value)}
               color={option.colorValue}
+              loading={loading}
               selected={option.value === selected}
             >
               <div

@@ -6,6 +6,7 @@ const initialState = {
   loaded: false,
   state: undefined,
   language: undefined,
+  isPlayerLoading: false,
 };
 
 const { actions, reducer } = createSlice({
@@ -14,6 +15,7 @@ const { actions, reducer } = createSlice({
   reducers: {
     setLoaded: (state, _) => {
       state.loaded = true;
+      state.isPlayerLoading = true;
     },
     setInternalAttributesState: (state, action) => {
       state.attributes = Object.assign({}, state.attributes, action.payload);
@@ -21,10 +23,17 @@ const { actions, reducer } = createSlice({
     updateLanguageState: (state, action) => {
       state.language = action.payload;
     },
+    setPlayerLoading: (state, action) => {
+      state.isPlayerLoading = action.payload;
+    },
   },
 });
 
-const { setInternalAttributesState, updateLanguageState } = actions;
+const {
+  setInternalAttributesState,
+  updateLanguageState,
+  setPlayerLoading,
+} = actions;
 export const { setLoaded } = actions;
 
 const getInternalAttributeState = (state) => {
@@ -32,7 +41,9 @@ const getInternalAttributeState = (state) => {
   return state.threekit.attributes;
 };
 
-export const isPlayerLoaded = (state) => state.threekit.loaded;
+export const isThreekitLoaded = (state) => state.threekit.loaded;
+
+export const isPlayerLoading = (state) => state.threekit.isPlayerLoading;
 
 //  Languages and Translations
 export const getLanguage = (state) => state.threekit.language;
@@ -59,10 +70,12 @@ export const getAttributes = (attribute) =>
   });
 
 export const setConfiguration = (config) => async (dispatch) => {
+  dispatch(setPlayerLoading(true));
   const updatedState = await window.threekit.controller.setAttributesState(
     config
   );
   dispatch(setInternalAttributesState(updatedState));
+  dispatch(setPlayerLoading(false));
 };
 
 export const stepHistory = (step) => async (dispatch) => {

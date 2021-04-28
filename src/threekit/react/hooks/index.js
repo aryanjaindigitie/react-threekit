@@ -2,7 +2,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   getAttributes,
   setConfiguration,
-  isPlayerLoaded,
+  isThreekitLoaded,
+  isPlayerLoading as isPlayerLoadingSelector,
   getLanguage,
   getLanguageOptions,
   setLanguage,
@@ -61,7 +62,9 @@ export const useLanguages = () => {
   return [language, languages, handleChange];
 };
 
-export const hasLoaded = () => useSelector(isPlayerLoaded);
+export const hasLoaded = () => useSelector(isThreekitLoaded);
+
+export const isPlayerLoading = () => useSelector(isPlayerLoadingSelector);
 
 export const useZoom = () => {
   const zoomIn = (step) => window.threekit.api.camera.zoom(Math.abs(step) || 1);

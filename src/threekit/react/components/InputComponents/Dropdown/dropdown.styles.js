@@ -25,7 +25,7 @@ export const DropdownWrapper = styled.div`
     border-color: ${(props) => props.theme.primaryColor};
   }
 
-  cursor: pointer;
+  cursor: ${(props) => (props.loading ? 'wait' : 'pointer')};
 `;
 
 export const DropdownMain = styled.div`

@@ -34,7 +34,7 @@ export const ButtonWrapper = styled.div`
   background-color: ${(props) =>
     props.selected ? props.theme.primaryColor : '#fff'};
 
-  cursor: pointer;
+  cursor: ${(props) => (props.loading ? 'wait' : 'pointer')};
 
   transition: all 0.3s;
 
