@@ -1,14 +1,15 @@
-import connection from './connection';
-import api from './api';
-import Controller from './Controller';
-import * as tools from './tools';
-export * from './api';
-
-export { Controller, connection, tools };
+import * as files from './files';
+import * as products from './products';
+import * as configurations from './configurations';
+import * as orgs from './orgs';
+import * as datatables from './datatables';
+import * as catalog from './catalog';
 
 export default {
-  connection,
-  ...api,
-  tools,
-  Controller,
+  files,
+  products,
+  configurations,
+  orgs,
+  datatables,
+  catalog,
 };

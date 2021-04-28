@@ -1,4 +1,4 @@
-import { Controller } from '../../api';
+import Controller from '../../controller';
 import { createSlice } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 

@@ -1,6 +1,6 @@
-import connection from './connection';
-import threekitAPI from './api';
-import { shallowCompare, deepCompare } from './utils';
+import connection from '../connection';
+import threekitAPI from '../api';
+import { shallowCompare, deepCompare } from '../utils';
 
 class Controller {
   constructor({ api, configurator, translations, language }) {

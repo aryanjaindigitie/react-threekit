@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Controller } from '../../../api';
+import Controller from '../../../controller';
 
 const Player = (props) => {
   const { height, width } = Object.assign(

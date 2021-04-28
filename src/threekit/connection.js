@@ -1,4 +1,15 @@
-import validation from './validation';
+import Joi from 'joi';
+
+const connectionObj = Joi.object({
+  authToken: Joi.string()
+    .guid({
+      version: ['uuidv4'],
+    })
+    .required(),
+  orgId: Joi.string().required(),
+  assetId: Joi.string(),
+  threekitEnv: Joi.string(),
+});
 
 const checkRuntime = new Function(
   'try { return this === window; } catch(e) { return false; }'
@@ -14,9 +25,7 @@ class ThreekitConnection {
   }
 
   async connect(config) {
-    const { value, error } = validation.connection.connectionObj.validate(
-      config
-    );
+    const { value, error } = connectionObj.validate(config);
     if (error) throw new Error(error);
     this._authToken = value.authToken;
     this._orgId = value.orgId;
