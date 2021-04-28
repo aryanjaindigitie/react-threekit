@@ -1,4 +1,4 @@
-import api from '../../src/threekit/api/index';
+import api from '../../src/threekit/api';
 import chalk from 'chalk';
 import Table from 'cli-table';
 

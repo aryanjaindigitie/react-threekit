@@ -25,6 +25,7 @@ export const editItem = (assetId, data) =>
 
 export const deleteItems = (assetIds) =>
   new Promise(async (resolve) => {
+    if (!assetIds?.length) resolve();
     const assets = Array.isArray(assetIds) ? assetIds : [assetIds];
     await Promise.all(assets.map((id) => http.assets.deleteAsset(id)));
     resolve();

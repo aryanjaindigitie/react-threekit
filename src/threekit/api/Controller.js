@@ -54,7 +54,7 @@ class Controller {
     });
   }
 
-  static attachPlayerToComponent = (moveToElementId) => {
+  static attachPlayerToComponent(moveToElementId) {
     const addPlayer = (tryCount = 0) => {
       if (tryCount >= 10) return;
 
@@ -73,7 +73,7 @@ class Controller {
     };
 
     addPlayer();
-  };
+  }
 
   static async launch(config) {
     return new Promise(async (resolve) => {
@@ -140,7 +140,7 @@ class Controller {
     };
   }
 
-  _pushToHistory = (historyItem) => {
+  _pushToHistory(historyItem) {
     if (!this._history) {
       this._history = [historyItem];
       return;
@@ -155,7 +155,7 @@ class Controller {
     this._history.splice(this._historyPosition + 1);
     this._history.push(historyItem);
     this._historyPosition++;
-  };
+  }
 
   _compareAttributes(attributes1, attributes2) {
     let updatedAttributes = new Set([]);
@@ -240,7 +240,7 @@ class Controller {
     return this.getAttributesState(updatedAttrNames);
   }
 
-  stepHistoryPosition = (step) => {
+  stepHistoryPosition(step) {
     return new Promise(async (resolve) => {
       if (typeof step !== 'number' || step === 0) resolve({});
       if (
@@ -256,7 +256,7 @@ class Controller {
       if (updatedAttrNames.length)
         resolve(this.getAttributesState(updatedAttrNames));
     });
-  };
+  }
 
   saveConfiguration(data = {}, options = {}) {
     const {

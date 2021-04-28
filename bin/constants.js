@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { connect } from '../src/threekit/api';
+import { connection } from '../src/threekit/api';
 
 dotenv.config();
 
@@ -20,7 +20,7 @@ export const AUTH_TOKEN = process.env.THREEKIT_PRIVATE_TOKEN;
 export const THREEKIT_ENV = process.env.THREEKIT_ENV;
 
 if (AUTH_TOKEN)
-  connect({
+  connection.connect({
     assetId: ASSET_ID,
     orgId: ORG_ID,
     authToken: AUTH_TOKEN,
