@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { connection } from '../src/threekit/api';
+import connection from '../src/threekit/connection';
 
 dotenv.config();
 
