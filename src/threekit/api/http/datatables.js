@@ -2,39 +2,37 @@ import { threekitRequest } from './utils';
 
 const DATATABLES_API_ROUTE = `/api/datatables`;
 
-export const getDatatablesList = (orgId) => {
-  if (!orgId) throw new Error('Requires Org ID');
-  return threekitRequest({
+export const getDatatablesList = () =>
+  threekitRequest({
     method: 'GET',
     url: DATATABLES_API_ROUTE,
-    params: { orgId },
+    includeOrgId: true,
   });
-};
 
-export const getDatatableInfo = (datatableId, orgId) => {
+export const getDatatableInfo = (datatableId) => {
   if (!datatableId) throw new Error('Requires Datatable ID');
   return threekitRequest({
     method: 'GET',
     url: `${DATATABLES_API_ROUTE}/${datatableId}`,
-    params: { orgId },
+    includeOrgId: true,
   });
 };
 
-export const getDatatableData = (datatableId, orgId) => {
+export const getDatatableData = (datatableId) => {
   if (!datatableId) throw new Error('Requires Datatable ID');
   return threekitRequest({
     method: 'GET',
     url: `${DATATABLES_API_ROUTE}/${datatableId}/rows`,
-    params: { orgId },
+    includeOrgId: true,
   });
 };
 
-export const getDatatable = (datatableId, orgId) => {
+export const getDatatable = (datatableId) => {
   if (!datatableId) throw new Error('Requires Datatable ID');
   return threekitRequest({
     method: 'GET',
     url: `${DATATABLES_API_ROUTE}/${datatableId}/download`,
-    params: { orgId },
+    includeOrgId: true,
   });
 };
 
@@ -43,25 +41,16 @@ export const postDatatable = (formData) => {
   return threekitRequest({
     method: 'POST',
     url: DATATABLES_API_ROUTE,
-    data: formData,
-    config: {
-      headers: {
-        'content-type': `multipart/form-data; boundary=${formData._boundary}`,
-      },
-    },
+    formData,
   });
 };
 
 export const putDatatable = (datatableId, formData) => {
+  if (!datatableId) throw new Error('Requires DataTable ID');
   if (!formData) throw new Error('Requires DataTable Form');
   return threekitRequest({
     method: 'PUT',
     url: `${DATATABLES_API_ROUTE}/${datatableId}`,
-    data: formData,
-    config: {
-      headers: {
-        'content-type': `multipart/form-data; boundary=${formData._boundary}`,
-      },
-    },
+    formData,
   });
 };

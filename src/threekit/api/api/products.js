@@ -1,51 +1,8 @@
-import { validate as uuidValidate } from 'uuid';
-import { connect, getConnection } from '../connect';
 import http from '../http';
 import FormData from 'form-data';
 
-// export const findById = (
-//     productId: string,
-//     returnFieldsString: string,
-//     options: any
-// ) =>
-//     new Promise(async (resolve) => {
-//         const connectionObj = getConnection()
-//         if (!connectionObj && !options?.connection?.authToken) {
-//             console.error('Please connect to threekit')
-//             return resolve(false)
-//         }
-//         if (!connectionObj) connect(options.connection)
-
-//         if (!uuidValidate(productId)) {
-//             console.error('Invalid Product Id')
-//             return resolve(false)
-//         }
-
-//         try {
-//             const response = await http.products.getItemById(productId)
-//             if (response.status !== 200) {
-//                 console.error(
-//                     'something went wrong with the product rest request'
-//                 )
-//                 console.error(response.data)
-//                 return resolve(false)
-//             }
-//             resolve(response.data.products)
-//         } catch (err) {
-//             console.error(err)
-//             resolve(false)
-//         }
-//     })
-
 export const find = (query, returnFieldsString, options) =>
   new Promise(async (resolve, reject) => {
-    if (options?.connection) connect(options.connection);
-    const connectionObj = getConnection();
-    if (!connectionObj) {
-      console.error('Please connect to threekit');
-      reject();
-    }
-
     try {
       const response = await http.catalog.getAllItems();
       if (response.status !== 200) {

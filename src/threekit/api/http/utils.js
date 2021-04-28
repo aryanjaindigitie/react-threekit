@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getConnection } from '../connect';
+import connection from '../connection';
 
 export const objectToQueryStr = (obj) => {
   if (!obj || !Object.keys(obj).length) return '';
@@ -12,34 +12,47 @@ export const objectToQueryStr = (obj) => {
 
 export const threekitRequest = (request) => {
   if (!request) throw new Error('Request missing');
-  const { url, authToken, method, data, params, config } = Object.assign(
+  const {
+    url,
+    method,
+    data,
+    formData,
+    params,
+    config,
+    includeOrgId,
+  } = Object.assign(
     {
-      authToken: undefined,
       method: 'GET',
       params: {},
-      config: undefined,
+      includeOrgId: false,
     },
     typeof request === 'string' ? { url: request } : request
   );
 
-  const connectionObj = getConnection();
-  if (!connectionObj) throw new Error('Please connect to threekit');
+  const {
+    authToken,
+    orgId,
+    threekitEnv,
+    isServerEnv,
+  } = connection.getConnection();
 
-  const urlRaw = url.startsWith('http')
-    ? url
-    : `${connectionObj.threekitEnv}${url}`;
+  const urlRaw = `${threekitEnv}${url}`;
 
-  const token = authToken || connectionObj.authToken;
-
-  const query = objectToQueryStr(params);
+  const query = objectToQueryStr(
+    Object.assign({}, includeOrgId ? { orgId } : {}, params)
+  );
   let urlPrepped = `${urlRaw}${query}`;
   let configPrepped = { ...config };
 
-  if (connectionObj.isServerEnv)
+  if (isServerEnv)
     configPrepped.headers = Object.assign({}, configPrepped.headers || {}, {
-      authorization: `Bearer ${token}`,
+      authorization: `Bearer ${authToken}`,
     });
-  else urlPrepped += (query.length ? `&` : `?`) + `bearer_token=${token}`;
+  if (formData)
+    configPrepped.headers = Object.assign({}, configPrepped.headers || {}, {
+      'content-type': `multipart/form-data; boundary=${formData._boundary}`,
+    });
+  else urlPrepped += `${query.length ? `&` : `?`}bearer_token=${authToken}`;
 
   switch (method) {
     case 'GET':
@@ -47,10 +60,10 @@ export const threekitRequest = (request) => {
       return axios.get(urlPrepped, configPrepped);
     case 'POST':
     case 'post':
-      return axios.post(urlPrepped, data, configPrepped);
+      return axios.post(urlPrepped, formData || data, configPrepped);
     case 'put':
     case 'PUT':
-      return axios.put(urlPrepped, data, configPrepped);
+      return axios.put(urlPrepped, formData || data, configPrepped);
     case 'delete':
     case 'DELETE':
       return axios.delete(urlPrepped, configPrepped);

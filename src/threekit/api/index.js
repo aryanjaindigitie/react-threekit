@@ -1,11 +1,14 @@
-import connection from './connect';
+import connection from './connection';
 import api from './api';
 import * as tools from './tools';
 import * as controller from './controller';
 export * from './api';
 
-const { connect } = connection;
+export { connection, tools, controller };
 
-export { connect, tools, controller };
-
-export default { connect, ...api, controller, tools };
+export default {
+  connection,
+  ...api,
+  controller,
+  tools,
+};

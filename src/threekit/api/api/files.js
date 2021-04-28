@@ -1,5 +1,4 @@
 import { validate as uuidValidate } from 'uuid';
-import { connect } from '../connect';
 import http from '../http';
 
 export const saveFiles = (files, options) =>
@@ -13,10 +12,6 @@ export const saveFiles = (files, options) =>
 
 export const fetchFiles = (fileIds, options) =>
   new Promise(async (resolve) => {
-    // if (!AUTH_TOKEN && !options?.connection?.authToken)
-    //   return console.log('Please connect to threekit');
-    // if (!AUTH_TOKEN) connect(options.connection);
-
     if (!fileIds?.length) return console.error('no file id(s) provided');
 
     const fileRequests = (typeof fileIds === 'string' ? [fileIds] : fileIds)

@@ -10,6 +10,7 @@ export const getItemById = (catalogId) => {
 };
 
 export const getItemsByTag = (tags) => {
+  if (!tags) throw new Error('Requires a tag');
   return threekitRequest({
     method: 'GET',
     url: `${CATALOG_API_ROUTE}`,

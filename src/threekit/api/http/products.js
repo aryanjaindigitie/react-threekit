@@ -1,86 +1,46 @@
-import axios from 'axios';
-import { getConnection } from '../connect';
 import { threekitRequest } from './utils';
 
 const PRODUCTS_API_ROUTE = `/api/products`;
 
-export const downloadAllItems = (orgId) => {
-  const connectionObj = getConnection();
-  if (!connectionObj) throw new Error('Please connect to threekit');
-  if (!orgId && !connectionObj.orgId) throw new Error('Org ID is missing');
-  return threekitRequest({
+export const downloadAllItems = () =>
+  threekitRequest({
     method: 'GET',
     url: `${PRODUCTS_API_ROUTE}/export/json`,
-    params: { orgId: orgId || connectionObj.orgId },
+    includeOrgId: true,
   });
-};
 
-export const uploadItems = (formData, orgId) => {
-  const connectionObj = getConnection();
-  if (!connectionObj) throw new Error('Please connect to threekit');
-  if (!orgId && !connectionObj.orgId) throw new Error('Org ID is missing');
+export const uploadItems = (formData) =>
+  threekitRequest({
+    method: 'POST',
+    url: `${PRODUCTS_API_ROUTE}/import`,
+    formData,
+    includeOrgId: true,
+  });
+
+export const getAllItems = () =>
+  threekitRequest(`${PRODUCTS_API_ROUTE}/export/${'json'}`);
+
+export const getItemById = (itemId) => {};
+
+export const populateItems = (formData) => {
+  if (!formData) throw new Error('Requires items FormData');
   return threekitRequest({
     method: 'POST',
     url: `${PRODUCTS_API_ROUTE}/import`,
-    params: { orgId: orgId || connectionObj.orgId },
-    data: formData,
-    config: {
-      headers: {
-        'content-type': `multipart/form-data; boundary=${formData._boundary}`,
-      },
-    },
-  });
-};
-
-export const getAllItems = () => {
-  const connectionObj = getConnection();
-  if (!connectionObj) throw new Error('Please connect to threekit');
-  const url = `${
-    connectionObj.threekitEnv
-  }${PRODUCTS_API_ROUTE}/export/${'json'}`;
-  return axios.get(url, {
-    headers: {
-      authorization: `Bearer ${connectionObj.authToken}`,
-    },
-  });
-};
-
-export const getItemById = (itemId) => {
-  const connectionObj = getConnection();
-  if (!connectionObj) throw new Error('Please connect to threekit');
-  // return axios.get()
-};
-
-export const populateItems = (data) => {
-  const connectionObj = getConnection();
-  if (!connectionObj) throw new Error('Please connect to threekit');
-  const url = `${connectionObj.threekitEnv}${PRODUCTS_API_ROUTE}/import?orgId=${connectionObj.orgId}`;
-  return axios({
-    method: 'post',
-    data,
-    url,
-    maxContentLength: Infinity,
-    maxBodyLength: Infinity,
-    headers: {
-      'content-type': `multipart/form-data; boundary=${data._boundary}`,
-      authorization: `Bearer ${connectionObj.authToken}`,
-    },
+    formData,
+    includeOrgId: true,
   });
 };
 
 export const getTranslations = () =>
   threekitRequest(`${PRODUCTS_API_ROUTE}/translations`);
 
-export const postTranslations = (data) => {
-  if (!data) throw new Error('Requires Translations Data');
+export const postTranslations = (formData) => {
+  if (!formData) throw new Error('Requires Translations FormData');
   return threekitRequest({
     method: 'POST',
     url: `${PRODUCTS_API_ROUTE}/translations`,
-    data,
-    config: {
-      headers: {
-        'content-type': `multipart/form-data; boundary=${data._boundary}`,
-      },
-    },
+    formData,
+    includeOrgId: true,
   });
 };

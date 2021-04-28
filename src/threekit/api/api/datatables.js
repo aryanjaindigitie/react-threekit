@@ -1,26 +1,16 @@
 import http from '../http';
-import { getConnection } from '../connect';
+import connection from '../connection';
 import FormData from 'form-data';
 
 export const fetchList = () =>
   new Promise(async (resolve, reject) => {
-    const connectionObj = getConnection();
-    if (!connectionObj.orgId) {
-      reject('missing Org ID');
-    }
-    const response = await http.datatables.getDatatablesList(
-      connectionObj.orgId
-    );
+    const response = await http.datatables.getDatatablesList();
     resolve(response.data.datatables);
   });
 
 export const fetchDatatable = (datatableId, options) =>
   new Promise(async (resolve, reject) => {
     const { format } = Object.assign({ format: 'csv' }, options);
-    const connectionObj = getConnection();
-    if (!connectionObj.orgId) {
-      reject('missing Org ID');
-    }
 
     let output;
 
@@ -28,8 +18,8 @@ export const fetchDatatable = (datatableId, options) =>
       switch (format) {
         case 'json':
           const [infoResponse1, dataResponse] = await Promise.all([
-            http.datatables.getDatatableInfo(datatableId, connectionObj.orgId),
-            http.datatables.getDatatableData(datatableId, connectionObj.orgId),
+            http.datatables.getDatatableInfo(datatableId),
+            http.datatables.getDatatableData(datatableId),
           ]);
           if (infoResponse1.status !== 200) return reject(response.data);
           if (dataResponse.status !== 200) return reject(dataResponse.data);
@@ -45,8 +35,8 @@ export const fetchDatatable = (datatableId, options) =>
         case 'csv':
         default:
           const [infoResponse2, csvResponse] = await Promise.all([
-            http.datatables.getDatatableInfo(datatableId, connectionObj.orgId),
-            http.datatables.getDatatable(datatableId, connectionObj.orgId),
+            http.datatables.getDatatableInfo(datatableId),
+            http.datatables.getDatatable(datatableId),
           ]);
           if (infoResponse2.status !== 200) return reject(response.data);
           if (csvResponse.status !== 200) return reject(dataResponse.data);
@@ -81,13 +71,9 @@ export const fetchDatatable = (datatableId, options) =>
 
 export const uploadDatatable = ({ name, columnInfo, data }) =>
   new Promise(async (resolve, reject) => {
-    const connectionObj = getConnection();
-    if (!connectionObj.orgId) {
-      reject('missing Org ID');
-    }
-
+    const { orgId } = connection.getConnection();
     const fd = new FormData();
-    fd.append('orgId', connectionObj.orgId);
+    fd.append('orgId', orgId);
     fd.append('name', name);
     fd.append('columnInfo', JSON.stringify(columnInfo));
     fd.append('file', Buffer.from(data), { filename: 'datatable.csv' });
@@ -104,13 +90,10 @@ export const uploadDatatable = ({ name, columnInfo, data }) =>
 
 export const updateDatatable = ({ datatableId, name, columnInfo, data }) =>
   new Promise(async (resolve, reject) => {
-    const connectionObj = getConnection();
-    if (!connectionObj.orgId) {
-      reject('missing Org ID');
-    }
+    const { orgId } = connection.getConnection();
 
     const fd = new FormData();
-    fd.append('orgId', connectionObj.orgId);
+    fd.append('orgId', orgId);
     fd.append('name', name);
     fd.append('columnInfo', JSON.stringify(columnInfo));
     fd.append('file', Buffer.from(data), { filename: 'datatable.csv' });

@@ -1,4 +1,4 @@
-import { connect, controller } from '../../api';
+import { connection, controller } from '../../api';
 import { createSlice } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 
@@ -74,7 +74,7 @@ export const stepHistory = (step) => async (dispatch, getState) => {
 };
 
 export const launch = (config) => async (dispatch) => {
-  connect({
+  connection.connect({
     orgId: config.orgId,
     authToken: config.authToken,
     threekitEnv: config.threekitEnv,

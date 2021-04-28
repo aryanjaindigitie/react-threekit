@@ -1,7 +1,7 @@
 import { validate as isUuid } from 'uuid';
 import { deepCompare } from '../utils';
 import api from '../api';
-import connect from '../connect';
+import connection from '../connection';
 
 let PRODUCTS;
 let TRANSLATION_MAP;
@@ -223,7 +223,7 @@ const initializePlayer = (initializationObj) =>
 export const launch = (initializationObj) => {
   if (window.threekit) return;
 
-  const connectionObj = connect.getConnection();
+  const connectionObj = connection.getConnection();
   if (!connectionObj) {
     throw new Error('Please connect to threekit');
   }

@@ -1,5 +1,4 @@
 import http from '../http';
-import { getConnection } from '../connect';
 import { validate as uuidValidate } from 'uuid';
 import FormData from 'form-data';
 
@@ -64,13 +63,6 @@ export const fetch = (configurationId) =>
 
 export const fetchAll = () =>
   new Promise(async (resolve, reject) => {
-    const connectionObj = getConnection();
-    if (!connectionObj.orgId) {
-      reject('missing Org ID');
-    }
-
-    const response = await http.configurations.getConfigurations(
-      connectionObj.orgId
-    );
+    const response = await http.configurations.getConfigurations();
     resolve(response.data.configurations);
   });

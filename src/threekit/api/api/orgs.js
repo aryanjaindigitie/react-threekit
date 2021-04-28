@@ -1,14 +1,9 @@
 import http from '../http';
-import { getConnection } from '../connect';
 
-export const fetchOrg = (orgId) =>
+export const fetchOrg = () =>
   new Promise(async (resolve, reject) => {
-    const connectionObj = getConnection();
-    if (!(orgId || connectionObj.orgId)?.length)
-      return reject('Requires Org Id');
-
     try {
-      const response = await http.orgs.getOrgById(orgId || connectionObj.orgId);
+      const response = await http.orgs.getOrg();
       if (response.status !== 200) return reject(response.data);
       resolve(response.data);
     } catch (e) {
@@ -18,10 +13,8 @@ export const fetchOrg = (orgId) =>
 
 export const updateOrg = (data) =>
   new Promise(async (resolve, reject) => {
-    const connectionObj = getConnection();
-    if (!connectionObj.orgId?.length) return reject('Requires Org Id');
     try {
-      const response = await http.orgs.putOrgById(connectionObj.orgId, data);
+      const response = await http.orgs.putOrg(data);
       if (response.status !== 200) return reject(response.data);
       resolve(response.data);
     } catch (e) {
