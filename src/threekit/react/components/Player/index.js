@@ -1,7 +1,15 @@
 import React, { useEffect } from 'react';
 import { Controller } from '../../../api';
 
-const Player = ({ height, width }) => {
+const Player = (props) => {
+  const { height, width } = Object.assign(
+    {
+      height: '500px',
+      width: '100%',
+    },
+    props
+  );
+
   useEffect(() => {
     (() => {
       Controller.attachPlayerToComponent('threekit-player');
@@ -10,11 +18,7 @@ const Player = ({ height, width }) => {
   }, []);
 
   return (
-    <div
-      style={{ height: height || '500px', width: width || '100%' }}
-      className="tk-player"
-      id="threekit-player"
-    />
+    <div style={{ height, width }} className="tk-player" id="threekit-player" />
   );
 };
 
