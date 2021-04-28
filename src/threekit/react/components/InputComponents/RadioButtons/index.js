@@ -61,7 +61,7 @@ export const RadioButtons = (props) => {
                   className ? `tk-input-${className}` : ''
                 } option-${i + 1}`}
               >
-                {option.name}
+                {option.label}
               </div>
             </ButtonWrapper>
           );
@@ -107,7 +107,7 @@ RadioButtons.propTypes = {
    */
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string,
+      label: PropTypes.string,
       value: PropTypes.string,
       disabled: PropTypes.bool,
     })

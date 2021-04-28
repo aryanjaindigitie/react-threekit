@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { controller } from '../../../api';
+import { Controller } from '../../../api';
 
 const Player = ({ height, width }) => {
   useEffect(() => {
     (() => {
-      controller.addPlayerToComponent('threekit-player');
+      Controller.attachPlayerToComponent('threekit-player');
     })();
     return;
   }, []);

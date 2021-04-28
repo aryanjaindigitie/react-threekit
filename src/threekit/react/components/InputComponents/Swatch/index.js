@@ -67,16 +67,16 @@ export const Swatch = (props) => {
                   } option-${i + 1}`}
                 >
                   {option.imageUrl && (
-                    <img src={option.imageUrl} alt={option.name} />
+                    <img src={option.imageUrl} alt={option.label} />
                   )}
                 </div>
-                {option.name && (
+                {option.label && (
                   <div
                     className={`tk-swatch-item-label ${
                       className ? `tk-input-${className}` : ''
                     } option-${i + 1}`}
                   >
-                    {option.name}
+                    {option.label}
                   </div>
                 )}
               </div>
@@ -124,7 +124,7 @@ Swatch.propTypes = {
    */
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string,
+      label: PropTypes.string,
       value: PropTypes.string,
       colorValue: PropTypes.string,
       imageUrl: PropTypes.string,

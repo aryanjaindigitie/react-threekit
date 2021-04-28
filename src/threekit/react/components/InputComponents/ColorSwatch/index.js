@@ -38,7 +38,7 @@ export const ColorSwatch = (props) => {
         {options.map((option, i) => {
           if (option.disabled && hideDisabled) return null;
           return (
-            <Tooltip key={i} placement="top" title={option.name}>
+            <Tooltip key={i} placement="top" title={option.label}>
               <Option
                 className={`tk-color-swatch-option ${className} option-${
                   i + 1
@@ -100,7 +100,7 @@ ColorSwatch.propTypes = {
    */
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string,
+      label: PropTypes.string,
       value: PropTypes.string,
       colorValue: PropTypes.string,
       disabled: PropTypes.bool,

@@ -9,9 +9,11 @@ export const RadioButtonsHeader = styled.div`
 export const Buttons = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 
   & > div {
-    margin-right: 5px;
+    margin-right: 10px;
+    margin-bottom: 10px;
   }
 `;
 

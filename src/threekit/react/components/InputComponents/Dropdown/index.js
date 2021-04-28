@@ -87,7 +87,7 @@ export const Dropdown = (props) => {
                   onClick={() => handleClick(option.value)}
                 >
                   <div className={`tk-dropdown-option-label ${className}`}>
-                    {option.name}
+                    {option.label}
                   </div>
                 </Option>
               );
@@ -139,7 +139,7 @@ Dropdown.propTypes = {
    */
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string,
+      label: PropTypes.string,
       value: PropTypes.string,
       disabled: PropTypes.bool,
     })

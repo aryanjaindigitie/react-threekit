@@ -1,14 +1,14 @@
 import connection from './connection';
 import api from './api';
+import Controller from './Controller';
 import * as tools from './tools';
-import * as controller from './controller';
 export * from './api';
 
-export { connection, tools, controller };
+export { Controller, connection, tools };
 
 export default {
   connection,
   ...api,
-  controller,
   tools,
+  Controller,
 };

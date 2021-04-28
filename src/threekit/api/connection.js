@@ -30,7 +30,6 @@ class ThreekitConnection {
     return {
       authToken: this._authToken,
       orgId: this._orgId,
-      authToken: this._authToken,
       assetId: this._assetId,
       threekitEnv: this._threekitEnv,
       isServerEnv: this._isServerEnv,

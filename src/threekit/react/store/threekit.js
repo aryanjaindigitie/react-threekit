@@ -1,11 +1,11 @@
-import { connection, controller } from '../../api';
+import { Controller } from '../../api';
 import { createSlice } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 
 const initialState = {
   loaded: false,
   state: undefined,
-  locale: undefined,
+  language: undefined,
 };
 
 const { actions, reducer } = createSlice({
@@ -15,82 +15,77 @@ const { actions, reducer } = createSlice({
     setLoaded: (state, _) => {
       state.loaded = true;
     },
-    setInternalState: (state, action) => {
-      state.state = action.payload;
+    setInternalAttributesState: (state, action) => {
+      state.attributes = Object.assign({}, state.attributes, action.payload);
     },
-    updateLocaleState: (state, action) => {
-      state.locale = action.payload;
+    updateLanguageState: (state, action) => {
+      state.language = action.payload;
     },
   },
 });
 
-const { setInternalState, updateLocaleState } = actions;
+const { setInternalAttributesState, updateLanguageState } = actions;
 export const { setLoaded } = actions;
 
-const getInternalState = (state) => {
+const getInternalAttributeState = (state) => {
   if (!state.threekit.loaded) return undefined;
-  return state.threekit.state;
+  return state.threekit.attributes;
 };
 
 export const isPlayerLoaded = (state) => state.threekit.loaded;
 
-//  Locale and Translations
-export const getLocale = (state) => state.threekit.locale;
+//  Languages and Translations
+export const getLanguage = (state) => state.threekit.language;
 
-export const getLocaleOptions = () => controller.LOCALE_OPTIONS;
+export const getLanguageOptions = (state) => {
+  if (!state.threekit.loaded) return [];
+  return window.threekit.controller.getLanguageOptions();
+};
 
-export const setLocale = (locale) => async (dispatch) => {
-  if (!locale) return;
-  dispatch(updateLocaleState(locale));
-  const state = await controller.getState({
-    locale,
-  });
-  dispatch(setInternalState(state));
+export const setLanguage = (language) => async (dispatch) => {
+  if (!language) return;
+  const updatedState = window.threekit.controller.setLanguage(language);
+  dispatch(updateLanguageState(language));
+  dispatch(setInternalAttributesState(updatedState));
 };
 
 //  Attribute + Configuration state
-export const getState = (attribute) =>
-  createSelector(getInternalState, (state) => {
-    if (!state) return undefined;
-    return attribute && state[attribute] ? state[attribute] : state;
+export const getAttributes = (attribute) =>
+  createSelector(getInternalAttributeState, (attributes) => {
+    if (!attributes) return undefined;
+    return attribute && attributes[attribute]
+      ? attributes[attribute]
+      : attributes;
   });
 
-export const setState = (config) => async (dispatch, getState) => {
-  const state = getState();
-  await controller.setState(config);
-  const updatedState = await controller.getState({
-    locale: state.threekit.locale,
-  });
-  dispatch(setInternalState(updatedState));
+export const setConfiguration = (config) => async (dispatch) => {
+  const updatedState = await window.threekit.controller.setAttributesState(
+    config
+  );
+  dispatch(setInternalAttributesState(updatedState));
 };
 
-export const stepHistory = (step) => async (dispatch, getState) => {
-  if (typeof step !== 'number') return;
-  const state = getState();
-  const updatedState = await controller.updateHistoryPosition(step, {
-    locale: state.threekit.locale,
-  });
-  if (updatedState) dispatch(setInternalState(updatedState));
+export const stepHistory = (step) => async (dispatch) => {
+  if (typeof step !== 'number' || step === 0) return;
+  const updatedState = await window.threekit.controller.stepHistoryPosition(
+    step
+  );
+  if (updatedState) dispatch(setInternalAttributesState(updatedState));
 };
 
 export const launch = (config) => async (dispatch) => {
-  connection.connect({
+  await Controller.launch({
     orgId: config.orgId,
     authToken: config.authToken,
     threekitEnv: config.threekitEnv,
+    assetId: config.assetId,
+    language: 'EN',
   });
 
-  await controller.launch(config);
-
-  if (config.locale) dispatch(setLocale(config.locale));
-  const stateOptions = Object.assign(
-    {},
-    config.locale ? { locale: config.locale } : undefined
-  );
-  const state = await controller.getState(stateOptions);
-
   dispatch(setLoaded(true));
-  dispatch(setInternalState(state));
+  dispatch(
+    setInternalAttributesState(window.threekit.controller.getAttributesState())
+  );
 };
 
 export default reducer;

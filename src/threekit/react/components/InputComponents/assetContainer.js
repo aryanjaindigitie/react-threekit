@@ -47,7 +47,7 @@ const container = (WrappedComponent) => (props) => {
     <WrappedComponent
       {...preppedProps}
       attribute={attribute}
-      selected={attributeData.selected?.assetId}
+      selected={attributeData.value?.assetId}
       handleClick={handleSetAttribute}
       options={options}
     />

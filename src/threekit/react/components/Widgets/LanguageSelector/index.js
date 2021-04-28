@@ -1,9 +1,9 @@
 import React from 'react';
 import { Select } from 'antd';
-import { useLocale } from '../../../hooks';
+import { useLanguages } from '../../../hooks';
 
-const LocaleSelector = () => {
-  const [selected, options, handleChange] = useLocale();
+const LanguageSelector = () => {
+  const [selected, options, handleChange] = useLanguages();
 
   if (!options) return null;
 
@@ -22,4 +22,4 @@ const LocaleSelector = () => {
   );
 };
 
-export default LocaleSelector;
+export default LanguageSelector;
