@@ -216,6 +216,10 @@ class Controller {
     return this.getAttributesState();
   }
 
+  getLanguage() {
+    return this._currentLanguage;
+  }
+
   getLanguageOptions() {
     return Object.keys(Object.values(this._translations)[0]);
   }
