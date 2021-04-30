@@ -96,6 +96,11 @@ export const launch = (config) => async (dispatch) => {
   });
 
   dispatch(setLoaded(true));
+
+  if (config.language) {
+    return dispatch(setLanguage(config.language));
+  }
+
   dispatch(
     setInternalAttributesState(window.threekit.controller.getAttributesState())
   );
