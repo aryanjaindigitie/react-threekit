@@ -17,8 +17,8 @@ export const Swatch = (props) => {
     handleClick,
     selected,
     hideDisabled,
+    isPlayerLoading,
   } = props;
-  if (!options || !options.filter((el) => !el.disabled).length) return null;
 
   const className = attribute
     ? regularToKebabCase(attribute)
@@ -54,6 +54,7 @@ export const Swatch = (props) => {
               } option-${i + 1}`}
               onClick={() => handleClick(option.value)}
               color={option.colorValue}
+              isPlayerLoading={isPlayerLoading}
               selected={option.value === selected}
             >
               <div
@@ -67,16 +68,16 @@ export const Swatch = (props) => {
                   } option-${i + 1}`}
                 >
                   {option.imageUrl && (
-                    <img src={option.imageUrl} alt={option.name} />
+                    <img src={option.imageUrl} alt={option.label} />
                   )}
                 </div>
-                {option.name && (
+                {option.label && (
                   <div
                     className={`tk-swatch-item-label ${
                       className ? `tk-input-${className}` : ''
                     } option-${i + 1}`}
                   >
-                    {option.name}
+                    {option.label}
                   </div>
                 )}
               </div>
@@ -124,7 +125,7 @@ Swatch.propTypes = {
    */
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string,
+      label: PropTypes.string,
       value: PropTypes.string,
       colorValue: PropTypes.string,
       imageUrl: PropTypes.string,

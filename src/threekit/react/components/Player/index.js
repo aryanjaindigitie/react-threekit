@@ -1,20 +1,24 @@
 import React, { useEffect } from 'react';
-import { controller } from '../../../api';
+import Controller from '../../../controller';
 
-const Player = ({ height, width }) => {
+const Player = (props) => {
+  const { height, width } = Object.assign(
+    {
+      height: '500px',
+      width: '100%',
+    },
+    props
+  );
+
   useEffect(() => {
     (() => {
-      controller.addPlayerToComponent('threekit-player');
+      Controller.attachPlayerToComponent('threekit-player');
     })();
     return;
   }, []);
 
   return (
-    <div
-      style={{ height: height || '500px', width: width || '100%' }}
-      className="tk-player"
-      id="threekit-player"
-    />
+    <div style={{ height, width }} className="tk-player" id="threekit-player" />
   );
 };
 

@@ -3,29 +3,26 @@ import { threekitRequest } from './utils';
 const CONFIGURATIONS_API_ROUTE = `/api/configurations`;
 
 export const postConfiguration = (formData) => {
-  if (!formData) throw new Error('Requires Form Data');
+  let error;
+  if (!formData) error = 'Requires Form Data';
+  if (error) return [undefined, { message: error }];
   return threekitRequest({
     method: 'POST',
     url: CONFIGURATIONS_API_ROUTE,
-    data: formData,
-    config: {
-      headers: {
-        'content-type': `multipart/form-data; boundary=${formData._boundary}`,
-      },
-    },
+    formData,
   });
 };
 
 export const getSavedConfiguration = (configurationId) => {
-  if (!configurationId) throw new Error('Requires Configuration ID');
+  let error;
+  if (!configurationId) error = 'Requires Configuration ID';
+  if (error) return [undefined, { message: error }];
   return threekitRequest(`${CONFIGURATIONS_API_ROUTE}/${configurationId}`);
 };
 
-export const getConfigurations = (orgId) => {
-  if (!orgId) throw new Error('Requires Org ID');
-  return threekitRequest({
+export const getConfigurations = () =>
+  threekitRequest({
     method: 'GET',
     url: `${CONFIGURATIONS_API_ROUTE}`,
-    params: { orgId },
+    includeOrgId: true,
   });
-};

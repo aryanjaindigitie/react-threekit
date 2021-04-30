@@ -17,8 +17,8 @@ export const RadioButtons = (props) => {
     className: classNameRaw,
     hideDisabled,
     handleClick,
+    isPlayerLoading,
   } = props;
-  if (!options || !options.filter((el) => !el.disabled).length) return null;
 
   const className = attribute
     ? regularToKebabCase(attribute)
@@ -52,6 +52,7 @@ export const RadioButtons = (props) => {
                 className ? `tk-input-${className}` : ''
               } option-${i + 1}`}
               key={i}
+              isPlayerLoading={isPlayerLoading}
               disabled={option.disabled}
               selected={option.value === selected}
               onClick={() => handleClick(option.value)}
@@ -61,7 +62,7 @@ export const RadioButtons = (props) => {
                   className ? `tk-input-${className}` : ''
                 } option-${i + 1}`}
               >
-                {option.name}
+                {option.label}
               </div>
             </ButtonWrapper>
           );
@@ -107,7 +108,7 @@ RadioButtons.propTypes = {
    */
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string,
+      label: PropTypes.string,
       value: PropTypes.string,
       disabled: PropTypes.bool,
     })

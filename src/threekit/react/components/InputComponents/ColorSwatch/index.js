@@ -18,8 +18,8 @@ export const ColorSwatch = (props) => {
     selected,
     hideDisabled,
     handleClick,
+    isPlayerLoading,
   } = props;
-  if (!options || !options.filter((el) => !el.disabled).length) return null;
 
   const className = attribute
     ? 'tk-input-' + regularToKebabCase(attribute)
@@ -38,11 +38,12 @@ export const ColorSwatch = (props) => {
         {options.map((option, i) => {
           if (option.disabled && hideDisabled) return null;
           return (
-            <Tooltip key={i} placement="top" title={option.name}>
+            <Tooltip key={i} placement="top" title={option.label}>
               <Option
                 className={`tk-color-swatch-option ${className} option-${
                   i + 1
                 }`.trim()}
+                isPlayerLoading={isPlayerLoading}
                 color={option.colorValue}
                 onClick={() => handleClick(option.value)}
               >
@@ -100,7 +101,7 @@ ColorSwatch.propTypes = {
    */
   options: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string,
+      label: PropTypes.string,
       value: PropTypes.string,
       colorValue: PropTypes.string,
       disabled: PropTypes.bool,

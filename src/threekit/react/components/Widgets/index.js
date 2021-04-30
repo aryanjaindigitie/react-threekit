@@ -1,6 +1,6 @@
-import LocaleSelector from './LocaleSelector';
+import LanguageSelector from './LanguageSelector';
 import Zoom from './Zoom';
 import Undo from './Undo';
 import Redo from './Redo';
 
-export { Zoom, LocaleSelector, Undo, Redo };
+export { LanguageSelector, Zoom, Undo, Redo };

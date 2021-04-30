@@ -9,9 +9,11 @@ export const RadioButtonsHeader = styled.div`
 export const Buttons = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 
   & > div {
-    margin-right: 5px;
+    margin-right: 10px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -32,7 +34,7 @@ export const ButtonWrapper = styled.div`
   background-color: ${(props) =>
     props.selected ? props.theme.primaryColor : '#fff'};
 
-  cursor: pointer;
+  cursor: ${(props) => (props.isPlayerLoading ? 'wait' : 'pointer')};
 
   transition: all 0.3s;
 

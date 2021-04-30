@@ -1,19 +1,18 @@
-import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  getState,
-  setState,
-  isPlayerLoaded,
-  getLocale,
-  getLocaleOptions,
-  setLocale,
+  getAttributes,
+  setConfiguration,
+  isThreekitLoaded,
+  isPlayerLoading,
+  getLanguage,
+  getLanguageOptions,
+  setLanguage,
   stepHistory,
 } from '../store/threekit';
-import { controller } from '../../api';
 
 export const useAttribute = (attribute) => {
   const dispatch = useDispatch();
-  const attributeData = useSelector(getState(attribute));
+  const attributeData = useSelector(getAttributes(attribute));
 
   if (!attribute) return [undefined, undefined];
   if (!attributeData || !Object.keys(attributeData).length)
@@ -43,45 +42,34 @@ export const useAttribute = (attribute) => {
       default:
         updated = value;
     }
-    dispatch(setState({ [attribute]: updated }));
+    dispatch(setConfiguration({ [attribute]: updated }));
   };
 
   return [attributeData, handleChange];
 };
 
-export const useLocale = () => {
+export const useLanguages = () => {
   const dispatch = useDispatch();
-  const locale = useSelector(getLocale);
-  const [localeOptions, setLocaleOptions] = useState(getLocaleOptions());
+  const language = useSelector(getLanguage);
+  const languages = useSelector(getLanguageOptions);
 
-  useEffect(() => {
-    const fetchLocaleOptions = () => {
-      if (localeOptions) return;
-      const options = getLocaleOptions();
-      if (options) return setLocaleOptions(options);
-      setTimeout(() => {
-        fetchLocaleOptions();
-      }, 0.1 * 1000);
-    };
-
-    fetchLocaleOptions();
-    return;
-  }, [locale, localeOptions]);
-
-  const handleChange = (locale) => {
-    if (locale?.length && localeOptions.includes(locale)) {
-      dispatch(setLocale(locale));
+  const handleChange = (language) => {
+    if (language?.length && languages.includes(language)) {
+      dispatch(setLanguage(language));
     }
   };
 
-  return [locale, localeOptions, handleChange];
+  return [language, languages, handleChange];
 };
 
-export const hasLoaded = () => useSelector(isPlayerLoaded);
+export const useThreekitInitStatus = () => useSelector(isThreekitLoaded);
+
+export const usePlayerLoadingStatus = () => useSelector(isPlayerLoading);
 
 export const useZoom = () => {
-  const zoomIn = (step) => controller.zoom(step || 1);
-  const zoomOut = (step) => controller.zoom(step ? -1 * Math.abs(step) : -1);
+  const zoomIn = (step) => window.threekit.api.camera.zoom(Math.abs(step) || 1);
+  const zoomOut = (step) =>
+    window.threekit.api.camera.zoom(step ? -1 * Math.abs(step) : -1);
 
   return [zoomIn, zoomOut];
 };
