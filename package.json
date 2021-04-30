@@ -79,9 +79,6 @@
     "publish:storybook": "yarn build:storybook && yarn deploy:storybook",
     "test": "jest --runInBand --notify --config ./config/jest.config.js"
   },
-  "bin": {
-    "threekit": "bin/threekit.js"
-  },
   "eslintConfig": {
     "extends": [
       "react-app",
