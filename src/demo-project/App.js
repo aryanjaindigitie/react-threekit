@@ -1,23 +1,16 @@
 import React from 'react';
-import { threekit, Player, InputComponents } from '../threekit';
-import { Button } from 'antd';
+import { components } from '../threekit';
 
-const { Dropdown } = InputComponents;
+const { RadioButtons, Player } = components;
 
 const App = () => {
-  const handleClickPrintBom = async () => {
-    const { bom, configuration } = await threekit.getBom();
-    console.log(bom, configuration);
-  };
-
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
       <Player />
       <div>
         {/* Replace the 'title' and 'attribute' with the name 
           of the Attribute you wish to Diplay */}
-        <Dropdown title="Attribute Name" attribute="Attribute Name" />
-        <Button onClick={handleClickPrintBom}>Print BOM</Button>
+        <RadioButtons title="Attribute Name" attribute="Attribute Name" />
       </div>
     </div>
   );
