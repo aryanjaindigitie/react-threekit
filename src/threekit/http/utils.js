@@ -54,20 +54,42 @@ export const threekitRequest = (request) => {
     });
   else urlPrepped += `${query.length ? `&` : `?`}bearer_token=${authToken}`;
 
-  switch (method) {
-    case 'GET':
-    case 'get':
-      return axios.get(urlPrepped, configPrepped);
-    case 'POST':
-    case 'post':
-      return axios.post(urlPrepped, formData || data, configPrepped);
-    case 'put':
-    case 'PUT':
-      return axios.put(urlPrepped, formData || data, configPrepped);
-    case 'delete':
-    case 'DELETE':
-      return axios.delete(urlPrepped, configPrepped);
-    default:
-      return;
-  }
+  return new Promise(async (resolve) => {
+    let response;
+    try {
+      switch (method) {
+        case 'GET':
+        case 'get':
+          response = await axios.get(urlPrepped, configPrepped);
+          break;
+        case 'POST':
+        case 'post':
+          response = await axios.post(
+            urlPrepped,
+            formData || data,
+            configPrepped
+          );
+          break;
+        case 'put':
+        case 'PUT':
+          response = await axios.put(
+            urlPrepped,
+            formData || data,
+            configPrepped
+          );
+          break;
+        case 'delete':
+        case 'DELETE':
+          response = await axios.delete(urlPrepped, configPrepped);
+        default:
+          return resolve([
+            undefined,
+            { message: `Unknown request method: ${method}` },
+          ]);
+      }
+      resolve([response.data, undefined]);
+    } catch (e) {
+      resolve([undefined, e]);
+    }
+  });
 };

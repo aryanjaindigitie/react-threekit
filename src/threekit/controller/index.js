@@ -103,10 +103,15 @@ class Controller {
       //  We create the threekit script
       await this.createThreekitScriptEl(threekitEnv);
 
-      const [{ api, configurator }, translations] = await Promise.all([
+      const [
+        { api, configurator },
+        [translations, translationErrors],
+      ] = await Promise.all([
         this.initThreekit({ el, authToken, orgId, assetId }),
         threekitAPI.products.fetchTranslations(),
       ]);
+
+      if (translationErrors) console.log(translationErrors);
 
       window.threekit = {
         api,
@@ -114,7 +119,7 @@ class Controller {
         controller: new Controller({
           api,
           configurator,
-          translations,
+          translations: translations,
         }),
       };
       resolve();
@@ -283,22 +288,22 @@ class Controller {
       },
       options
     );
-    return new Promise(async (resolve) => {
-      const config = await threekitAPI.configurations.save({
-        assetId: ASSET_ID,
-        configuration,
-        productVersion,
-        metadata,
-        thumbnail,
-      });
-      resolve(config);
+    return threekitAPI.configurations.save({
+      assetId: ASSET_ID,
+      configuration,
+      productVersion,
+      metadata,
+      thumbnail,
     });
   }
 
   resumeConfiguration(configurationId) {
     return new Promise(async (resolve) => {
       if (!configurationId) return;
-      const config = await threekitAPI.configurations.fetch(configurationId);
+      const [config, error] = await threekitAPI.configurations.fetch(
+        configurationId
+      );
+      if (error) throw new Error(error);
       await this.setAttributesState(config.variant);
       resolve();
     });
