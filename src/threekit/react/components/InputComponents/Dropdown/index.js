@@ -21,7 +21,7 @@ export const Dropdown = (props) => {
     handleClick: onClick,
     selected,
     hideDisabled,
-    loading,
+    isPlayerLoading,
   } = props;
   const [hide, setHide] = useState(true);
   const ref = useRef(null);

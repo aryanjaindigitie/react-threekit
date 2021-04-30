@@ -17,7 +17,7 @@ export const RadioButtons = (props) => {
     className: classNameRaw,
     hideDisabled,
     handleClick,
-    loading,
+    isPlayerLoading,
   } = props;
 
   const className = attribute
@@ -52,7 +52,7 @@ export const RadioButtons = (props) => {
                 className ? `tk-input-${className}` : ''
               } option-${i + 1}`}
               key={i}
-              loading={loading}
+              isPlayerLoading={isPlayerLoading}
               disabled={option.disabled}
               selected={option.value === selected}
               onClick={() => handleClick(option.value)}

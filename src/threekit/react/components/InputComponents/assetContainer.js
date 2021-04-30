@@ -1,5 +1,9 @@
 import React from 'react';
-import { useAttribute, isPlayerLoading } from '../../hooks';
+import {
+  useAttribute,
+  useThreekitInitStatus,
+  usePlayerLoadingStatus,
+} from '../../hooks';
 import { METADATA_RESERVED } from '../../../constants';
 
 const container = (WrappedComponent) => (props) => {
@@ -11,10 +15,10 @@ const container = (WrappedComponent) => (props) => {
   } = props;
   if (!attribute) return <WrappedComponent {...props} />;
 
+  const loading = usePlayerLoadingStatus();
+
   const [attributeData, setAttribute] = useAttribute(attribute);
   if (!attributeData) return null;
-
-  const loading = isPlayerLoading();
 
   const imgKey = imgFromMetadata || METADATA_RESERVED.imageUrl;
   const colorValKey = colorFromMetadata || METADATA_RESERVED.colorValue;
@@ -51,7 +55,7 @@ const container = (WrappedComponent) => (props) => {
       selected={attributeData.value?.assetId}
       handleClick={handleSetAttribute}
       options={options}
-      loading={loading}
+      isPlayerLoading={loading}
     />
   );
 };

@@ -25,7 +25,7 @@ export const ColorOption = styled.div`
   margin-right: 12px;
   margin-bottom: 25px;
 
-  cursor: ${(props) => (props.loading ? 'wait' : 'pointer')};
+  cursor: ${(props) => (props.isPlayerLoading ? 'wait' : 'pointer')};
 
   & > div {
     text-align: center;

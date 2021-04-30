@@ -17,7 +17,7 @@ export const Swatch = (props) => {
     handleClick,
     selected,
     hideDisabled,
-    loading,
+    isPlayerLoading,
   } = props;
 
   const className = attribute
@@ -54,7 +54,7 @@ export const Swatch = (props) => {
               } option-${i + 1}`}
               onClick={() => handleClick(option.value)}
               color={option.colorValue}
-              loading={loading}
+              isPlayerLoading={isPlayerLoading}
               selected={option.value === selected}
             >
               <div

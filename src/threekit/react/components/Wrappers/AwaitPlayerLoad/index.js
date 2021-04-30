@@ -1,9 +1,9 @@
-import { hasLoaded } from '../../../hooks'
+import { useThreekitInitStatus } from '../../../hooks';
 
 const AwaitPlayerLoadWrapper = ({ children }) => {
-    const isLoaded = hasLoaded()
-    if (!isLoaded) return null
-    return children
-}
+  const isLoaded = useThreekitInitStatus();
+  if (!isLoaded) return null;
+  return children;
+};
 
-export default AwaitPlayerLoadWrapper
+export default AwaitPlayerLoadWrapper;

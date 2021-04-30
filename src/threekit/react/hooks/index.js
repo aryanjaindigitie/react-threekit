@@ -3,7 +3,7 @@ import {
   getAttributes,
   setConfiguration,
   isThreekitLoaded,
-  isPlayerLoading as isPlayerLoadingSelector,
+  isPlayerLoading,
   getLanguage,
   getLanguageOptions,
   setLanguage,
@@ -62,9 +62,9 @@ export const useLanguages = () => {
   return [language, languages, handleChange];
 };
 
-export const hasLoaded = () => useSelector(isThreekitLoaded);
+export const useThreekitInitStatus = () => useSelector(isThreekitLoaded);
 
-export const isPlayerLoading = () => useSelector(isPlayerLoadingSelector);
+export const usePlayerLoadingStatus = () => useSelector(isPlayerLoading);
 
 export const useZoom = () => {
   const zoomIn = (step) => window.threekit.api.camera.zoom(Math.abs(step) || 1);

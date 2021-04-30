@@ -18,7 +18,7 @@ export const ColorSwatch = (props) => {
     selected,
     hideDisabled,
     handleClick,
-    loading,
+    isPlayerLoading,
   } = props;
 
   const className = attribute
@@ -43,7 +43,7 @@ export const ColorSwatch = (props) => {
                 className={`tk-color-swatch-option ${className} option-${
                   i + 1
                 }`.trim()}
-                loading={loading}
+                isPlayerLoading={isPlayerLoading}
                 color={option.colorValue}
                 onClick={() => handleClick(option.value)}
               >
