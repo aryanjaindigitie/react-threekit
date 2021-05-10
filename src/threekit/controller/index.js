@@ -308,6 +308,17 @@ class Controller {
       resolve();
     });
   }
+
+  getBom() {
+    const attributes = window.threekit.configurator.getDisplayAttributes();
+    return attributes.reduce((output, attr) => {
+      const value =
+        attr.type !== 'Asset'
+          ? attr.value
+          : attr.values.find((el) => el.assetId === attr.value?.assetId);
+      return Object.assign(output, { [attr.name]: value });
+    }, {});
+  }
 }
 
 export default Controller;
