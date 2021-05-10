@@ -176,14 +176,13 @@ class Controller {
     const attrKeys1 = Object.keys(attributesObj1);
     const attrKeys2 = Object.keys(attributesObj2);
 
-    //  Check to see if same number of attributes are
-    //  in each object. If not figure out the missing
-    //  ones
-    if (attrKeys1.length !== attrKeys2.length) {
-      attrKeys1
-        .filter((attribute) => attrKeys2.indexOf(attribute) == -1)
-        .forEach((attribute) => updatedAttributes.add(attribute));
-    }
+    //  We compare the attributes on in each object
+    attrKeys2
+      .filter((attribute) => attrKeys1.indexOf(attribute) === -1)
+      .forEach((attribute) => updatedAttributes.add(attribute));
+    attrKeys1
+      .filter((attribute) => attrKeys2.indexOf(attribute) === -1)
+      .forEach((attribute) => updatedAttributes.add(attribute));
 
     for (let key of attrKeys1) {
       const attr1 = attributesObj1[key];
