@@ -48,11 +48,12 @@ export const threekitRequest = (request) => {
     configPrepped.headers = Object.assign({}, configPrepped.headers || {}, {
       authorization: `Bearer ${authToken}`,
     });
+  else urlPrepped += `${query.length ? `&` : `?`}bearer_token=${authToken}`;
+
   if (formData)
     configPrepped.headers = Object.assign({}, configPrepped.headers || {}, {
       'content-type': `multipart/form-data; boundary=${formData._boundary}`,
     });
-  else urlPrepped += `${query.length ? `&` : `?`}bearer_token=${authToken}`;
 
   return new Promise(async (resolve) => {
     let response;

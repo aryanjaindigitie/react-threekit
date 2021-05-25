@@ -1,6 +1,6 @@
 const isObject = (object) => object != null && typeof object === 'object';
 
-const shallowCompare = (value1, value2) => {
+export const shallowCompare = (value1, value2) => {
   if (typeof value1 !== typeof value2) return false;
 
   if (Array.isArray(value1)) {
@@ -27,7 +27,7 @@ const shallowCompare = (value1, value2) => {
   return true;
 };
 
-const deepCompare = (item1, item2) => {
+export const deepCompare = (item1, item2) => {
   //  Are the items the same type
   if (typeof item1 !== typeof item2) return false;
   //  If that type is Array we deepCompare each item
@@ -58,5 +58,3 @@ const deepCompare = (item1, item2) => {
 
   return true;
 };
-
-module.exports = { shallowCompare, deepCompare };

@@ -67,9 +67,10 @@ export const useThreekitInitStatus = () => useSelector(isThreekitLoaded);
 export const usePlayerLoadingStatus = () => useSelector(isPlayerLoading);
 
 export const useZoom = () => {
-  const zoomIn = (step) => window.threekit.api.camera.zoom(Math.abs(step) || 1);
+  const zoomIn = (step) =>
+    window.threekit.player.camera.zoom(Math.abs(step) || 1);
   const zoomOut = (step) =>
-    window.threekit.api.camera.zoom(step ? -1 * Math.abs(step) : -1);
+    window.threekit.player.camera.zoom(step ? -1 * Math.abs(step) : -1);
 
   return [zoomIn, zoomOut];
 };

@@ -114,7 +114,7 @@ class Controller {
       if (translationErrors) console.log(translationErrors);
 
       window.threekit = {
-        api,
+        player: api,
         configurator,
         controller: new Controller({
           api,
@@ -188,6 +188,8 @@ class Controller {
       const attr1 = attributesObj1[key];
       const attr2 = attributesObj2[key];
 
+      if (!attr1 || !attr2) continue;
+
       if (!shallowCompare(attr1.value, attr2.value)) {
         updatedAttributes.add(key);
         continue;
@@ -230,12 +232,17 @@ class Controller {
 
   getAttributesState(attrNames) {
     const attributes = this._configurator.getDisplayAttributes();
+    const attributesObj =
+      attrNames?.reduce(
+        (output, el) => Object.assign(output, { [el]: undefined }),
+        {}
+      ) || {};
     return attributes.reduce((output, attr) => {
       if (attrNames && !attrNames.includes(attr.name)) return output;
       return Object.assign(output, {
         [attr.name]: this._translateAttribute(attr),
       });
-    }, {});
+    }, attributesObj);
   }
 
   async setAttributesState(configuration) {
@@ -288,7 +295,7 @@ class Controller {
       options
     );
     return threekitAPI.configurations.save({
-      assetId: ASSET_ID,
+      assetId: window.threekit.player.assetId,
       configuration,
       productVersion,
       metadata,

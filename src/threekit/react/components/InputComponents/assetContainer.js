@@ -10,6 +10,7 @@ const container = (WrappedComponent) => (props) => {
   const {
     attribute,
     imgFromMetadata,
+    imgBaseUrl,
     colorFromMetadata,
     showAttributeTitle,
   } = props;
@@ -31,14 +32,14 @@ const container = (WrappedComponent) => (props) => {
           {
             value: el.assetId,
           },
-          el[imgKey]
+          el.metadata[imgKey]
             ? {
-                imgUrl: (imgBaseUrl || '') + el[imgKey],
+                imageUrl: (imgBaseUrl || '') + el.metadata[imgKey],
               }
             : undefined,
-          el[colorValKey]
+          el.metadata[colorValKey]
             ? {
-                colorValue: el[colorValKey],
+                colorValue: el.metadata[colorValKey],
               }
             : undefined
         )

@@ -10,7 +10,7 @@ export const fetchTranslations = (format = 'json') =>
       return resolve([translations, undefined]);
 
     const csvData = translations
-      .replaceAll('"', '')
+      .replace(/"/g, '')
       .split('\n')
       .map((el) => el.split(','));
     const languages = csvData[0];

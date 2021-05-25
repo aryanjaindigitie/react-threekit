@@ -58,7 +58,7 @@ export const Swatch = (props) => {
               selected={option.value === selected}
             >
               <div
-                className={`tk-swatch-content ${
+                className={`tk-swatch-option-content ${
                   className ? `tk-input-${className}` : ''
                 } option-${i + 1}`}
               >

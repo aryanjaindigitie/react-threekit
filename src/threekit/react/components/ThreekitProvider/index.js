@@ -16,12 +16,16 @@ const Loader = (props) => {
   const authToken = props.authToken || process.env.THREEKIT_AUTH_TOKEN;
   const threekitEnv = props.threekitEnv || process.env.THREEKIT_ENV;
 
-  const config = Object.assign({}, props.config, {
-    assetId,
-    orgId,
-    authToken,
-    threekitEnv,
-  });
+  const config = Object.assign(
+    {},
+    {
+      assetId,
+      orgId,
+      authToken,
+      threekitEnv,
+    },
+    props.config
+  );
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -33,10 +37,17 @@ const Loader = (props) => {
 };
 
 const ThreekitProvider = (props) => {
+  const config = Object.assign(
+    {
+      theme: {},
+      hooks: {},
+    },
+    props.config
+  );
   return (
     <Provider store={store}>
-      <ThemeProvider theme={Object.assign(theme, props?.config?.theme)}>
-        <Loader config={props.config}>{props.children}</Loader>
+      <ThemeProvider theme={Object.assign(theme, config.theme)}>
+        <Loader config={config}>{props.children}</Loader>
       </ThemeProvider>
     </Provider>
   );

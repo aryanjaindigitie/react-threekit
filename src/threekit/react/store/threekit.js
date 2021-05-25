@@ -2,6 +2,10 @@ import Controller from '../../controller';
 import { createSlice } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 
+let HOOKS = {
+  onSetConfiguration: undefined,
+};
+
 const initialState = {
   loaded: false,
   state: undefined,
@@ -69,10 +73,19 @@ export const getAttributes = (attribute) =>
       : attributes;
   });
 
-export const setConfiguration = (config) => async (dispatch) => {
+export const setConfiguration = (config) => async (dispatch, getState) => {
+  let preppedConfig = config;
+  if (HOOKS.onSetConfiguration) {
+    const { threekit } = getState();
+    preppedConfig = await HOOKS.onSetConfiguration(
+      preppedConfig,
+      threekit.attributes
+    );
+    if (!preppedConfig) return;
+  }
   dispatch(setPlayerLoading(true));
   const updatedState = await window.threekit.controller.setAttributesState(
-    config
+    preppedConfig
   );
   dispatch(setInternalAttributesState(updatedState));
   dispatch(setPlayerLoading(false));
@@ -92,10 +105,13 @@ export const launch = (config) => async (dispatch) => {
     authToken: config.authToken,
     threekitEnv: config.threekitEnv,
     assetId: config.assetId,
-    language: 'EN',
+    language: config.language,
   });
 
   dispatch(setLoaded(true));
+  dispatch(setPlayerLoading(false));
+
+  if (config.hooks) HOOKS = Object.assign(HOOKS, config.hooks);
 
   if (config.language) {
     return dispatch(setLanguage(config.language));
