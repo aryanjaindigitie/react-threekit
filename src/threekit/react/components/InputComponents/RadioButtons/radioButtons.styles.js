@@ -8,38 +8,46 @@ export const RadioButtonsHeader = styled.div`
 
 export const Buttons = styled.div`
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-
-  & > div {
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
+  flex-direction: column;
 `;
 
 export const ButtonWrapper = styled.div`
   width: max-content;
   height: max-content;
-  padding: 6px 12px;
+  padding: 6px 0px;
 
-  border-width: 1px;
-  border-style: solid;
-  border-color: ${(props) =>
-    props.selected ? props.theme.primaryColor : props.theme.borderColorBase};
-  border-radius: ${(props) => props.theme.borderRadius};
-
-  color: ${(props) => (props.selected ? '#fff' : props.theme.headingColor)};
-  font-size: ${(props) => props.theme.fontBaseSize};
-
-  background-color: ${(props) =>
-    props.selected ? props.theme.primaryColor : '#fff'};
+  display: grid;
+  grid-template-columns: max-content auto;
+  grid-gap: 8px;
 
   cursor: ${(props) => (props.isPlayerLoading ? 'wait' : 'pointer')};
+`;
 
-  transition: all 0.3s;
+export const IconWrapper = styled.div`
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  border: 1px solid
+    ${(props) =>
+      props.selected ? props.theme.primaryColor : props.theme.borderColorBase};
 
-  &:hover {
-    border: 1px solid ${(props) => props.theme.primaryColor};
-    color: ${(props) => (props.selected ? '#fff' : props.theme.primaryColor)};
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+
+  & > div {
+    height: 9px;
+    width: 9px;
+    border-radius: 50%;
+
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background: ${(props) =>
+      props.selected ? props.theme.primaryColor : 'none'};
   }
 `;
+
+export const Label = styled.div``;

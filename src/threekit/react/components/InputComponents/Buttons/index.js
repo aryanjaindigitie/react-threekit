@@ -2,15 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Wrapper,
-  RadioButtonsHeader as Header,
-  Buttons,
+  ButtonsHeader as Header,
+  ButtonsWrapper,
   ButtonWrapper,
-  IconWrapper,
-  Label,
-} from './radioButtons.styles';
+} from './buttons.styles';
 import { regularToKebabCase } from '../../../utils';
 
-export const RadioButtons = (props) => {
+export const Buttons = (props) => {
   const {
     attribute,
     title,
@@ -30,53 +28,49 @@ export const RadioButtons = (props) => {
 
   return (
     <Wrapper
-      className={`tk-radio-buttons ${className ? `tk-input-${className}` : ''}`}
+      className={`tk-buttons ${className ? `tk-input-${className}` : ''}`}
     >
       {title && (
         <Header
-          className={`tk-radio-btn-header ${
+          className={`tk-btn-header ${
             className ? `tk-input-${className}` : ''
           }`}
         >
           {title}
         </Header>
       )}
-      <Buttons
-        className={`tk-radio-btn-content ${
-          className ? `tk-input-${className}` : ''
-        }`}
+      <ButtonsWrapper
+        className={`tk-btn-content ${className ? `tk-input-${className}` : ''}`}
       >
         {options.map((option, i) => {
           if (option.disabled && hideDisabled) return null;
           return (
             <ButtonWrapper
-              className={`tk-radio-btn ${
+              className={`tk-btn ${
                 className ? `tk-input-${className}` : ''
               } option-${i + 1}`}
               key={i}
               isPlayerLoading={isPlayerLoading}
               disabled={option.disabled}
+              selected={option.value === selected}
               onClick={() => handleClick(option.value)}
             >
-              <IconWrapper selected={option.value === selected}>
-                <div></div>
-              </IconWrapper>
-              <Label
-                className={`tk-radio-btn-label ${
+              <div
+                className={`tk-btn-label ${
                   className ? `tk-input-${className}` : ''
                 } option-${i + 1}`}
               >
                 {option.label}
-              </Label>
+              </div>
             </ButtonWrapper>
           );
         })}
-      </Buttons>
+      </ButtonsWrapper>
     </Wrapper>
   );
 };
 
-RadioButtons.propTypes = {
+Buttons.propTypes = {
   /**
    * Is the attribute name on the initialized asset that we are
    * using this component for
@@ -119,7 +113,7 @@ RadioButtons.propTypes = {
   ),
 };
 
-RadioButtons.defaultProps = {
+Buttons.defaultProps = {
   attribute: undefined,
   title: undefined,
   className: undefined,
@@ -129,4 +123,4 @@ RadioButtons.defaultProps = {
   options: [],
 };
 
-export default RadioButtons;
+export default Buttons;
