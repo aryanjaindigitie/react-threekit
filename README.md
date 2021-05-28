@@ -78,10 +78,11 @@ This should launch our Demo project, available locally on `http://localhost:3000
 
 Some best practices in setting up the boilerplate for a project:
 
-1. Update the project `name` and `homepage` in the `package.json` file.
-2. Update the `<title>` tag in the `public/index.html` file.
-3. Create a `.env` file in the root directory and add your Threekit Environment, Org ID, Asset ID, and Auth Token. You can use `.env.sample` as an example of what your file should look like.
-4. Create a folder in the `src` folder to hold all the project-specific work.
+1. Start by replacing the existing git setup. You can do this by running `sudo rm -r .git` from the project's root directory to remove the existing git setup and start then start a new one with `git init`.
+2. Update the project `name` and `homepage` in the `package.json` file.
+3. Update the `<title>` tag in the `public/index.html` file.
+4. Create a `.env` file in the root directory and add your Threekit Environment, Org ID, Asset ID, and Auth Token. You can use `.env.sample` as an example of what your file should look like.
+5. Create a folder in the `src` folder to hold all the project-specific work.
    **_Note: since this boilerplate is in active development it is highly recommended to keep all project-specific code in a single folder which is easy to migrate to a newer release of the boilerplate_**
 
 #### Development Kit Overview
