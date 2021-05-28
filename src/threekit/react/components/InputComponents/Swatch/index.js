@@ -7,6 +7,7 @@ import {
   SwatchHeader as Header,
 } from './swatch.styles';
 import { regularToKebabCase } from '../../../utils';
+import { ATTRIBUTE_TYPES } from '../../../../constants';
 
 export const Swatch = (props) => {
   const {
@@ -142,5 +143,7 @@ Swatch.defaultProps = {
   handleClick: undefined,
   options: [],
 };
+
+Swatch.compatibleAttributes = new Set([ATTRIBUTE_TYPES.asset]);
 
 export default Swatch;

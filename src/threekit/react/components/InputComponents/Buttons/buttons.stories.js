@@ -1,21 +1,33 @@
 import React from 'react';
 
-import { RadioButtons } from './index';
+import { Buttons } from './index';
 
 const options = [
-  { name: 'blue', value: 'blue' },
-  { name: 'green', value: 'green' },
-  { name: 'red', value: 'red' },
-  { name: 'yellow', value: 'yellow' },
+  {
+    label: 'Celtic',
+    value: 'celtic',
+  },
+  {
+    label: 'Arsenal',
+    value: 'arsenal',
+  },
+  {
+    label: 'Dortmund',
+    value: 'dortmund',
+  },
+  {
+    label: 'Ajax',
+    value: 'ajax',
+  },
 ];
 
 export default {
-  title: 'Input Components/RadioButtons',
-  component: RadioButtons,
+  title: 'Input Components/Buttons',
+  component: Buttons,
   argTypes: { handleClick: { action: 'clicked' } },
 };
 
-const Template = (args) => <RadioButtons {...args} />;
+const Template = (args) => <Buttons {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {

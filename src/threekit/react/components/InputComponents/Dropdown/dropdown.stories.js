@@ -4,10 +4,22 @@ import 'antd/dist/antd.css';
 import { Dropdown } from './index';
 
 const options = [
-  { name: 'blue', value: 'blue' },
-  { name: 'green', value: 'green' },
-  { name: 'red', value: 'red' },
-  { name: 'yellow', value: 'yellow' },
+  {
+    label: 'Celtic',
+    value: 'celtic',
+  },
+  {
+    label: 'Arsenal',
+    value: 'arsenal',
+  },
+  {
+    label: 'Dortmund',
+    value: 'dortmund',
+  },
+  {
+    label: 'Ajax',
+    value: 'ajax',
+  },
 ];
 
 export default {

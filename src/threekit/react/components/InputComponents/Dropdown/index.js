@@ -10,6 +10,7 @@ import {
 } from './dropdown.styles';
 import { DownOutlined } from '@ant-design/icons';
 import { regularToKebabCase } from '../../../utils';
+import { ATTRIBUTE_TYPES } from '../../../../constants';
 
 export const Dropdown = (props) => {
   const {
@@ -54,7 +55,7 @@ export const Dropdown = (props) => {
         <Header className={`tk-dropdown-header ${className}`}>{title}</Header>
       )}
       <Wrapper
-        loading={loading}
+        loading={isPlayerLoading}
         active={!hide}
         ref={ref}
         className={`tk-dropdown-outer ${className}`}
@@ -157,5 +158,10 @@ Dropdown.defaultProps = {
   handleClick: undefined,
   options: [],
 };
+
+Dropdown.compatibleAttributes = new Set([
+  ATTRIBUTE_TYPES.asset,
+  ATTRIBUTE_TYPES.string,
+]);
 
 export default Dropdown;

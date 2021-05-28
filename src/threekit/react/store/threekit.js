@@ -68,9 +68,8 @@ export const setLanguage = (language) => async (dispatch) => {
 export const getAttributes = (attribute) =>
   createSelector(getInternalAttributeState, (attributes) => {
     if (!attributes) return undefined;
-    return attribute && attributes[attribute]
-      ? attributes[attribute]
-      : attributes;
+    if (!attribute) return attributes;
+    return attributes[attribute] || undefined;
   });
 
 export const setConfiguration = (config) => async (dispatch, getState) => {
@@ -92,7 +91,7 @@ export const setConfiguration = (config) => async (dispatch, getState) => {
 };
 
 export const stepHistory = (step) => async (dispatch) => {
-  if (typeof step !== 'number' || step === 0) return;
+  if (isNaN(step) || step === 0) return;
   const updatedState = await window.threekit.controller.stepHistoryPosition(
     step
   );
@@ -106,6 +105,7 @@ export const launch = (config) => async (dispatch) => {
     threekitEnv: config.threekitEnv,
     assetId: config.assetId,
     language: config.language,
+    additionalTools: config.additionalTools,
   });
 
   dispatch(setLoaded(true));

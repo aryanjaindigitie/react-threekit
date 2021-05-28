@@ -5,5 +5,6 @@ export * from './InputComponents';
 export * from './Wrappers';
 export * from './Widgets';
 export * from './Sections';
+export * from './Display';
 
 export { Player, ThreekitProvider };

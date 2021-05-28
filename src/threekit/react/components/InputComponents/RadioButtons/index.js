@@ -9,6 +9,7 @@ import {
   Label,
 } from './radioButtons.styles';
 import { regularToKebabCase } from '../../../utils';
+import { ATTRIBUTE_TYPES } from '../../../../constants';
 
 export const RadioButtons = (props) => {
   const {
@@ -128,5 +129,10 @@ RadioButtons.defaultProps = {
   handleClick: undefined,
   options: [],
 };
+
+RadioButtons.compatibleAttributes = new Set([
+  ATTRIBUTE_TYPES.asset,
+  ATTRIBUTE_TYPES.string,
+]);
 
 export default RadioButtons;

@@ -99,7 +99,7 @@ const tooltip = (config = {}) => {
     tooltipEl.style.left = '-300px';
   };
 
-  return (api) => ({
+  return (player) => ({
     key: 'tooltip',
     label: 'tooltpip',
     active: true,
@@ -118,7 +118,7 @@ const tooltip = (config = {}) => {
 
         for (let node of hierarchy) {
           if (node.type === 'Item') {
-            const item = api.scene.get({
+            const item = player.scene.get({
               id: node.nodeId,
             });
             const tooltip = item.configurator.metadata.find(

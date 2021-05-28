@@ -1,13 +1,17 @@
 import React from 'react';
-import { Story } from '@storybook/react';
-import { SectionProps } from '../index';
 
 import { Accordian } from './index';
 const { AccordianItem } = Accordian;
 
 const items = [
-  { label: 'Demo', content: 'hello mars' },
-  { label: 'Test', content: 'hello mars' },
+  {
+    label: 'First Section',
+    content: 'This is some content in the first section',
+  },
+  {
+    label: 'Second Section',
+    content: 'This is different content for a different section',
+  },
 ];
 
 export default {
@@ -17,8 +21,11 @@ export default {
 
 const Template = (args) => (
   <Accordian {...args}>
-    <AccordianItem label="Section 1">Content</AccordianItem>
-    <AccordianItem label="Section 2">Content</AccordianItem>
+    {items.map((el, i) => (
+      <AccordianItem key={i} label={el.label}>
+        {el.content}
+      </AccordianItem>
+    ))}
   </Accordian>
 );
 

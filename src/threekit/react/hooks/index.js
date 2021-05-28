@@ -9,6 +9,7 @@ import {
   setLanguage,
   stepHistory,
 } from '../store/threekit';
+import { ATTRIBUTE_TYPES } from '../../constants';
 
 export const useAttribute = (attribute) => {
   const dispatch = useDispatch();
@@ -22,21 +23,20 @@ export const useAttribute = (attribute) => {
     if (!value) return;
     let updated;
     switch (attributeData.type) {
-      case 'Number':
+      case ATTRIBUTE_TYPES.number:
         updated = value;
         break;
-      case 'Asset':
-        if (typeof value === 'number')
+      case ATTRIBUTE_TYPES.asset:
+        if (!isNaN(value))
           updated = { assetId: attributeData.values[value].assetId };
-        else updated = { assetId: value.assetId };
+        else updated = { assetId: value };
         break;
-      case 'String':
-        if (typeof value === 'number')
-          updated = attributeData.values[value].value;
-        else updated = value.value;
+      case ATTRIBUTE_TYPES.string:
+        if (!isNaN(value)) updated = attributeData.values[value].value;
+        else updated = value;
         break;
-      case 'Color':
-        if (typeof value === 'number') updated = attributeData.values[value];
+      case ATTRIBUTE_TYPES.color:
+        if (!isNaN(value)) updated = attributeData.values[value];
         else updated = value;
         break;
       default:

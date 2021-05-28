@@ -8,6 +8,7 @@ import {
 import { Tooltip } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 import { regularToKebabCase } from '../../../utils';
+import { ATTRIBUTE_TYPES } from '../../../../constants';
 
 export const ColorSwatch = (props) => {
   const {
@@ -118,5 +119,7 @@ ColorSwatch.defaultProps = {
   handleClick: undefined,
   options: [],
 };
+
+ColorSwatch.compatibleAttributes = new Set([ATTRIBUTE_TYPES.asset]);
 
 export default ColorSwatch;

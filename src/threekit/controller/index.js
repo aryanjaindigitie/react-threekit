@@ -3,9 +3,9 @@ import threekitAPI from '../api';
 import { shallowCompare, deepCompare } from '../utils';
 
 class Controller {
-  constructor({ api, configurator, translations, language }) {
+  constructor({ player, configurator, translations, language }) {
     //  Threekit API
-    this._api = api;
+    this._player = player;
     this._configurator = configurator;
     //  Translations
     this._translations = translations;
@@ -43,14 +43,14 @@ class Controller {
 
   static initThreekit({ el, authToken, assetId, orgId }) {
     return new Promise(async (resolve) => {
-      const api = await window.threekitPlayer({
+      const player = await window.threekitPlayer({
         el,
         authToken,
         assetId,
         orgId,
       });
-      const configurator = await api.getConfigurator();
-      resolve({ api, configurator });
+      const configurator = await player.getConfigurator();
+      resolve({ player, configurator });
     });
   }
 
@@ -85,6 +85,7 @@ class Controller {
         orgId,
         elementId,
         language,
+        additionalTools,
       } = config;
 
       //  Connection
@@ -104,20 +105,23 @@ class Controller {
       await this.createThreekitScriptEl(threekitEnv);
 
       const [
-        { api, configurator },
+        { player, configurator },
         [translations, translationErrors],
       ] = await Promise.all([
         this.initThreekit({ el, authToken, orgId, assetId }),
         threekitAPI.products.fetchTranslations(),
       ]);
 
+      if (additionalTools?.length)
+        additionalTools.forEach((tool) => player.tools.addTool(tool(player)));
+
       if (translationErrors) console.log(translationErrors);
 
       window.threekit = {
-        player: api,
+        player,
         configurator,
         controller: new Controller({
-          api,
+          player,
           configurator,
           translations: translations,
         }),
@@ -257,7 +261,7 @@ class Controller {
 
   stepHistoryPosition(step) {
     return new Promise(async (resolve) => {
-      if (typeof step !== 'number' || step === 0) resolve({});
+      if (isNaN(step) || step === 0) resolve({});
       if (
         this._historyPosition + step < 0 ||
         this._historyPosition + step >= this._history.length

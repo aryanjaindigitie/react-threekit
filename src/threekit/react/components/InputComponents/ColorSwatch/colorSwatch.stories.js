@@ -4,10 +4,10 @@ import 'antd/dist/antd.css';
 import { ColorSwatch } from './index';
 
 const options = [
-  { name: 'blue', value: 'blue', colorValue: 'blue' },
-  { name: 'green', value: 'green', colorValue: 'green' },
-  { name: 'red', value: 'red', colorValue: 'red' },
-  { name: 'yellow', value: 'yellow', colorValue: 'yellow' },
+  { label: 'Blue', value: 'blue', colorValue: 'blue' },
+  { label: 'Green', value: 'green', colorValue: 'green' },
+  { label: 'Red', value: 'red', colorValue: 'red' },
+  { label: 'Yellow', value: 'yellow', colorValue: 'yellow' },
 ];
 
 export default {
