@@ -1,7 +1,7 @@
 import React from 'react';
 import { components } from '../threekit';
 
-const { RadioButtons, Player } = components;
+const { Buttons, Player } = components;
 
 const App = () => {
   return (
@@ -10,7 +10,7 @@ const App = () => {
       <div>
         {/* Replace the 'title' and 'attribute' with the name 
           of the Attribute you wish to Diplay */}
-        <RadioButtons title="Attribute Name" attribute="Attribute Name" />
+        <Buttons attribute="Attribute Name" />
       </div>
     </div>
   );

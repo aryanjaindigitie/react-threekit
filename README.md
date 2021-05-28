@@ -1,16 +1,16 @@
-# Threekit React Boilerplate
+# Threekit React
 
-The Threekit React Boilerplate is a feature-rich codebase, containing a vast set of tools, functionality, components, and examples to build an impressive front-end experience for a Threekit Configurator. We have everything you need to get started!
+The Threekit React Project is a feature-rich React Development Kit, containing a vast set of tools, functionality, components, and examples to build an impressive front-end experience for a Threekit Configurator. We have everything you need to get started!
 
 ## Table of Contents
 
-- [Threekit React Boilerplate](#threekit-react-boilerplate)
+- [Threekit React](#threekit-react)
   - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
     - [Quick Start](#quick-start)
-    - [How to use this Boilerpate](#how-to-use-this-boilerpate)
+    - [How to use this Development Kit](#how-to-use-this-development-kit)
       - [Project Setup](#project-setup)
-      - [Boilerplate Overview](#boilerplate-overview)
+      - [Development Kit Overview](#development-kit-overview)
   - [Scripts and Deployment Strategies](#scripts-and-deployment-strategies)
     - [Development Server Scripts](#development-server-scripts)
       - [`yarn start`](#yarn-start)
@@ -33,25 +33,20 @@ The Threekit React Boilerplate is a feature-rich codebase, containing a vast set
       - [Locale Selector](#locale-selector)
       - [Undo](#undo)
       - [Redo](#redo)
+    - [Displays](#displays)
+      - [Attribute Title](#attribute-title)
+      - [Attribute Value](#attribute-value)
     - [Wrappers](#wrappers)
       - [Await Loader](#await-loader)
       - [Attribute](#attribute)
   - [API](#api)
-    - [Player](#player-1)
-      - [Launch](#launch)
-      - [Add Player To Component (MOVE TO INTERNAL)](#add-player-to-component-move-to-internal)
-      - [Get State](#get-state)
-      - [Set State](#set-state)
-      - [Subscribe to Attribute](#subscribe-to-attribute)
-      - [Publish to Attribute](#publish-to-attribute)
+    - [Player API](#player-api)
+    - [Configurator API](#configurator-api)
+    - [Controller API](#controller-api)
       - [Save Configuration](#save-configuration)
       - [Resume Configuration](#resume-configuration)
-      - [Step Backward (Undo)](#step-backward-undo)
-      - [Step Forward (Redo)](#step-forward-redo)
-      - [Zoom](#zoom-1)
-    - [Tools](#tools)
-      - [Tooltip](#tooltip)
-    - [Threekit](#threekit)
+  - [Tools](#tools)
+    - [Tooltip](#tooltip)
 
 ## Installation
 
@@ -60,8 +55,8 @@ The Threekit React Boilerplate is a feature-rich codebase, containing a vast set
 Clone, Fork or Download the repository to your computer and navigate to the project directory:
 
 ```sh
-git clone https://github.com/Threekit/boilerplate-react.git
-cd ./boilerplate-react
+git clone https://github.com/Threekit/threekit-react.git
+cd ./threekit-react
 ```
 
 Install all the dependencies:
@@ -74,20 +69,21 @@ Start development server:
 
 This should launch our Demo project, available locally on `http://localhost:3000`.
 
-### How to use this Boilerpate
+### How to use this Development Kit
 
 #### Project Setup
 
-Some common best practices in setting up the boilerplate for a project:
+Some best practices in setting up the boilerplate for a project:
 
-1. Update the project `name` in the `package.json` file.
-2. Update the website title in the `public/index.html` file.
-3. Create a folder in the `src` folder to hold all the project-specific work.
+1. Update the project `name` and `homepage` in the `package.json` file.
+2. Update the `<title>` tag in the `public/index.html` file.
+3. Create a `.env` file in the root directory and add your Threekit Environment, Org ID, Asset ID, and Auth Token. You can use `.env.sample` as an example of what your file should look like.
+4. Create a folder in the `src` folder to hold all the project-specific work.
    **_Note: since this boilerplate is in active development it is highly recommended to keep all project-specific code in a single folder which is easy to migrate to a newer release of the boilerplate_**
 
-#### Boilerplate Overview
+#### Development Kit Overview
 
-Our React Boilerplate follows a Provider Pattern where you wrap all the React code that will interact with the Threekit API inside the ThreekitProvider. Within the ThreekitProvider context all our components and hooks have complete flexibility in where and how they are used while still being fully connected to the Threekit API, the 3D Player, and each other.
+This React Development Kit follows a 'Provider' Pattern where all the React code that interacts with the Threekit API is placed inside the ThreekitProvider. Within the ThreekitProvider context all our components and hooks have complete flexibility in where and how they're used while still fully connected to the Threekit API, the 3D Player, and each other.
 
 ## Scripts and Deployment Strategies
 
@@ -97,17 +93,17 @@ All scripts are expected to be run from the project root directory. These includ
 
 #### `yarn start`
 
-Starts up the local development server on `port 3000`.
+Starts up a local development server on accessible on `localhost:3000`.
 
 #### `yarn storybook`
 
-Starts up the local Storybook server on `port 6006`, where you can explore and play around with our UI component library.
+Starts up the local Storybook server on `localhost:6006`, where you can explore and play around with our UI component library.
 
-We use [Storybook](https://storybook.js.org/) to build, test and showcase our components. You can also use storybook to support any further development using the boilerplate by adding stories for your own components.
+We use [Storybook](https://storybook.js.org/) to build, test, and showcase our components. You can also use Storybook to support any further development using the boilerplate by adding stories for your own components.
 
 ### Build Scripts
 
-All React-app production builds are placed in the `build` folder, located in the project root folder. Building a project will replace any files currently in the `build` folder.
+All Threekit React production builds are placed in the `build` folder, located in the project root folder. Building a project will replace any files currently in the `build` folder.
 
 #### `yarn build`
 
@@ -119,7 +115,7 @@ The build is minified and the filenames include the hashes.
 
 Bundles React in production mode into a single javascript file with the name `threekit-embed.js`.
 
-This build strategy is useful for eCommerce embeds, requiring only a single-file upload.
+This build strategy is suitable for eCommerce embeds, requiring only a single-file upload.
 
 ## React Features
 
@@ -134,20 +130,22 @@ import ReactDOM from 'react-dom';
 import { ThreekitProvider } from './threekit';
 import App from './App';
 
-const threekitConfig = {
+const config = {
+  //  Instead of using the `.env` file to store the project config
+  //  these variables can also be passed explicity to the ThreekitProvider
   authToken: '3fb4asd5d-ea38-4a05-a1c3-6cf9d8dd3d48',
   assetId: 'a9a66218-bkid-4106-96fe-a0709fdc3dc1',
   orgId: '20df501b-1ef8-4bh0-sfda-2b99426624de',
-  threekitEnv: 'admin-fts',
+  threekitEnv: 'admin-fts.threekit.com',
+  // We can also pass overwrites to the default theme
+  theme: { primaryColor: '#54AA54' },
 };
 
-const rootElement = document.getElementById('root');
-
 ReactDOM.render(
-  <ThreekitProvider config={threekitConfig}>
+  <ThreekitProvider config={config}>
     <App /> // All Threekit related code goes here
   </ThreekitProvider>,
-  rootElement
+  document.getElementById('root')
 );
 ```
 
@@ -177,7 +175,7 @@ import { hooks } from './threekit';
 const { useAttribute } = hooks;
 
 const AttributeComponent = () => {
-  const [attribute, setAttribute] = useAttribute();
+  const [attribute, setAttribute] = useAttribute('Attribute Name');
   return <div>{/* Custom component to use attribute */}</div>;
 };
 ```
@@ -266,13 +264,13 @@ const RedoButton = () => {
 ### Input Components
 
 ```javascript
-import { InputComponents } from './threekit';
+import { components } from './threekit';
 
-//  Components for Part Reference type Attributes
-const { RadioButtons, Dropdown, Swatch } = InputComponents;
+//  Components for Part Reference or String type Attributes
+const { Buttons, RadioButtons, Dropdown, Swatch } = components;
 ```
 
-Input Components Storybook coming soon!
+To explore our Input Components library on Storybook, [click here](https://threekit.github.io/react-threekit).
 
 ### Widgets
 
@@ -283,9 +281,9 @@ The `<Zoom />` component provides a simple pair of `+` and `-` buttons to update
 It defaults to single increments changes but also accepts increment values to use instead.
 
 ```javascript
-import { Widgets } from './threekit';
+import { components } from './threekit';
 
-const { Zoom } = Widgets;
+const { Zoom } = components;
 
 const Component = () => {
   return (
@@ -302,9 +300,9 @@ const Component = () => {
 The `<LocaleSelector />` component renders out a simple dropdown to toggle through all the translation options.
 
 ```javascript
-import { Widgets } from './threekit';
+import { components } from './threekit';
 
-const { LocaleSelector } = Widgets;
+const { LocaleSelector } = components;
 
 const Component = () => {
   return (
@@ -321,9 +319,9 @@ const Component = () => {
 The `<Undo />` component renders a button that allows us to step our configuration backward.
 
 ```javascript
-import { Widgets } from './threekit';
+import { components } from './threekit';
 
-const { Undo } = Widgets;
+const { Undo } = components;
 
 const Component = () => {
   return (
@@ -340,15 +338,57 @@ const Component = () => {
 The `<Redo />` component renders a button that allows us to step our configuration forward, after it has been stepped backward by any number of steps.
 
 ```javascript
-import { Widgets } from './threekit';
+import { components } from './threekit';
 
-const { Redo } = Widgets;
+const { Redo } = components;
 
 const Component = () => {
   return (
     <div>
       // Any React content
       <Redo />
+    </div>
+  );
+};
+```
+
+### Displays
+
+Displays can be used to display specific information anywhere in the UI.
+
+#### Attribute Title
+
+The `<AttributeTitle>` will display the translated attribute name of an attribute.
+
+```javascript
+import { components } from './threekit';
+
+const { AttributeTitle } = components;
+
+const Component = () => {
+  return (
+    <div>
+      // Content here will be rendered as normal
+      <AttributeTitle attribute="Attribute Name">
+    </div>
+  );
+};
+```
+
+#### Attribute Value
+
+The `<AttributeValue>` will display the translated selected value of an attribute.
+
+```javascript
+import { components } from './threekit';
+
+const { AttributeValue } = components;
+
+const Component = () => {
+  return (
+    <div>
+      // Content here will be rendered as normal
+      <AttributeValue attribute="Attribute Name">
     </div>
   );
 };
@@ -361,9 +401,9 @@ const Component = () => {
 The `<AwaitPlayerLoad>` will not render any content placed inside it until the Threekit API has initialized.
 
 ```javascript
-import { Wrappers } from './threekit';
+import { components } from './threekit';
 
-const { AwaitPlayerLoad } = Wrappers;
+const { AwaitPlayerLoad } = components;
 
 const Component = () => {
   return (
@@ -382,9 +422,9 @@ const Component = () => {
 The `<Attribute>` is a component-oriented way to use the [`useAttribute`](#use-attribute) hook. It expects a function as its child, which takes two arguments. The first argument is the attribute data, and the second is a change handler function to update the attribute value.
 
 ```javascript
-    import { Wrappers } from "./threekit"
+    import { components } from "./threekit"
 
-    const { Attribute } = Wrappers
+    const { Attribute } = components
 
     const AttributeComponent = () => {
         return(
@@ -403,127 +443,33 @@ The `<Attribute>` is a component-oriented way to use the [`useAttribute`](#use-a
 ## API
 
 ```javascript
-import threekitApi from './threekit';
-
-const { player, threekit } = threekitApi;
+const { player, configurator, controller } = window.threekit;
 ```
 
-### Player
+The `player` and `configurator` API are the standard API interfaces returned when initializing the Threekit player.
 
-The player API has all the higher-level functionality to interact with the 3D.
+### Player API
 
-```javascript
-import { player } from './threekit';
-```
+For documentation on the Player API, [click here](https://docs.threekit.com/docs/player-api).
 
-#### Launch
+### Configurator API
 
-```javascript
-import { player } from './threekit';
+For documentation on the Configurator API, [click here](https://docs.threekit.com/docs/configurator-api).
 
-const initObj = {
-  //  required
-  authToken: '3fb4asd5d-ea38-4a05-a1c3-6cf9d8dd3d48',
-  assetId: '20df501b-1ef8-4bh0-sfda-2b99426624de',
-  //  optional
-  elementId: 'player-div-id',
-};
+### Controller API
 
-player.launch(initObj);
-```
-
-#### Add Player To Component (MOVE TO INTERNAL)
+The controller API has all the higher-level functionality to interact with the 3D.
 
 ```javascript
-import { player } from './threekit';
-
-player.addPlayerToComponent('player-div-id');
-```
-
-#### Get State
-
-This method returns all the Attributes on the initialized asset and their selected values, prepped for consumption by a UI Component. It can also provide a single attribute's state if we pass it the attribute name.
-
-For a `Part Reference` type attribute, the returned options also include their metadata and tags.
-
-This method also excepts an options object which allows us to define the language we want the returned state to be.
-
-```javascript
-import { player } from './threekit';
-
-//  optional
-const options = {
-  locale: 'IT',
-};
-
-// Returns the attributes state
-const attributesState = await player.getState();
-
-// Returns the attributes state in Italian
-// as specified by the options
-const attributesState = await player.getState(options);
-
-// Returns the attribute state provided attribute
-const attributeState = await player.getAttributesDisplay('Attribute Name');
-
-// If an attribute name is provided then we
-// add the options object as the second argument
-const attributeState = await player.getAttributesDisplay(
-  'Attribute Name',
-  options
-);
-```
-
-#### Set State
-
-Use this method to update the configuration of one or multiple attributes.
-
-```javascript
-import { player } from './threekit';
-
-const configurationUpdate = {
-  'Attribute Name': { assetId: '20df501b-1ef8-4bh0-sfda-2b99426624de' },
-};
-
-const updatedState = await player.setState(configurationUpdate);
-```
-
-#### Subscribe to Attribute
-
-Subscribing to an attribute allows you to attach a function to that attribute, which is fired every time that attribute's value or option set is updated.
-
-If building within the `<TheekitProvider>` component as recommended you should avoid using this method and instead rely on the [useAttribute](#use-attribute) hook to connect to the attributes state.
-
-```javascript
-import { player } from './threekit';
-
-const callback = (attributeState) => {
-  console.log(attributeState);
-};
-
-player.subscribeToAttribute('Attribute Name', callback);
-```
-
-#### Publish to Attribute
-
-Publishing to an attribute allows us to update the configuration state for that attribute.
-
-If building within the `<TheekitProvider>` component as recommended you should avoid using this method and instead rely on the [useAttribute](#use-attribute) hook to connect to the attributes state.
-
-```javascript
-import { player } from './threekit';
-
-const updateConfiguration = { assetId: '20df501b-1ef8-4bh0-sfda-2b99426624de' };
-
-player.publishToAttribute('Attribute Name', updateConfiguration);
+const { controller } = window.threekit;
 ```
 
 #### Save Configuration
 
-Use this method to save a configuration on the Threekit platform, along with any additional metadata or thumbnail urls related to that configuration.
+Use this method to save a configuration on the Threekit platform, along with any additional metadata or thumbnail URLs related to that configuration.
 
 ```javascript
-import { player } from './threekit';
+const { controller } = window.threekit;
 
 //  optional
 const saveData = {
@@ -536,98 +482,59 @@ const saveData = {
     'https://www.threekit.com/hubfs/Logos%20and%20Trademarks/threekit_logo_black.svg',
 };
 
-const response = await player.saveConfiguration(saveData);
+const response = await controller.saveConfiguration(saveData);
 ```
 
 #### Resume Configuration
 
-Use this method to resume a configuration saved on the Threekit platform by passing it the saved configuration's Id.
+Use this method to resume a configuration saved on the Threekit platform by passing it the saved configuration's ID.
 
 ```javascript
-import { player } from './threekit';
+const { controller } = window.threekit;
 
-await player.resumeConfiguration('20df501b-1ef8-4bh0-sfda-2b99426624de');
+await controller.resumeConfiguration('20df501b-1ef8-4bh0-sfda-2b99426624de');
 ```
 
-#### Step Backward (Undo)
-
-#### Step Forward (Redo)
-
-#### Zoom
-
-Use this method to update the zoom position in the player.
-
-```javascript
-import { player } from './threekit';
-
-//  Changes zoom position by +1 (value required)
-player.zoom(1);
-
-//  Changes zoom position by +1 (default)
-player.zoomIn();
-
-//  Changes zoom position by +6
-player.zoomIn(6);
-
-//  Changes zoom position by -1 (default)
-player.zoomOut();
-
-//  Changes zoom position by +8
-player.zoomOut(8);
-```
-
-### Tools
+## Tools
 
 Tools add functionality to the 3D-player beyond the out-of-the-box features such as scroll to zoom, drag to rotate, and right-click to pan the camera. To implement a tool it needs to be added to the array of `additionalTools` that is passed to the `<ThreekitProvider>` as part of it config object.
 
 ```javascript
-import { threekit } from './threekit';
+import { tools } from './threekit';
 
-const { exampleTool } = threekit.tools;
+const { exampleTool } = tools;
 
 const config = {
-  authToken: '3fb4asd5d-ea38-4a05-a1c3-6cf9d8dd3d48',
-  assetId: 'a9a66218-bkid-4106-96fe-a0709fdc3dc1',
-  orgId: '20df501b-1ef8-4bh0-sfda-2b99426624de',
-  threekitEnv: 'preview',
   additionalTools: [exampleTool()],
 };
 
 const ThreekitApp = () => {
   return (
-    <ThreekitProvider config={threekitConfig}>
-      // App code comes here
+    <ThreekitProvider config={config}>
+      <App />
     </ThreekitProvider>
   );
 };
 ```
 
-#### Tooltip
+### Tooltip
+
+The `tooltip` tool displays information stored in the metadata of a catalog item as a tooltip when a user hovers over it in the Player.
 
 ```javascript
-import { threekit } from './threekit';
+import { tools } from './threekit';
 
-const { exampleTool } = threekit.tools;
+const { tooltip } = tools;
 
 const config = {
-  authToken: '3fb4asd5d-ea38-4a05-a1c3-6cf9d8dd3d48',
-  assetId: 'a9a66218-bkid-4106-96fe-a0709fdc3dc1',
-  orgId: '20df501b-1ef8-4bh0-sfda-2b99426624de',
-  threekitEnv: 'preview',
-  additionalTools: [tooltip({ metadataField: productName })],
+  additionalTools: [tooltip({ metadataField: 'productName' })],
 };
 
 const ThreekitApp = () => {
   return (
-    <ThreekitProvider config={threekitConfig}>
-      // App code comes here
+    <ThreekitProvider config={config}>
+      <App />
     </ThreekitProvider>
   );
 };
-```
-
-### Threekit
-
-```javascript
-import { threekit } from './threekit';
 ```
