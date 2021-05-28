@@ -39,6 +39,9 @@ The Threekit React Project is a feature-rich React Development Kit, containing a
     - [Wrappers](#wrappers)
       - [Await Loader](#await-loader)
       - [Attribute](#attribute)
+    - [Sections](#sections)
+      - [Accordian](#accordian)
+      - [Tabs](#tabs)
   - [API](#api)
     - [Player API](#player-api)
     - [Configurator API](#configurator-api)
@@ -438,6 +441,46 @@ The `<Attribute>` is a component-oriented way to use the [`useAttribute`](#use-a
             </Attribute>
         )
     }
+```
+
+### Sections
+
+Sections are organizational components that we can use to organize the layout of our configurator. Sections are especially useful in breaking up large sets of attributes or information into smaller, more digestible portions.
+
+#### Accordian
+
+```javascript
+import { components } from './threekit';
+
+const { Accordian } = components;
+const { AccordianItem } = Accordian;
+
+const App = () => {
+  return (
+    <Accordian>
+      <AccordianItem label="Section 1 Heading">Section 1 content</AccordianItem>
+      <AccordianItem label="Section 2 Heading">Section 2 content</AccordianItem>
+    </Accordian>
+  );
+};
+```
+
+#### Tabs
+
+```javascript
+import { components } from './threekit';
+
+const { Tabs } = components;
+const { TabItem } = Tabs;
+
+const App = () => {
+  return (
+    <Tabs>
+      <TabItem label="Section 1 Heading">Section 1 content</TabItem>
+      <TabItem label="Section 2 Heading">Section 2 content</TabItem>
+    </Tabs>
+  );
+};
 ```
 
 ## API
