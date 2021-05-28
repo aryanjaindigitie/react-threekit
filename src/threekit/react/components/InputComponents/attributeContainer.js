@@ -12,7 +12,7 @@ const container = (WrappedComponent) => (props) => {
     imgFromMetadata,
     imgBaseUrl,
     colorFromMetadata,
-    showAttributeTitle,
+    hideAttributeTitle,
   } = props;
 
   if (!attribute) return <WrappedComponent {...props} />;
@@ -60,7 +60,7 @@ const container = (WrappedComponent) => (props) => {
   const handleSetAttribute = (value) => setAttribute(value);
 
   let preppedProps = { ...props };
-  if (showAttributeTitle) preppedProps.title = attributeData.label;
+  if (!hideAttributeTitle) preppedProps.title = attributeData.label;
 
   return (
     <WrappedComponent
