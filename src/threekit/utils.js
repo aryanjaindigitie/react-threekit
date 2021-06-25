@@ -58,3 +58,51 @@ export const deepCompare = (item1, item2) => {
 
   return true;
 };
+
+export const IsJsonString = (str) => {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+};
+
+export const getParams = () => {
+  let query = window.location.search.substr(1);
+  return query.split('&').reduce((output, part) => {
+    let [key, value] = part.split('=');
+    const preppedValue = decodeURIComponent(value);
+    output[decodeURIComponent(key)] = IsJsonString(preppedValue)
+      ? JSON.parse(preppedValue)
+      : preppedValue;
+    return output;
+  }, {});
+};
+
+export const regularToKebabCase = (str) =>
+  str
+    .split(' ')
+    .filter((word) => word?.length)
+    .map((word) => word.trim().toLowerCase())
+    .join('-');
+
+export const filterAttributesArray = (attributeName, attributes) => {
+  const attributesRegExp =
+    typeof attributeName === 'string'
+      ? new RegExp(`/${attributeName}/`)
+      : attributeName;
+
+  return Array.isArray(attributes)
+    ? attributes.filter((el) => attributesRegExp.test(el.name))
+    : Object.entries(attributes).reduce(
+        (output, [attrName, attr]) =>
+          attributesRegExp.test(attrName)
+            ? Object.assign(output, { [attrName]: attr })
+            : output,
+        {}
+      );
+};
+
+export const attrNameToRegExp = (name) =>
+  typeof name === 'string' ? new RegExp(`${name} [0-9]`) : name;

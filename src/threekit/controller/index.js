@@ -3,7 +3,7 @@ import threekitAPI from '../api';
 import { shallowCompare, deepCompare } from '../utils';
 
 class Controller {
-  constructor({ player, configurator, translations, language }) {
+  constructor({ player, configurator, translations, language, toolsList }) {
     //  Threekit API
     this._player = player;
     this._configurator = configurator;
@@ -13,6 +13,8 @@ class Controller {
     //  History
     this._history = [[{}, configurator.getConfiguration()]];
     this._historyPosition = 0;
+    //  Tools
+    this._toolsList = toolsList;
   }
 
   static createPlayerLoaderEl() {
@@ -112,8 +114,16 @@ class Controller {
         threekitAPI.products.fetchTranslations(),
       ]);
 
-      if (additionalTools?.length)
-        additionalTools.forEach((tool) => player.tools.addTool(tool(player)));
+      let toolsList;
+      if (additionalTools?.length) {
+        toolsList = new Set([]);
+        additionalTools.flat().forEach((toolFunc) => {
+          const tool = toolFunc(player);
+          if (toolsList.has(tool.key)) return;
+          toolsList.add(tool.key);
+          player.tools.addTool(tool);
+        });
+      }
 
       if (translationErrors) console.log(translationErrors);
 
@@ -124,6 +134,8 @@ class Controller {
           player,
           configurator,
           translations: translations,
+          language,
+          toolsList,
         }),
       };
       resolve();
@@ -217,6 +229,19 @@ class Controller {
       const updatedState = this._configurator.getDisplayAttributes();
       const updatedAttrs = this._compareAttributes(currentState, updatedState);
       resolve(updatedAttrs);
+    });
+  }
+
+  addTool(tools) {
+    if (!tools) return;
+    const toolsToAdd = Array.isArray(tools) ? tools : [tools];
+
+    toolsToAdd.flat().forEach((toolFunc) => {
+      const tool = toolFunc(this._player);
+      if (this._toolsList.has(tool.key))
+        return console.log(`The tool '${tool.label} has already been added.'`);
+      this._toolsList.add(tool.key);
+      this._player.tools.addTool(tool);
     });
   }
 

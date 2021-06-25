@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Tabs } from './index';
-const { TabItem } = Tabs;
+const { TabPane } = Tabs;
 
 const items = [
   {
@@ -15,16 +15,16 @@ const items = [
 ];
 
 export default {
-  title: 'Sections/Tabs',
+  title: 'Layouts/Tabs',
   component: Tabs,
 };
 
 const Template = (args) => (
   <Tabs {...args}>
     {items.map((el, i) => (
-      <TabItem key={i} label={el.label}>
+      <TabPane key={i} label={el.label}>
         {el.content}
-      </TabItem>
+      </TabPane>
     ))}
   </Tabs>
 );

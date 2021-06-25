@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Wrapper, TabsWrapper, Tab, TabContent } from './tabs.styles';
 
-const TabItem = ({ children }) => children;
+const TabPane = ({ children }) => children;
 
 export const Tabs = ({ children }) => {
   const [selected, setSelected] = useState(0);
@@ -14,7 +14,7 @@ export const Tabs = ({ children }) => {
     <Wrapper>
       <TabsWrapper>
         {React.Children.map(children, (child, idx) => {
-          if (child.type !== TabItem) return null;
+          if (child.type !== TabPane) return null;
           return (
             <Tab selected={selected === idx} onClick={() => handleSelect(idx)}>
               {child.props.label}
@@ -24,7 +24,7 @@ export const Tabs = ({ children }) => {
       </TabsWrapper>
       <TabContent>
         {React.Children.map(children, (child, idx) => {
-          if (child.type !== TabItem) return null;
+          if (child.type !== TabPane) return null;
           if (selected !== idx) return null;
           return React.cloneElement(child, {
             selected: selected === idx,
@@ -36,6 +36,6 @@ export const Tabs = ({ children }) => {
   );
 };
 
-Tabs.TabItem = TabItem;
+Tabs.TabPane = TabPane;
 
 export default Tabs;

@@ -15,7 +15,7 @@ const items = [
 ];
 
 export default {
-  title: 'Sections/Accordian',
+  title: 'Layouts/Accordian',
   component: Accordian,
 };
 

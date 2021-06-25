@@ -9,7 +9,7 @@ import {
   DropdownOption as Option,
 } from './dropdown.styles';
 import { DownOutlined } from '@ant-design/icons';
-import { regularToKebabCase } from '../../../utils';
+import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 
 export const Dropdown = (props) => {
@@ -162,6 +162,7 @@ Dropdown.defaultProps = {
 Dropdown.compatibleAttributes = new Set([
   ATTRIBUTE_TYPES.asset,
   ATTRIBUTE_TYPES.string,
+  ATTRIBUTE_TYPES.arraySelector,
 ]);
 
 export default Dropdown;

@@ -6,7 +6,7 @@ import {
   SwitchBackground,
   SwitchToggle,
 } from './switch.styles';
-import { regularToKebabCase } from '../../../utils';
+import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 
 export const Switch = (props) => {

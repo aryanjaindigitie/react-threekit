@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Wrapper, Header, Input } from './textInput.styles';
-import { regularToKebabCase } from '../../../utils';
+import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 
 export const TextInput = (props) => {

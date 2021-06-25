@@ -1,4 +1,4 @@
-import { threekitRequest } from './utils';
+import threekitRequest from './request';
 
 const CONFIGURATIONS_API_ROUTE = `/api/configurations`;
 

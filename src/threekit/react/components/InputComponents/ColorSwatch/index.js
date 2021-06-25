@@ -7,7 +7,7 @@ import {
 } from './colorSwatch.styles';
 import { Tooltip } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
-import { regularToKebabCase } from '../../../utils';
+import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 
 export const ColorSwatch = (props) => {

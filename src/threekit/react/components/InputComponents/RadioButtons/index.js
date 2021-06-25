@@ -8,7 +8,7 @@ import {
   IconWrapper,
   Label,
 } from './radioButtons.styles';
-import { regularToKebabCase } from '../../../utils';
+import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 
 export const RadioButtons = (props) => {

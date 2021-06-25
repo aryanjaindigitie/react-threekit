@@ -12,6 +12,7 @@ export const DropdownWrapper = styled.div`
   background-color: #fff;
   width: max-content;
   height: ${HEIGHT};
+  margin-bottom: 15px;
 
   border-width: 1px;
   border-style: solid;

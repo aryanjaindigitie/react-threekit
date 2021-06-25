@@ -1,7 +1,7 @@
 import axios from 'axios';
 import connection from '../connection';
 
-export const objectToQueryStr = (obj) => {
+const objectToQueryStr = (obj) => {
   if (!obj || !Object.keys(obj).length) return '';
   return Object.entries(obj).reduce((output, [key, val], i) => {
     if (i) output += '&';
@@ -10,7 +10,7 @@ export const objectToQueryStr = (obj) => {
   }, '?');
 };
 
-export const threekitRequest = (request) => {
+const threekitRequest = (request) => {
   if (!request) throw new Error('Request missing');
   const {
     url,
@@ -94,3 +94,5 @@ export const threekitRequest = (request) => {
     }
   });
 };
+
+export default threekitRequest;

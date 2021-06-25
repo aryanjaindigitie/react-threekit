@@ -6,7 +6,7 @@ import {
   ButtonsWrapper,
   ButtonWrapper,
 } from './buttons.styles';
-import { regularToKebabCase } from '../../../utils';
+import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 
 export const Buttons = (props) => {
@@ -127,6 +127,7 @@ Buttons.defaultProps = {
 Buttons.compatibleAttributes = new Set([
   ATTRIBUTE_TYPES.asset,
   ATTRIBUTE_TYPES.string,
+  ATTRIBUTE_TYPES.arraySelector,
 ]);
 
 export default Buttons;

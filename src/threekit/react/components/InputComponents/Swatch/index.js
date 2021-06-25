@@ -6,7 +6,7 @@ import {
   SwatchOption as Option,
   SwatchHeader as Header,
 } from './swatch.styles';
-import { regularToKebabCase } from '../../../utils';
+import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 
 export const Swatch = (props) => {

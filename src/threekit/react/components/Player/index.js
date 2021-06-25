@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
+import { Wrapper } from './player.styles';
 import Controller from '../../../controller';
+import { TK_PLAYER_DIV_ID } from '../../../constants';
 
 const Player = (props) => {
   const { height, width } = Object.assign(
@@ -12,13 +14,18 @@ const Player = (props) => {
 
   useEffect(() => {
     (() => {
-      Controller.attachPlayerToComponent('threekit-player');
+      Controller.attachPlayerToComponent(TK_PLAYER_DIV_ID);
     })();
     return;
   }, []);
 
   return (
-    <div style={{ height, width }} className="tk-player" id="threekit-player" />
+    <Wrapper
+      height={height}
+      width={width}
+      className="tk-player"
+      id={TK_PLAYER_DIV_ID}
+    />
   );
 };
 
