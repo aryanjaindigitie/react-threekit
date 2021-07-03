@@ -5,12 +5,12 @@ import {
   Content,
   ActionArea,
   StepButtons,
-} from './steppedForm.styles';
+} from './singleProductSteppedForm.styles';
 import componentOptions from '../../InputComponents/componentOptions';
-import container from './steppedFormContainer';
+import container from './singleProductSteppedFormContainer';
 import { ArrowRightOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 
-export const SteppedForm = (props) => {
+export const SingleProductSteppedForm = (props) => {
   const {
     title,
     attributes,
@@ -63,4 +63,4 @@ export const SteppedForm = (props) => {
   );
 };
 
-export default container(SteppedForm);
+export default container(SingleProductSteppedForm);

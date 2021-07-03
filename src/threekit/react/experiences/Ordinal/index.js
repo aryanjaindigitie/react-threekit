@@ -7,7 +7,7 @@ import {
   Title,
   Description,
   Buttons,
-  BasicForm,
+  SingleProductForm,
 } from '../../components';
 import { ordinalAttributesToolkit } from '../../../tools';
 
@@ -33,7 +33,7 @@ export const OrdinalComponent = (props) => {
           </FormWrapper>
         </TwoCol>
       </Wrapper>
-      <BasicForm activeAttribute={true} display={display} />
+      <SingleProductForm activeAttribute={true} display={display} />
     </>
   );
 };
