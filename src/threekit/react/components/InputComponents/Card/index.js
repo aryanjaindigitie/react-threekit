@@ -8,11 +8,11 @@ import {
   Main,
   Price,
   AddButton,
-} from './swatchDetailed.styles';
+} from './card.styles';
 import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 
-export const SwatchDetailed = ({ title, options, handleClick }) => {
+export const Card = ({ title, options, handleClick }) => {
   return (
     <Wrapper>
       {title ? <Header>{title}</Header> : null}
@@ -48,9 +48,9 @@ export const SwatchDetailed = ({ title, options, handleClick }) => {
   );
 };
 
-SwatchDetailed.compatibleAttributes = new Set([
+Card.compatibleAttributes = new Set([
   ATTRIBUTE_TYPES.asset,
   ATTRIBUTE_TYPES.arraySelector,
 ]);
 
-export default SwatchDetailed;
+export default Card;

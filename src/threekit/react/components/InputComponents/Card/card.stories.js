@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SwatchDetailed } from './index';
+import { Card } from './index';
 
 const props = {
   options: [
@@ -28,12 +28,12 @@ const props = {
 };
 
 export default {
-  title: 'Input Components/SwatchDetailed',
-  component: SwatchDetailed,
+  title: 'Input Components/Card',
+  component: Card,
   argTypes: { onClick: { action: 'clicked' } },
 };
 
-const Template = (args) => <SwatchDetailed {...args} />;
+const Template = (args) => <Card {...args} />;
 
 export const Default = Template.bind({});
 Default.args = props;
