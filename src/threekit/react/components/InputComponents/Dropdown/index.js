@@ -49,6 +49,8 @@ export const Dropdown = (props) => {
     ? 'tk-input-' + regularToKebabCase(title)
     : classNameRaw || '';
 
+  const selectedOpt = options.find((el) => el.value === selected)
+
   return (
     <div className={`tk-dropdown ${className}`}>
       {title && (
@@ -67,7 +69,7 @@ export const Dropdown = (props) => {
           hasPlaceholder={!selected && !!placeholder}
         >
           <div className={`tk-dropdown-selected ${className}`}>
-            {options.find((el) => el.value === selected)?.name ||
+            {selectedOpt?.name || selectedOpt?.label ||
               placeholder ||
               ''}
           </div>
