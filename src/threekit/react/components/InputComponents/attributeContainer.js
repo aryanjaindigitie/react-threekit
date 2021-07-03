@@ -7,6 +7,7 @@ import {
   useActiveAttribute,
 } from '../../hooks';
 import { METADATA_RESERVED, ATTRIBUTE_TYPES } from '../../../constants';
+import { inflateRgb, deflateRgb } from '../../../utils';
 
 const attributesArrayContainer = (WrappedComponent, props) => {
   const {
@@ -159,9 +160,14 @@ const attributeContainer = (WrappedComponent, props) => {
           )
         )
       : [];
-  }
+  } else if (attributeData.type === ATTRIBUTE_TYPES.color)
+    selected = inflateRgb(attributeData.value);
 
-  const handleSetAttribute = (value) => setAttribute(value);
+  const handleSetAttribute = (value) => {
+    if (attributeData.type === ATTRIBUTE_TYPES.color && 'r' in value)
+      return setAttribute(deflateRgb(value));
+    setAttribute(value);
+  };
 
   let preppedProps = { ...props };
   if (!hideAttributeTitle) preppedProps.title = attributeData.label;
