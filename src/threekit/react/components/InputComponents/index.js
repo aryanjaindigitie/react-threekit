@@ -2,7 +2,7 @@
 import container from './attributeContainer';
 //  Asset type attributes
 import SwatchComponent from './Swatch';
-import CardComponent from './Card';
+import CardsComponent from './Cards';
 import DropdownComponent from './Dropdown';
 import ButtonsComponent from './Buttons';
 import RadioButtonsComponent from './RadioButtons';
@@ -15,7 +15,7 @@ import OrdinalFloorPlannerComponent from './OrdinalFloorPlanner';
 import OrdinalListComponent from './OrdinalList';
 
 export const Swatch = container(SwatchComponent);
-export const Card = container(CardComponent);
+export const Cards = container(CardsComponent);
 export const Dropdown = container(DropdownComponent);
 export const Buttons = container(ButtonsComponent);
 export const RadioButtons = container(RadioButtonsComponent);

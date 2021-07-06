@@ -1,61 +1,78 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  SwatchWrapper as Wrapper,
-  SwatchContent as Content,
-  SwatchOption as Option,
-  SwatchHeader as Header,
-} from './swatch.styles';
+  Wrapper,
+  Header,
+  Content,
+  ItemWrapper,
+  ItemContent,
+  Main,
+  Price,
+  ActionButton,
+} from './cards.styles';
 import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 import defaultClassName, { classPrefix } from '../classNames';
 
-export const Swatch = (props) => {
+export const Cards = (props) => {
   const {
     attribute,
     title,
     options,
-    className: classNameRaw,
+    actionLabel,
     handleClick,
-    selected,
-    hideDisabled,
-    isPlayerLoading,
-  } = props;
+    className: classNameRaw,
+  } = Object.assign(
+    {
+      options: [],
+      actionLabel: 'Add',
+    },
+    props
+  );
 
-  let className = `${defaultClassName}-swatch`;
+  let className = `${defaultClassName}-cards`;
   if (attribute) className += ` ${regularToKebabCase(attribute)}`;
   else if (title) className += ` ${regularToKebabCase(attribute)}`;
   if (classNameRaw) className += ` ${classNameRaw}`;
-  className += ` ${classPrefix}-swatch`;
+  className += ` ${classPrefix}-cards`;
 
   return (
     <Wrapper className={`${className}-component`}>
-      {title && <Header className={`${className}-header`}>{title}</Header>}
+      {title ? (
+        <Header className={`${className}-header`}>{title}</Header>
+      ) : null}
       <Content className={`${className}-content`}>
         {options.map((option, i) => {
-          if (option.disabled && hideDisabled) return null;
-          let cls = `${className}-option option-${i + 1} ${option.value}`;
-          if (option.value === selected) cls += ` selected`;
+          const { name, description, value, Icon, imageUrl, price } = option;
+          const cls = `${className}-option option-${i + 1} ${value}`;
           return (
-            <Option
-              key={i}
-              className={cls}
-              onClick={() => handleClick(option.value)}
-              color={option.colorValue}
-              isPlayerLoading={isPlayerLoading}
-              selected={option.value === selected}
-            >
-              <div>
+            <ItemWrapper key={i} className={cls}>
+              <ItemContent>
                 <div className={`${cls} option-icon`}>
-                  {option.imageUrl && (
-                    <img src={option.imageUrl} alt={option.label} />
-                  )}
+                  {Icon ? (
+                    Icon
+                  ) : imageUrl ? (
+                    <img alt={name} src={imageUrl} />
+                  ) : null}
                 </div>
-                {option.label && (
-                  <div className={`${cls} option-label`}>{option.label}</div>
-                )}
-              </div>
-            </Option>
+
+                <Main>
+                  <div className={`${cls} option-name`}>{name}</div>
+                  <div className={`${cls} option-description`}>
+                    {description}
+                  </div>
+                </Main>
+
+                <Price className={`${cls} option-price`}>${price}</Price>
+              </ItemContent>
+
+              <ActionButton
+                className={`${cls} option-action`}
+                onClick={() => handleClick(value)}
+              >
+                {actionLabel}
+              </ActionButton>
+            </ItemWrapper>
           );
         })}
       </Content>
@@ -63,7 +80,7 @@ export const Swatch = (props) => {
   );
 };
 
-Swatch.propTypes = {
+Cards.propTypes = {
   /**
    * Is the attribute name on the initialized asset that we are
    * using this component for
@@ -101,13 +118,12 @@ Swatch.propTypes = {
     PropTypes.shape({
       label: PropTypes.string,
       value: PropTypes.string,
-      colorValue: PropTypes.string,
-      imageUrl: PropTypes.string,
+      disabled: PropTypes.bool,
     })
   ),
 };
 
-Swatch.defaultProps = {
+Cards.defaultProps = {
   attribute: undefined,
   title: undefined,
   className: undefined,
@@ -117,6 +133,9 @@ Swatch.defaultProps = {
   options: [],
 };
 
-Swatch.compatibleAttributes = new Set([ATTRIBUTE_TYPES.asset]);
+Cards.compatibleAttributes = new Set([
+  ATTRIBUTE_TYPES.asset,
+  ATTRIBUTE_TYPES.arraySelector,
+]);
 
-export default Swatch;
+export default Cards;

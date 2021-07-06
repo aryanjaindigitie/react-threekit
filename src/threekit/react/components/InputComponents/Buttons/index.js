@@ -8,6 +8,7 @@ import {
 } from './buttons.styles';
 import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
+import defaultClassName, { classPrefix } from '../classNames';
 
 export const Buttons = (props) => {
   const {
@@ -21,48 +22,32 @@ export const Buttons = (props) => {
     isPlayerLoading,
   } = props;
 
-  const className = attribute
-    ? regularToKebabCase(attribute)
-    : title
-    ? regularToKebabCase(title)
-    : classNameRaw;
+  let className = `${defaultClassName}-buttons`;
+  if (attribute) className += ` ${regularToKebabCase(attribute)}`;
+  else if (title) className += ` ${regularToKebabCase(attribute)}`;
+  if (classNameRaw) className += ` ${classNameRaw}`;
+  className += ` ${classPrefix}-buttons`;
 
   return (
-    <Wrapper
-      className={`tk-buttons ${className ? `tk-input-${className}` : ''}`}
-    >
-      {title && (
-        <Header
-          className={`tk-btn-header ${
-            className ? `tk-input-${className}` : ''
-          }`}
-        >
-          {title}
-        </Header>
-      )}
-      <ButtonsWrapper
-        className={`tk-btn-content ${className ? `tk-input-${className}` : ''}`}
-      >
+    <Wrapper className={`${className}-component`}>
+      {title ? (
+        <Header className={`${className}-header`}>{title}</Header>
+      ) : null}
+      <ButtonsWrapper className={`${className}-content`}>
         {options.map((option, i) => {
           if (option.disabled && hideDisabled) return null;
+          let cls = `${className}-option option-${i + 1} ${option.value}`;
+          if (option.value === selected) cls += ` selected`;
           return (
             <ButtonWrapper
-              className={`tk-btn ${
-                className ? `tk-input-${className}` : ''
-              } option-${i + 1}`}
+              className={cls}
               key={i}
               isPlayerLoading={isPlayerLoading}
               disabled={option.disabled}
               selected={option.value === selected}
               onClick={() => handleClick(option.value)}
             >
-              <div
-                className={`tk-btn-label ${
-                  className ? `tk-input-${className}` : ''
-                } option-${i + 1}`}
-              >
-                {option.label}
-              </div>
+              <div>{option.label}</div>
             </ButtonWrapper>
           );
         })}

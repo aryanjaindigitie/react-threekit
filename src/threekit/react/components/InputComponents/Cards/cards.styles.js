@@ -8,7 +8,7 @@ export const Header = styled.div`
 
 export const Content = styled.div``;
 
-export const AddButton = styled.div`
+export const ActionButton = styled.div`
   position: absolute;
   bottom: 0;
   right: 0;
@@ -41,7 +41,7 @@ export const ItemWrapper = styled.div`
   &:hover {
     box-shadow: 0 6px 10px 0 rgb(0 0 0 / 19%);
 
-    ${AddButton} {
+    ${ActionButton} {
       opacity: 1;
     }
   }

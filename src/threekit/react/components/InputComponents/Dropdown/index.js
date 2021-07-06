@@ -11,6 +11,7 @@ import {
 import { DownOutlined } from '@ant-design/icons';
 import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
+import defaultClassName, { classPrefix } from '../classNames';
 
 export const Dropdown = (props) => {
   const {
@@ -43,56 +44,52 @@ export const Dropdown = (props) => {
     setHide(true);
   };
 
-  const className = attribute
-    ? 'tk-input-' + regularToKebabCase(attribute)
-    : title
-    ? 'tk-input-' + regularToKebabCase(title)
-    : classNameRaw || '';
+  let className = `${defaultClassName}-dropdown`;
+  if (attribute) className += ` ${regularToKebabCase(attribute)}`;
+  else if (title) className += ` ${regularToKebabCase(attribute)}`;
+  if (classNameRaw) className += ` ${classNameRaw}`;
+  className += ` ${classPrefix}-dropdown`;
 
-  const selectedOpt = options.find((el) => el.value === selected)
+  const selectedOpt = options.find((el) => el.value === selected);
 
   return (
-    <div className={`tk-dropdown ${className}`}>
-      {title && (
-        <Header className={`tk-dropdown-header ${className}`}>{title}</Header>
-      )}
+    <div className={`${className}-component`}>
+      {title ? (
+        <Header className={`${className}-header`}>{title}</Header>
+      ) : null}
       <Wrapper
         loading={isPlayerLoading}
         active={!hide}
         ref={ref}
-        className={`tk-dropdown-outer ${className}`}
+        className={`${className}-dropdown`}
       >
         <Main
           active={!hide}
-          className={`tk-dropdown-main ${className}`}
+          className={`${className}-main`}
           onClick={() => setHide(!hide)}
           hasPlaceholder={!selected && !!placeholder}
         >
           <div className={`tk-dropdown-selected ${className}`}>
-            {selectedOpt?.name || selectedOpt?.label ||
-              placeholder ||
-              ''}
+            {selectedOpt?.name || selectedOpt?.label || placeholder || ''}
           </div>
-          <div className={`tk-dropdown-caret ${className}`}>
+          <div className={`${className}-caret`}>
             <DownOutlined />
           </div>
         </Main>
-        <Options hide={hide} className={`tk-dropdown-options ${className}`}>
-          <OptionsContent
-            className={`tk-dropdown-options-content ${className}`}
-          >
+        <Options hide={hide}>
+          <OptionsContent className={`${className}-content`}>
             {options.map((option, i) => {
               if (option.disabled && hideDisabled) return null;
+              let cls = `${className}-option option-${i + 1} ${option.value}`;
+              if (option.value === selected) cls += ` selected`;
               return (
                 <Option
                   key={i}
-                  className={`tk-dropdown-option ${className}`}
+                  className={cls}
                   selected={selected === option.value}
                   onClick={() => handleClick(option.value)}
                 >
-                  <div className={`tk-dropdown-option-label ${className}`}>
-                    {option.label}
-                  </div>
+                  <div>{option.label}</div>
                 </Option>
               );
             })}
