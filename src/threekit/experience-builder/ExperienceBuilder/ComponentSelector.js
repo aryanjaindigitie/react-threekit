@@ -55,7 +55,7 @@ export const ComponentSelector = (props) => {
       assetId: item.id,
       authToken,
       orgId,
-      env: threekitEnv,
+      threekitEnv,
       experience,
     };
 
