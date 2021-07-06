@@ -30,6 +30,8 @@ export const ARRAY_VALIDATION = Object.assign(
 
 export const METADATA_RESERVED = Object.assign(
   {
+    title: '_title',
+    description: '_description',
     imageUrl: '_imageUrl',
     colorValue: '_colorValue',
     sku: '_sku',
@@ -47,6 +49,11 @@ export const METADATA_RESERVED = Object.assign(
     {}
   )
 );
+
+export const ATTRIBUTES_RESERVED = {
+  step: '_step',
+  stepTo: '_stepTo',
+};
 
 export const ATTRIBUTE_TYPES = {
   asset: 'Asset',

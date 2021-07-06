@@ -1,19 +1,22 @@
 import React from 'react';
 import { useAttributes } from '../../../hooks';
+import { ATTRIBUTES_RESERVED } from '../../../../constants';
 
 const steppedFormContainer = (WrappedComponent) => (props) => {
   const [attributes, setConfiguration] = useAttributes();
 
-  const handleClickPrevious = () => setConfiguration({ _stepTo: 'previous' });
+  const handleClickPrevious = () =>
+    setConfiguration({ [ATTRIBUTES_RESERVED.stepTo]: 'previous' });
 
-  const handleClickNext = () => setConfiguration({ _stepTo: 'next' });
+  const handleClickNext = () =>
+    setConfiguration({ [ATTRIBUTES_RESERVED.stepTo]: 'next' });
 
-  let hasPrevious
-  let hasNext
-  attributes?._stepTo?.values.forEach(el => {
-    if(el.value === 'next') hasNext = true
-    else if(el.value === 'previous') hasPrevious = true
-  })
+  let hasPrevious;
+  let hasNext;
+  attributes?.[ATTRIBUTES_RESERVED.stepTo]?.values.forEach((el) => {
+    if (el.value === 'next') hasNext = true;
+    else if (el.value === 'previous') hasPrevious = true;
+  });
 
   return (
     <WrappedComponent
