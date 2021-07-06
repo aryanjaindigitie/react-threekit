@@ -22,5 +22,5 @@ export const TitleWrapper = styled.div`
 export const FormWrapper = styled.div`
   width: 420px;
   /* background: #eaeaea; */
-  padding: 20px;
+  padding: 0px 20px;
 `;
