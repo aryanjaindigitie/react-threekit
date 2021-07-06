@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import {
+  CredentialsWrapper as Wrapper,
+  ActionArea,
+} from './experienceBuilder.styles';
 import { Input, Button } from 'antd';
 
 export const Credentials = (props) => {
@@ -12,24 +16,37 @@ export const Credentials = (props) => {
   const handleClick = () => onContinue({ orgId, authToken, threekitEnv });
 
   return (
-    <div style={{ margin: '12px', width: '320px' }}>
-      Threekit Environment:
-      <Input
-        value={threekitEnv}
-        onChange={(e) => setThreekitEnv(e.target.value)}
-      />
-      Auth Token:
-      <Input value={authToken} onChange={(e) => setAuthToken(e.target.value)} />
-      OrgId:
-      <Input value={orgId} onChange={(e) => setOrgId(e.target.value)} />
-      <Button
-        style={{ marginTop: '12px' }}
-        disabled={!orgId.length || !authToken.length || !threekitEnv.length}
-        onClick={handleClick}
-      >
-        Continue
-      </Button>
-    </div>
+    <Wrapper>
+      <div>Enter your Threekit Organizations credentials</div>
+      <div>
+        Threekit Environment:
+        <Input
+          value={threekitEnv}
+          onChange={(e) => setThreekitEnv(e.target.value)}
+        />
+      </div>
+      <div>
+        Auth Token (localhost:3000):
+        <Input
+          value={authToken}
+          onChange={(e) => setAuthToken(e.target.value)}
+        />
+      </div>
+      <div>
+        OrgId:
+        <Input value={orgId} onChange={(e) => setOrgId(e.target.value)} />
+      </div>
+      <ActionArea>
+        <div />
+        <Button
+          style={{ marginTop: '12px' }}
+          disabled={!orgId.length || !authToken.length || !threekitEnv.length}
+          onClick={handleClick}
+        >
+          Continue
+        </Button>
+      </ActionArea>
+    </Wrapper>
   );
 };
 

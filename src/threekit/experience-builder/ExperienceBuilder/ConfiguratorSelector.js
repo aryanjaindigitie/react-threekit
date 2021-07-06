@@ -15,7 +15,11 @@ export const ConfiguratorSelector = (props) => {
       if (!response?.data) return;
 
       const configurators = response.data.reduce((output, el) => {
-        if (el.product.type === 'item' && !!el.product.attributes.length)
+        if (
+          el.product.type === 'item' &&
+          !!el.product.attributes.length &&
+          el.product.tags.includes('configurator')
+        )
           output.push(el.product);
         return output;
       }, []);

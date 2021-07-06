@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import {
+  Wrapper,
+  ExperienceBuilderContent as Content,
+} from './experienceBuilder.styles';
 import { Steps, Button } from 'antd';
 import Credentials from './Credentials';
 import ConfiguratorSelector from './ConfiguratorSelector';
@@ -10,22 +14,22 @@ const { Step } = Steps;
 const steps = [
   {
     title: 'Credentials',
-    content: 'Enter Environment, Auth Token and OrgId',
+    description: 'Enter Environment, Auth Token and OrgId',
     Component: Credentials,
   },
   {
     title: 'Select a Configurator',
-    content: 'Select the catalog item to use as the configurator',
+    description: 'Select the catalog item to use as the configurator',
     Component: ConfiguratorSelector,
   },
   {
-    title: 'Exeperience Selector',
-    content: 'Select a form type and experience',
+    title: 'Select an Experience',
+    description: 'Select a form type and experience',
     Component: ExperienceSelector,
   },
   {
-    title: 'Customize your componentry',
-    content: 'Choose the components for your attributes',
+    title: 'Select the Components',
+    description: 'Choose the components for your attributes',
     Component: ComponentSelector,
   },
 ];
@@ -52,21 +56,23 @@ export const ExperienceBuilder = () => {
   const { Component } = steps[activeStep];
 
   return (
-    <div>
-      <Steps current={activeStep}>
-        {steps.map((el, i) => (
-          <Step key={i} title={el.title} />
-        ))}
-      </Steps>
+    <Wrapper>
       <div>
+        <Steps current={activeStep} direction="vertical" size="small">
+          {steps.map((el, i) => (
+            <Step key={i} title={el.title} />
+          ))}
+        </Steps>
+      </div>
+      <Content>
         <Component
           creds={creds}
           item={item}
           experience={experience}
           onContinue={handleContinue}
         />
-      </div>
-    </div>
+      </Content>
+    </Wrapper>
   );
 };
 

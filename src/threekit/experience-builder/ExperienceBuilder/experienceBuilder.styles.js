@@ -1,5 +1,23 @@
 import styled from 'styled-components';
 
+export const Wrapper = styled.div`
+  padding: 20px 30px;
+
+  display: grid;
+  grid-template-columns: max-content auto;
+  grid-gap: 40px;
+`;
+
+export const ExperienceBuilderContent = styled.div``;
+
+export const CredentialsWrapper = styled.div`
+  width: 320px;
+
+  & > div {
+    margin-bottom: 12px;
+  }
+`;
+
 export const CatalogTableRow = styled.div`
   display: grid;
   grid-template-columns: 200px max-content;
@@ -63,9 +81,15 @@ export const AttributeRow = styled.div`
 export const OrdinalCustomizerWrapper = styled.div`
   & > div {
     display: grid;
-    grid-template-columns: 200px auto;
+    grid-template-columns: 200px 320px;
     grid-gap: 20px;
 
     margin-bottom: 12px;
   }
+`;
+
+export const ActionArea = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;

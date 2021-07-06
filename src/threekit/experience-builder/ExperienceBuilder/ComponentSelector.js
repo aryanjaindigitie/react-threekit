@@ -7,9 +7,10 @@ import {
   SelectedExperienceWrapper,
   OrdinalCustomizerWrapper,
 } from './experienceBuilder.styles';
-import componentOptions from '../../react/components/InputComponents/componentOptions';
 import { message } from 'antd';
 import experiences from '../experiences';
+import { ATTRIBUTE_TYPES } from '../../constants';
+import componentOptions from '../../react/components/InputComponents/componentOptions';
 
 const DISPLAY_OPTIONS = {
   modal: 'modal',
@@ -27,6 +28,9 @@ export const ComponentSelector = (props) => {
       component: 0,
     }))
   );
+  const [arrayAttributeComponent, setArrayAttributeComponent] = useState(
+    'cards'
+  );
   const [arrayAttributeLabel, setArrayAttributeLabel] = useState('');
   const [display, setDisplay] = useState(DISPLAY_OPTIONS.modal);
 
@@ -42,8 +46,6 @@ export const ComponentSelector = (props) => {
     updatedAttributes[attrIdx].component = componentIdx;
     setAttributes(updatedAttributes);
   };
-
-  console.log(item);
 
   const generateUrl = () => {
     if (!experience?.length)
@@ -66,6 +68,7 @@ export const ComponentSelector = (props) => {
     if (experience === experiences['ordinal-interactive'].id)
       data = Object.assign(data, {
         arrayAttribute: arrayAttributeLabel,
+        arrayAttributeComponent,
         display,
       });
     else if (attributesPrepped?.length)
@@ -100,6 +103,22 @@ export const ComponentSelector = (props) => {
               value={arrayAttributeLabel}
               onChange={(e) => setArrayAttributeLabel(e.target.value)}
             />
+          </div>
+          <div>
+            Selector Component:
+            <Select
+              style={{ width: 220 }}
+              value={arrayAttributeComponent}
+              onChange={(value) => setArrayAttributeComponent(value)}
+            >
+              {(componentsMap[ATTRIBUTE_TYPES.asset] || []).map((el, j) => (
+                <Select.Option key={j} value={el}>
+                  <span style={{ textTransform: 'capitalize' }}>
+                    {el.replace(/-/g, ' ')}
+                  </span>
+                </Select.Option>
+              ))}
+            </Select>
           </div>
           <div>
             Display:

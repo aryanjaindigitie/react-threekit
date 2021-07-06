@@ -15,6 +15,7 @@ export const Experience = (props) => {
       return (
         <Component
           config={config}
+          attributesArrayComponent={config.arrayAttributeComponent}
           attributesArrayLabel={config.arrayAttribute}
           display={config.display}
         />
