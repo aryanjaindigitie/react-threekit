@@ -1,11 +1,37 @@
 import React from 'react';
-import { useAttribute } from '../../../hooks';
+import PropTypes from 'prop-types';
+import { Wrapper } from './attributeTitle.styles';
+import container from './attributeTitleContainer';
+import defaultClassName from '../classNames';
+import { regularToKebabCase } from '../../../../utils';
 
 export const AttributeTitle = (props) => {
-  if (!props.attribute) return null;
-  const [attributeData] = useAttribute(props.attribute);
-  if (!attributeData) return null;
-  return <span className={`attribute-title`}>{attributeData.label}</span>;
+  const { title, className: classNameRaw } = Object.assign(
+    { title: undefined, className: '' },
+    props
+  );
+  if (!title?.length) return null;
+
+  let className = `${defaultClassName}-attr-title ${regularToKebabCase(title)}`;
+  if (classNameRaw?.length) className += ` ${classNameRaw}`;
+
+  return <Wrapper className={className}>{title}</Wrapper>;
 };
 
-export default AttributeTitle;
+AttributeTitle.propTypes = {
+  /**
+   * The attribute's title/label displayed to the user
+   */
+  title: PropTypes.string,
+  /**
+   * Custom classNames applied to the HTML Element to apply custom CSS styling.
+   */
+  className: PropTypes.string,
+};
+
+AttributeTitle.defaultProps = {
+  title: undefined,
+  className: '',
+};
+
+export default container(AttributeTitle);

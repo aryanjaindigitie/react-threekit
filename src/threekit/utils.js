@@ -81,11 +81,13 @@ export const getParams = () => {
 };
 
 export const regularToKebabCase = (str) =>
-  str
-    .split(' ')
-    .filter((word) => word?.length)
-    .map((word) => word.trim().toLowerCase())
-    .join('-');
+  !str?.length
+    ? ''
+    : str
+        .split(' ')
+        .filter((word) => word?.length)
+        .map((word) => word.trim().toLowerCase())
+        .join('-');
 
 export const filterAttributesArray = (attributeName, attributes) => {
   const attributesRegExp =

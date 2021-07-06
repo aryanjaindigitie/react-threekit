@@ -1,5 +1,9 @@
 export const TK_PLAYER_DIV_ID = 'threekit-player';
 
+export const DEFAULT_CLASS_NAME = `threekit-react`;
+
+export const CLASS_NAME_PREFIX = `tk`;
+
 const arrayValidations = {
   maxItems: 'maxItems',
 };
