@@ -1,14 +1,18 @@
 import React from 'react';
-import { Wrapper } from './undo.styles';
+import PropTypes from 'prop-types';
+import { Wrapper } from './redo.styles';
 import { RedoOutlined } from '@ant-design/icons';
-import { useHistory } from '../../../hooks';
+import container from './redoContainer';
+import defaultClassName from '../classNames';
 
-export const Redo = () => {
-  const stepHistory = useHistory();
-  const handleClick = () => stepHistory(1);
+export const Redo = (props) => {
+  const { handleClick, className: classNameRaw } = props;
+
+  let className = `${defaultClassName}-redo`;
+  if (classNameRaw?.length) className += ` ${classNameRaw}`;
 
   return (
-    <Wrapper onClick={handleClick}>
+    <Wrapper className={className} onClick={handleClick}>
       <div>
         <RedoOutlined />
       </div>
@@ -16,4 +20,19 @@ export const Redo = () => {
   );
 };
 
-export default Redo;
+Redo.PropTypes = {
+  /**
+   * Function to execute when user clicks 'Redo'.
+   */
+  handleClick: PropTypes.func,
+  /**
+   * Custom classNames applied to the HTML Element to apply custom CSS styling.
+   */ className: PropTypes.string,
+};
+
+Redo.defaultProps = {
+  handleClick: undefined,
+  classname: '',
+};
+
+export default container(Redo);

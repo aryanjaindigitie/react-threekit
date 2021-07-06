@@ -1,25 +1,19 @@
 import React from 'react';
-import { Select } from 'antd';
-import { useLanguages } from '../../../hooks';
+import container from './lanuageSelectorContainer';
+import { Dropdown } from '../../InputComponents/Dropdown';
+import { widgetPrefix } from '../classNames';
 
-const LanguageSelector = () => {
-  const [selected, options, handleChange] = useLanguages();
-
+export const LanguageSelector = ({ selected, options, handleChange }) => {
   if (!options) return null;
 
   return (
-    <Select
-      style={{ minWidth: '80px' }}
-      value={selected}
-      onChange={handleChange}
-    >
-      {options.map((el, i) => (
-        <Select.Option key={i} value={el}>
-          {el}
-        </Select.Option>
-      ))}
-    </Select>
+    <Dropdown
+      className={`${widgetPrefix}-language-selector`}
+      options={options}
+      selected={selected}
+      handleClick={handleChange}
+    />
   );
 };
 
-export default LanguageSelector;
+export default container(LanguageSelector);

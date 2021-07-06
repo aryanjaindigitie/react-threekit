@@ -7,8 +7,8 @@ import {
   ThreekitProvider,
   Title,
   Description,
-  BasicForm,
-  SteppedForm,
+  SingleProductForm,
+  SingleProductSteppedForm,
 } from '../../components';
 import { selectAttribute, animateItem } from '../../../tools';
 
@@ -18,8 +18,8 @@ const FORMS = {
 };
 
 const formsComponents = {
-  [FORMS.basic]: BasicForm,
-  [FORMS.stepped]: SteppedForm,
+  [FORMS.basic]: SingleProductForm,
+  [FORMS.stepped]: SingleProductSteppedForm,
 };
 
 export const MinimalistComponent = (props) => {

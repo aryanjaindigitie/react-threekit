@@ -81,11 +81,13 @@ export const getParams = () => {
 };
 
 export const regularToKebabCase = (str) =>
-  str
-    .split(' ')
-    .filter((word) => word?.length)
-    .map((word) => word.trim().toLowerCase())
-    .join('-');
+  !str?.length
+    ? ''
+    : str
+        .split(' ')
+        .filter((word) => word?.length)
+        .map((word) => word.trim().toLowerCase())
+        .join('-');
 
 export const filterAttributesArray = (attributeName, attributes) => {
   const attributesRegExp =
@@ -106,3 +108,34 @@ export const filterAttributesArray = (attributeName, attributes) => {
 
 export const attrNameToRegExp = (name) =>
   typeof name === 'string' ? new RegExp(`${name} [0-9]`) : name;
+
+export const hexToRgb = (hex) =>
+  hex
+    .replace(
+      /^#?([a-f\d])([a-f\d])([a-f\d])$/i,
+      (m, r, g, b) => '#' + r + r + g + g + b + b
+    )
+    .substring(1)
+    .match(/.{2}/g)
+    .map((x) => parseInt(x, 16));
+
+export const rgbToHex = (r, g, b) =>
+  '#' + [r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('');
+
+export const inflateRgb = (rgbObj) =>
+  Object.entries(rgbObj).reduce(
+    (output, [key, value]) =>
+      ['r', 'g', 'b'].includes(key)
+        ? Object.assign(output, { [key]: Math.round(255 * value) })
+        : output,
+    {}
+  );
+
+export const deflateRgb = (rgbObj) =>
+  Object.entries(rgbObj).reduce(
+    (output, [key, value]) =>
+      ['r', 'g', 'b'].includes(key)
+        ? Object.assign(output, { [key]: value / 255 })
+        : output,
+    {}
+  );

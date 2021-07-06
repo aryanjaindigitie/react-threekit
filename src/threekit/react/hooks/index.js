@@ -55,8 +55,7 @@ export const useAttribute = (attribute) => {
         else updated = value;
         break;
       case ATTRIBUTE_TYPES.color:
-        if (!isNaN(value)) updated = attributeData.values[value];
-        else updated = value;
+        updated = value;
         break;
       default:
         updated = value;

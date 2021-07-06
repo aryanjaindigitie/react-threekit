@@ -1,22 +1,37 @@
 import React from 'react';
-import { useAttribute } from '../../../hooks';
-import { ATTRIBUTE_TYPES } from '../../../../constants';
+import PropTypes from 'prop-types';
+import { Wrapper } from './attributeValue.styles';
+import container from './attributeValueContainer';
+import defaultClassName from '../classNames';
+import { regularToKebabCase } from '../../../../utils';
 
 export const AttributeValue = (props) => {
-  if (!props.attribute) return null;
-  const [attributeData] = useAttribute(props.attribute);
-  if (!attributeData) return null;
+  const { value, className: classNameRaw } = Object.assign(
+    { value: undefined, className: '' },
+    props
+  );
+  if (!value?.length) return null;
 
-  let value = attributeData.value;
+  let className = `${defaultClassName}-attr-value ${regularToKebabCase(value)}`;
+  if (classNameRaw?.length) className += ` ${classNameRaw}`;
 
-  if (attributeData.type === ATTRIBUTE_TYPES.asset) {
-    if (!attributeData.value?.assetId) return null;
-    value = attributeData.values.find(
-      (el) => el.assetId === attributeData.value.assetId
-    )?.name;
-  }
-
-  return <span className={`attribute-value`}>{value}</span>;
+  return <Wrapper className={className}>{value}</Wrapper>;
 };
 
-export default AttributeValue;
+AttributeValue.propTypes = {
+  /**
+   * The attribute's value displayed to the user
+   */
+  value: PropTypes.string,
+  /**
+   * Custom classNames applied to the HTML Element to apply custom CSS styling.
+   */
+  className: PropTypes.string,
+};
+
+AttributeValue.defaultProps = {
+  value: undefined,
+  className: '',
+};
+
+export default container(AttributeValue);

@@ -9,6 +9,7 @@ import { Tooltip } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
+import defaultClassName, { classPrefix } from '../classNames';
 
 export const ColorSwatch = (props) => {
   const {
@@ -22,38 +23,29 @@ export const ColorSwatch = (props) => {
     isPlayerLoading,
   } = props;
 
-  const className = attribute
-    ? 'tk-input-' + regularToKebabCase(attribute)
-    : title
-    ? 'tk-input-' + regularToKebabCase(title)
-    : classNameRaw || '';
+  let className = `${defaultClassName}-color-swatch`;
+  if (attribute) className += ` ${regularToKebabCase(attribute)}`;
+  else if (title) className += ` ${regularToKebabCase(attribute)}`;
+  if (classNameRaw) className += ` ${classNameRaw}`;
+  className += ` ${classPrefix}-color-swatch`;
 
   return (
-    <div className={`tk-color-swatch ${className}`.trim()}>
-      {title && (
-        <Header className={`tk-color-swatch-header ${className}`.trim()}>
-          {title}
-        </Header>
-      )}
-      <Content className={`tk-color-swatch-content ${className}`.trim()}>
+    <div className={`${className}-component`}>
+      {title && <Header className={`${className}-header`}>{title}</Header>}
+      <Content className={`${className}-content`}>
         {options.map((option, i) => {
           if (option.disabled && hideDisabled) return null;
+          let cls = `${className}-option option-${i + 1} ${option.value}`;
           return (
             <Tooltip key={i} placement="top" title={option.label}>
               <Option
-                className={`tk-color-swatch-option ${className} option-${
-                  i + 1
-                }`.trim()}
+                className={cls}
                 isPlayerLoading={isPlayerLoading}
                 color={option.colorValue}
                 onClick={() => handleClick(option.value)}
               >
                 {option.value === selected && (
-                  <div
-                    className={`tk-color-swatch-option-selected ${className} option-${
-                      i + 1
-                    }`.trim()}
-                  >
+                  <div className={`${cls} selected`}>
                     <CheckOutlined />
                   </div>
                 )}

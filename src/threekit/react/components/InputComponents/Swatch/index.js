@@ -8,6 +8,7 @@ import {
 } from './swatch.styles';
 import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
+import defaultClassName, { classPrefix } from '../classNames';
 
 export const Swatch = (props) => {
   const {
@@ -21,65 +22,37 @@ export const Swatch = (props) => {
     isPlayerLoading,
   } = props;
 
-  const className = attribute
-    ? regularToKebabCase(attribute)
-    : title
-    ? regularToKebabCase(title)
-    : classNameRaw;
+  let className = `${defaultClassName}-swatch`;
+  if (attribute) className += ` ${regularToKebabCase(attribute)}`;
+  else if (title) className += ` ${regularToKebabCase(attribute)}`;
+  if (classNameRaw) className += ` ${classNameRaw}`;
+  className += ` ${classPrefix}-swatch`;
 
   return (
-    <Wrapper
-      className={`tk-swatch ${className ? `tk-input-${className}` : ''}`}
-    >
-      {title && (
-        <Header
-          className={`tk-swatch-header ${
-            className ? `tk-input-${className}` : ''
-          }`}
-        >
-          {title}
-        </Header>
-      )}
-      <Content
-        className={`tk-swatch-content ${
-          className ? `tk-input-${className}` : ''
-        }`}
-      >
+    <Wrapper className={`${className}-component`}>
+      {title && <Header className={`${className}-header`}>{title}</Header>}
+      <Content className={`${className}-content`}>
         {options.map((option, i) => {
           if (option.disabled && hideDisabled) return null;
+          let cls = `${className}-option option-${i + 1} ${option.value}`;
+          if (option.value === selected) cls += ` selected`;
           return (
             <Option
               key={i}
-              className={`tk-swatch-item ${
-                className ? `tk-input-${className}` : ''
-              } option-${i + 1}`}
+              className={cls}
               onClick={() => handleClick(option.value)}
               color={option.colorValue}
               isPlayerLoading={isPlayerLoading}
               selected={option.value === selected}
             >
-              <div
-                className={`tk-swatch-option-content ${
-                  className ? `tk-input-${className}` : ''
-                } option-${i + 1}`}
-              >
-                <div
-                  className={`tk-swatch-image ${
-                    className ? `tk-input-${className}` : ''
-                  } option-${i + 1}`}
-                >
+              <div>
+                <div className={`${cls} option-icon`}>
                   {option.imageUrl && (
                     <img src={option.imageUrl} alt={option.label} />
                   )}
                 </div>
                 {option.label && (
-                  <div
-                    className={`tk-swatch-item-label ${
-                      className ? `tk-input-${className}` : ''
-                    } option-${i + 1}`}
-                  >
-                    {option.label}
-                  </div>
+                  <div className={`${cls} option-label`}>{option.label}</div>
                 )}
               </div>
             </Option>

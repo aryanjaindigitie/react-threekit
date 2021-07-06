@@ -1,9 +1,9 @@
 import React from 'react';
-import { Wrapper, Title } from './basicForm.styles';
+import { Wrapper, Title } from './singleProductForm.styles';
 import componentOptions from '../../InputComponents/componentOptions';
-import container from './basicFormContainer';
+import container from './singleProductFormContainer';
 
-export const BasicForm = (props) => {
+export const SingleProductForm = (props) => {
   const { title, attributes, attributeComponents } = Object.assign(
     { attributes: [], attributeComponents: {} },
     props
@@ -28,4 +28,4 @@ export const BasicForm = (props) => {
   );
 };
 
-export default container(BasicForm);
+export default container(SingleProductForm);

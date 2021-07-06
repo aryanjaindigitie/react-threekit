@@ -7,15 +7,25 @@ import {
   Title,
   Description,
   Buttons,
-  BasicForm,
+  SingleProductForm,
 } from '../../components';
 import { ordinalAttributesToolkit } from '../../../tools';
+import { ATTRIBUTE_TYPES } from '../../../constants';
+import componentOptions from '../../components/InputComponents/componentOptions';
 
 export const OrdinalComponent = (props) => {
-  const { display, attributesArrayLabel } = Object.assign(
-    { display: 'modal' },
+  const {
+    display,
+    attributesArrayLabel,
+    attributesArrayComponent,
+  } = Object.assign(
+    { display: 'modal', attributesArrayComponent: 'cards' },
     props
   );
+
+  const Component =
+    componentOptions[ATTRIBUTE_TYPES.asset][attributesArrayComponent] ||
+    Buttons;
 
   return (
     <>
@@ -29,11 +39,11 @@ export const OrdinalComponent = (props) => {
               <Title />
               <Description />
             </TitleWrapper>
-            <Buttons attributesArrayLabel={attributesArrayLabel} />
+            <Component attributesArrayLabel={attributesArrayLabel} />
           </FormWrapper>
         </TwoCol>
       </Wrapper>
-      <BasicForm activeAttribute={true} display={display} />
+      <SingleProductForm activeAttribute={true} display={display} />
     </>
   );
 };
