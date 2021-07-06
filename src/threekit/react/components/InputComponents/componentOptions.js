@@ -2,7 +2,7 @@ import { ATTRIBUTE_TYPES } from '../../../constants';
 
 import {
   Swatch,
-  Card,
+  Cards,
   Dropdown,
   Buttons,
   RadioButtons,
@@ -14,7 +14,7 @@ export default {
   [ATTRIBUTE_TYPES.asset]: {
     //  First option is default
     dropdown: Dropdown,
-    card: Card,
+    cards: Cards,
     swatch: Swatch,
     buttons: Buttons,
     'radio-buttons': RadioButtons,

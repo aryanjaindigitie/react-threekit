@@ -2,8 +2,12 @@ import { METADATA_RESERVED } from '../constants';
 import { easeInOutCubic } from './tools-utils';
 
 const animateItem = (config) => {
-  const { topItemOnly, translateMetadataField } = Object.assign(
-    { topItemOnly: true, translateMetadataField: METADATA_RESERVED.translate },
+  const { topItemOnly, translateMetadataField, duration } = Object.assign(
+    {
+      topItemOnly: true,
+      translateMetadataField: METADATA_RESERVED.translate,
+      duration: 1000,
+    },
     config
   );
 
@@ -50,7 +54,7 @@ const animateItem = (config) => {
 
           try {
             translateDelta = Object.assign(
-              { x: 0, y: 0, z: 0, duration: 1000 },
+              { x: 0, y: 0, z: 0, duration },
               JSON.parse(translate?.defaultValue)
             );
           } catch (e) {}
