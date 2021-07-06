@@ -1,41 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import { Select, Button, Input } from 'antd';
 import {
-  Wrapper,
+  ComponentSelectorWrapper,
   Title,
   AttributeRow,
   SelectedExperienceWrapper,
   OrdinalCustomizerWrapper,
-} from './componentSelector.styles';
-import componentOptions from '../../../threekit/react/components/InputComponents/componentOptions';
+} from './experienceBuilder.styles';
+import componentOptions from '../../react/components/InputComponents/componentOptions';
 import { message } from 'antd';
-import { CONFIGURATION_EXPERIENCES, DISPLAY_OPTIONS } from '../../constants';
+import experiences from '../experiences';
+
+const DISPLAY_OPTIONS = {
+  modal: 'modal',
+  drawer: 'drawer',
+};
 
 export const ComponentSelector = (props) => {
-  const { authToken, threekitEnv, assetId, orgId, experience } = props;
+  const { creds, experience, item } = props;
+  const { authToken, threekitEnv, orgId } = creds;
   // const []
-  const [attributes, setAttributes] = useState([]);
+  const [attributes, setAttributes] = useState(
+    item.attributes.map((el) => ({
+      name: el.name,
+      type: el.type,
+      component: 0,
+    }))
+  );
   const [arrayAttributeLabel, setArrayAttributeLabel] = useState('');
   const [display, setDisplay] = useState(DISPLAY_OPTIONS.modal);
-
-  useEffect(() => {
-    (async () => {
-      const response = await axios.get(
-        `https://${threekitEnv}/api/products/export/json?orgId=${orgId}&bearer_token=${authToken}`
-      );
-      if (!response?.data) return;
-
-      const data = response.data
-        .find((el) => el.query.id === assetId)
-        .product.attributes.map((el) => ({
-          name: el.name,
-          type: el.type,
-          component: 0,
-        }));
-      setAttributes(data);
-    })();
-  }, []);
 
   const componentsMap = Object.entries(componentOptions).reduce(
     (output, [attrType, componentsObj]) =>
@@ -50,12 +43,14 @@ export const ComponentSelector = (props) => {
     setAttributes(updatedAttributes);
   };
 
+  console.log(item);
+
   const generateUrl = () => {
     if (!experience?.length)
       return message.warning('Please select an experience');
 
     let data = {
-      assetId,
+      assetId: item.id,
       authToken,
       orgId,
       env: threekitEnv,
@@ -68,18 +63,19 @@ export const ComponentSelector = (props) => {
       return output;
     }, '');
 
-    if ([CONFIGURATION_EXPERIENCES['ordinal-interactive']])
+    if (experience === experiences['ordinal-interactive'].id)
       data = Object.assign(data, {
         arrayAttribute: arrayAttributeLabel,
         display,
       });
-    else
+    else if (attributesPrepped?.length)
       data = Object.assign(data, {
         attributes: btoa(attributesPrepped),
       });
 
-    const baseUrl = `${window.location.origin}/demo`;
+    const baseUrl = `${window.location.origin}/experience`;
     const dataParams = Object.entries(data).reduce((output, [key, val], i) => {
+      if (!val.length) return output;
       output += `${i ? '&' : ''}${key}=${val}`;
       return output;
     }, '?');
@@ -90,13 +86,13 @@ export const ComponentSelector = (props) => {
   if (!experience) return <div>Please choose an experience first.</div>;
 
   return (
-    <Wrapper>
+    <ComponentSelectorWrapper>
       <SelectedExperienceWrapper>
         Selected Experience: <span>{experience}</span>
       </SelectedExperienceWrapper>
       <hr />
       <Title>Attributes</Title>
-      {experience === CONFIGURATION_EXPERIENCES['ordinal-interactive'] ? (
+      {experience === experiences['ordinal-interactive'].id ? (
         <OrdinalCustomizerWrapper>
           <div>
             Array Attribute Label:
@@ -119,7 +115,9 @@ export const ComponentSelector = (props) => {
       ) : (
         attributes.map((el, i) => (
           <AttributeRow key={i}>
-            <div>{el.name}</div>
+            <div>
+              {el.name} [{el.type}]
+            </div>
             <div>
               <Select
                 style={{ width: 220 }}
@@ -139,7 +137,7 @@ export const ComponentSelector = (props) => {
       <Button type="primary" onClick={generateUrl}>
         Launch
       </Button>
-    </Wrapper>
+    </ComponentSelectorWrapper>
   );
 };
 

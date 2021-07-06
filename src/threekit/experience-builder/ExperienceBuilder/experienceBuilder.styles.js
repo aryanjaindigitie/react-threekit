@@ -1,6 +1,35 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+export const CatalogTableRow = styled.div`
+  display: grid;
+  grid-template-columns: 200px max-content;
+
+  cursor: pointer;
+  padding: 10px 5px;
+
+  &:hover {
+    background: #1890ff99;
+  }
+`;
+
+export const ExperienceSelectorWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  & > div {
+    margin-bottom: 10px;
+    margin-right: 10px;
+    width: 320px;
+  }
+`;
+
+export const ClickableSpan = styled.span`
+  color: #1890ff;
+  cursor: pointer;
+`;
+
+export const ComponentSelectorWrapper = styled.div`
   hr {
     width: 80%;
     height: 1px;
