@@ -34,22 +34,27 @@ The Threekit React Project is a feature-rich React Development Kit, containing a
       - [Undo](#undo)
       - [Redo](#redo)
     - [Displays](#displays)
+      - [Title](#title)
+      - [Description](#description)
       - [Attribute Title](#attribute-title)
       - [Attribute Value](#attribute-value)
     - [Wrappers](#wrappers)
       - [Await Loader](#await-loader)
       - [Attribute](#attribute)
-    - [Sections](#sections)
+    - [Layouts](#layouts)
       - [Accordian](#accordian)
       - [Tabs](#tabs)
+      - [Modal](#modal)
+      - [Drawer](#drawer)
+  - [Tools](#tools)
+    - [Tooltip](#tooltip)
+    - [Animate Item](#animate-item)
   - [API](#api)
     - [Player API](#player-api)
     - [Configurator API](#configurator-api)
     - [Controller API](#controller-api)
       - [Save Configuration](#save-configuration)
       - [Resume Configuration](#resume-configuration)
-  - [Tools](#tools)
-    - [Tooltip](#tooltip)
 
 ## Installation
 
@@ -358,7 +363,45 @@ const Component = () => {
 
 ### Displays
 
-Displays can be used to display specific information anywhere in the UI.
+Display components can be used to display specific information anywhere in the UI.
+
+#### Title
+
+The `<Title />` component will display the value of the metadata key `_title` on the Catalog Item used to initialize the Player.
+
+```javascript
+import { components } from './threekit';
+
+const { Title } = components;
+
+const Component = () => {
+  return (
+    <div>
+      // Content here will be rendered as normal
+      <Title />
+    </div>
+  );
+};
+```
+
+#### Description
+
+The `<Description />` component will display the value of the metadata key `_description` on the Catalog Item used to initialize the Player.
+
+```javascript
+import { components } from './threekit';
+
+const { Description } = components;
+
+const Component = () => {
+  return (
+    <div>
+      // Content here will be rendered as normal
+      <Description />
+    </div>
+  );
+};
+```
 
 #### Attribute Title
 
@@ -373,7 +416,7 @@ const Component = () => {
   return (
     <div>
       // Content here will be rendered as normal
-      <AttributeTitle attribute="Attribute Name">
+      <AttributeTitle attribute="Attribute Name" />
     </div>
   );
 };
@@ -444,9 +487,9 @@ The `<Attribute>` is a component-oriented way to use the [`useAttribute`](#use-a
     }
 ```
 
-### Sections
+### Layouts
 
-Sections are organizational components that we can use to organize the layout of our configurator. Sections are especially useful in breaking up large sets of attributes or information into smaller, more digestible portions.
+Layouts are organizational components that we can use to organize the layout of our configurator. Layouts are especially useful in breaking up large sets of attributes or information into smaller, more digestible portions.
 
 #### Accordian
 
@@ -472,14 +515,130 @@ const App = () => {
 import { components } from './threekit';
 
 const { Tabs } = components;
-const { TabItem } = Tabs;
+const { TabPane } = Tabs;
 
 const App = () => {
   return (
     <Tabs>
-      <TabItem label="Section 1 Heading">Section 1 content</TabItem>
-      <TabItem label="Section 2 Heading">Section 2 content</TabItem>
+      <TabPane label="Section 1 Heading">Section 1 content</TabPane>
+      <TabPane label="Section 2 Heading">Section 2 content</TabPane>
     </Tabs>
+  );
+};
+```
+
+#### Modal
+
+A Modal can be used to present an actionable pop-up to the user.
+
+```javascript
+import { useState } from 'react';
+import { components } from './threekit';
+
+const { Modal } = components;
+
+const App = () => {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleClose = () => setShowModal(false);
+
+  return (
+    <Modal show={showModal} handleClose={handleClose}>
+      <div>
+        Content to be placed in the modal is added as an HTML child element.
+      </div>
+    </Modal>
+  );
+};
+```
+
+#### Drawer
+
+A Drawer can be used to present an actionable slide-out drawer to the user.
+
+```javascript
+import { useState } from 'react';
+import { components } from './threekit';
+
+const { Drawer } = components;
+
+const App = () => {
+  const [showDrawer, setShowDrawer] = useState(false);
+
+  const handleClose = () => setShowDrawer(false);
+
+  return (
+    <Drawer show={showDrawer} handleClose={handleClose}>
+      <div>
+        Content to be placed in the drawer is added as an HTML child element.
+      </div>
+    </Drawer>
+  );
+};
+```
+
+## Tools
+
+Tools add functionality to the 3D-player beyond the out-of-the-box features such as scroll to zoom, drag to rotate, and right-click to pan the camera. To implement a tool it needs to be added to the array of `additionalTools` that is passed to the `<ThreekitProvider>` as part of it config object.
+
+```javascript
+import { tools } from './threekit';
+
+const { exampleTool } = tools;
+
+const config = {
+  additionalTools: [exampleTool()],
+};
+
+const ThreekitApp = () => {
+  return (
+    <ThreekitProvider config={config}>
+      <App />
+    </ThreekitProvider>
+  );
+};
+```
+
+### Tooltip
+
+The `tooltip` tool displays information stored in the metadata of a catalog item as a tooltip when a user hovers over it in the Player.
+
+```javascript
+import { tools } from './threekit';
+
+const { tooltip } = tools;
+
+const config = {
+  additionalTools: [tooltip({ metadataField: 'productName' })],
+};
+
+const ThreekitApp = () => {
+  return (
+    <ThreekitProvider config={config}>
+      <App />
+    </ThreekitProvider>
+  );
+};
+```
+
+### Animate Item
+
+The `animateItem` tool applies a transform (translation, rotation, re-scale), stored in the metadata of a catalog item, to the model in the 3D when the user clicks on it.
+
+```javascript
+import { tools } from './threekit';
+
+const { animateItem } = tools;
+
+const config = {
+  additionalTools: [animateItem()],
+};
+
+const ThreekitApp = () => {
+  return (
+    <ThreekitProvider config={config}>
+      <App />
+    </ThreekitProvider>
   );
 };
 ```
@@ -490,7 +649,7 @@ const App = () => {
 const { player, configurator, controller } = window.threekit;
 ```
 
-The `player` and `configurator` API are the standard API interfaces returned when initializing the Threekit player.
+The `player` and `configurator` API are the standard API interfaces returned when initializing the Threekit Player.
 
 ### Player API
 
@@ -537,48 +696,4 @@ Use this method to resume a configuration saved on the Threekit platform by pass
 const { controller } = window.threekit;
 
 await controller.resumeConfiguration('20df501b-1ef8-4bh0-sfda-2b99426624de');
-```
-
-## Tools
-
-Tools add functionality to the 3D-player beyond the out-of-the-box features such as scroll to zoom, drag to rotate, and right-click to pan the camera. To implement a tool it needs to be added to the array of `additionalTools` that is passed to the `<ThreekitProvider>` as part of it config object.
-
-```javascript
-import { tools } from './threekit';
-
-const { exampleTool } = tools;
-
-const config = {
-  additionalTools: [exampleTool()],
-};
-
-const ThreekitApp = () => {
-  return (
-    <ThreekitProvider config={config}>
-      <App />
-    </ThreekitProvider>
-  );
-};
-```
-
-### Tooltip
-
-The `tooltip` tool displays information stored in the metadata of a catalog item as a tooltip when a user hovers over it in the Player.
-
-```javascript
-import { tools } from './threekit';
-
-const { tooltip } = tools;
-
-const config = {
-  additionalTools: [tooltip({ metadataField: 'productName' })],
-};
-
-const ThreekitApp = () => {
-  return (
-    <ThreekitProvider config={config}>
-      <App />
-    </ThreekitProvider>
-  );
-};
 ```

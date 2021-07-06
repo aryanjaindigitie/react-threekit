@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import theme from '../../theme';
 
-const Loader = (props) => {
+const App = (props) => {
   const assetId = props.assetId || process.env.THREEKIT_ASSET_ID;
   const orgId = props.orgId || process.env.THREEKIT_ORG_ID;
   const authToken = props.authToken || process.env.THREEKIT_AUTH_TOKEN;
@@ -47,7 +47,7 @@ const ThreekitProvider = (props) => {
   return (
     <Provider store={store}>
       <ThemeProvider theme={Object.assign(theme, config.theme)}>
-        <Loader config={config}>{props.children}</Loader>
+        <App config={config}>{props.children}</App>
       </ThemeProvider>
     </Provider>
   );
