@@ -53,6 +53,7 @@ export const METADATA_RESERVED = Object.assign(
 export const ATTRIBUTES_RESERVED = {
   step: '_step',
   stepTo: '_stepTo',
+  attribute: '_attribute',
 };
 
 export const ATTRIBUTE_TYPES = {

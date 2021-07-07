@@ -17,8 +17,8 @@ export const ConfiguratorSelector = (props) => {
       const configurators = response.data.reduce((output, el) => {
         if (
           el.product.type === 'item' &&
-          !!el.product.attributes.length &&
-          el.product.tags.includes('configurator')
+          !!el.product.attributes.length
+          // && el.product.tags.includes('configurator')
         )
           output.push(el.product);
         return output;

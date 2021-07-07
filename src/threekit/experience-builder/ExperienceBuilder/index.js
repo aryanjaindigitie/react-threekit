@@ -69,6 +69,7 @@ export const ExperienceBuilder = () => {
           creds={creds}
           item={item}
           experience={experience}
+          onPrevious={handlePrevious}
           onContinue={handleContinue}
         />
       </Content>

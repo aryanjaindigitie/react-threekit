@@ -1,9 +1,12 @@
 import store from '../react/store';
 import { setConfiguration } from '../react/store/threekit';
-import { TK_PLAYER_DIV_ID } from '../constants';
+import { TK_PLAYER_DIV_ID, ATTRIBUTES_RESERVED } from '../constants';
 
 const selectAttribute = (config) => {
-  const { active } = Object.assign({ active: false }, config);
+  const { active, attribute } = Object.assign(
+    { active: false, attribute: ATTRIBUTES_RESERVED.attribute },
+    config
+  );
 
   // Sets up our attributes names RegExp
   let htmlEl;
@@ -52,7 +55,7 @@ const selectAttribute = (config) => {
         if (!model) return;
 
         if (attributesList.includes(model.name))
-          store.dispatch(setConfiguration({ _attribute: model.name }));
+          store.dispatch(setConfiguration({ [attribute]: model.name }));
       },
     },
   });
