@@ -59,7 +59,7 @@ export const deepCompare = (item1, item2) => {
   return true;
 };
 
-export const IsJsonString = (str) => {
+export const isJsonString = (str) => {
   try {
     JSON.parse(str);
   } catch (e) {
@@ -73,12 +73,39 @@ export const getParams = () => {
   return query.split('&').reduce((output, part) => {
     let [key, value] = part.split('=');
     const preppedValue = decodeURIComponent(value);
-    output[decodeURIComponent(key)] = IsJsonString(preppedValue)
+    output[decodeURIComponent(key)] = isJsonString(preppedValue)
       ? JSON.parse(preppedValue)
       : preppedValue;
     return output;
   }, {});
 };
+
+export const configurationToParams = (configuration) =>
+  Object.entries(configuration).reduce((output, [attribute, value], i) => {
+    if (i) output += '&';
+    if (value === undefined || value === null) return output;
+    if (['string', 'number'].includes(typeof value))
+      output += `${encodeURIComponent(attribute)}=${encodeURIComponent(value)}`;
+    else if (assetId in value)
+      output += `${encodeURIComponent(attribute)}=${encodeURIComponent(
+        value.assetId
+      )}`;
+    else
+      output += `${encodeURIComponent(attribute)}=${encodeURIComponent(
+        JSON.stringify(value)
+      )}`;
+    return output;
+  }, '');
+
+export const configurationFromParams = (params = getParams()) =>
+  Object.entries(params).reduce((output, [key, val]) => {
+    let value = val;
+    if (threekit.utils.isUuid(val)) value = { assetId: val };
+    else if (isJsonString(val)) value = JSON.parse(val);
+    return Object.assign(output, {
+      [key]: value,
+    });
+  }, {});
 
 export const regularToKebabCase = (str) =>
   !str?.length
