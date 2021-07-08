@@ -6,6 +6,7 @@ import {
   ChromePicker,
 } from 'react-color';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
+import { Wrapper, Header, OptionsWrapper } from './colorPicker.styles';
 
 const components = {
   block: BlockPicker,
@@ -14,21 +15,28 @@ const components = {
   chrome: ChromePicker,
 };
 
-import { Wrapper, Header } from './colorPicker.styles';
-
 export const ColorPicker = (props) => {
-  const { title, selected, handleClick, colorPicker } = Object.assign(
+  const { title, selected, options, handleClick, colorPicker } = Object.assign(
     { options: [], colorPicker: 'chrome' },
     props
   );
 
   const Component = components[colorPicker] || components.chrome;
 
-  const handleSelectColor = (color) => handleClick(color.rgb);
+  const handleSelectColor = (color) => handleClick(color.rgb || color.hex);
 
   return (
     <Wrapper>
       {title && <Header>{title}</Header>}
+      {options.length ? (
+        <OptionsWrapper>
+          <CirclePicker
+            color={selected}
+            onChangeComplete={handleSelectColor}
+            colors={options}
+          />
+        </OptionsWrapper>
+      ) : null}
       <Component color={selected} onChangeComplete={handleSelectColor} />
     </Wrapper>
   );

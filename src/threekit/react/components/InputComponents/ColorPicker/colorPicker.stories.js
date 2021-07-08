@@ -12,7 +12,7 @@ const options = [
 
 export default {
   title: 'Input Components/Color Picker',
-  component: ColorPickerComponent,
+  component: ColorPicker,
   argTypes: { handleClick: { action: 'clicked' } },
 };
 
@@ -23,5 +23,5 @@ Default.args = {};
 
 export const WithOptions = Template.bind({});
 WithOptions.args = {
-  options,
+  options: options.map((el) => el.colorValue),
 };

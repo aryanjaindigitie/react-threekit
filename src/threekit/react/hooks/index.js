@@ -17,6 +17,7 @@ import {
   getMetadata,
 } from '../store/threekit';
 import { ATTRIBUTE_TYPES } from '../../constants';
+import { hexToRgb } from '../../utils';
 
 export const useAttributes = () => {
   const dispatch = useDispatch();
@@ -55,7 +56,7 @@ export const useAttribute = (attribute) => {
         else updated = value;
         break;
       case ATTRIBUTE_TYPES.color:
-        updated = value;
+        updated = hexToRgb(value);
         break;
       default:
         updated = value;
