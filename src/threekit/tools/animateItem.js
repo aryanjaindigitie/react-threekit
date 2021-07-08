@@ -76,33 +76,24 @@ const animateItem = (config) => {
           const progress = elapsed / translateDelta.duration;
           const animPercent = easeInOutCubic(progress);
 
-          if (!isTransformed[nullId]) {
-            updatedPosition.x = Math.min(
-              originalPosition[nullId].x + translateDelta.x * animPercent,
-              translateDelta.x
-            );
-            updatedPosition.y = Math.min(
-              originalPosition[nullId].y + translateDelta.y * animPercent,
-              translateDelta.y
-            );
-            updatedPosition.z = Math.min(
-              originalPosition[nullId].z + translateDelta.z * animPercent,
-              translateDelta.z
-            );
-          } else {
-            updatedPosition.x = Math.min(
-              originalPosition[nullId].x - translateDelta.x * animPercent,
-              translateDelta.x
-            );
-            updatedPosition.y = Math.min(
-              originalPosition[nullId].y - translateDelta.y * animPercent,
-              translateDelta.y
-            );
-            updatedPosition.z = Math.min(
-              originalPosition[nullId].z - translateDelta.z * animPercent,
-              translateDelta.z
-            );
-          }
+          updatedPosition = Object.keys(updatedPosition).reduce(
+            (output, axis) => {
+              if (!isTransformed[nullId])
+                output[axis] = Math.min(
+                  originalPosition[nullId][axis] +
+                    translateDelta[axis] * animPercent,
+                  translateDelta[axis]
+                );
+              else
+                output[axis] = Math.min(
+                  originalPosition[nullId][axis] -
+                    translateDelta[axis] * animPercent,
+                  translateDelta[axis]
+                );
+              return output;
+            },
+            {}
+          );
 
           window.threekit.player.scene.set(
             {
