@@ -12,6 +12,7 @@ import { inflateRgb, deflateRgb } from '../../../utils';
 const attributesArrayContainer = (WrappedComponent, props) => {
   const {
     attributesArrayLabel,
+    imgBaseUrl,
     imgFromMetadata,
     colorFromMetadata,
     priceFromMetadata,
@@ -40,34 +41,38 @@ const attributesArrayContainer = (WrappedComponent, props) => {
   const descriptionKey =
     descriptionFromMetadata || METADATA_RESERVED.description;
 
-  let preppedOptions = Object.values(options).map((el) =>
-    Object.assign(
-      {},
-      el,
-      {
-        value: el.assetId,
-      },
-      el.metadata[imgKey]
-        ? {
-            imageUrl: (imgBaseUrl || '') + el.metadata[imgKey],
-          }
-        : undefined,
-      el.metadata[colorValKey]
-        ? {
-            colorValue: el.metadata[colorValKey],
-          }
-        : undefined,
-      el.metadata[priceKey]
-        ? {
-            price: el.metadata[priceKey],
-          }
-        : undefined,
-      el.metadata[descriptionKey]
-        ? {
-            description: el.metadata[descriptionKey],
-          }
-        : undefined
-    )
+  const preppedOptions = Object.entries(options).reduce(
+    (output, [assetId, el]) =>
+      Object.assign(output, {
+        [assetId]: Object.assign(
+          {},
+          el,
+          {
+            value: el.assetId,
+          },
+          el.metadata[imgKey]
+            ? {
+                imageUrl: (imgBaseUrl || '') + el.metadata[imgKey],
+              }
+            : undefined,
+          el.metadata[colorValKey]
+            ? {
+                colorValue: el.metadata[colorValKey],
+              }
+            : undefined,
+          el.metadata[priceKey]
+            ? {
+                price: el.metadata[priceKey],
+              }
+            : undefined,
+          el.metadata[descriptionKey]
+            ? {
+                description: el.metadata[descriptionKey],
+              }
+            : undefined
+        ),
+      }),
+    {}
   );
 
   if (WrappedComponent.compatibleAttributes.has(ATTRIBUTE_TYPES.arraySelector))
@@ -75,7 +80,7 @@ const attributesArrayContainer = (WrappedComponent, props) => {
       <WrappedComponent
         isPlayerLoading={loading}
         handleClick={addItem}
-        options={preppedOptions}
+        options={Object.values(preppedOptions)}
         {...props}
       />
     );
@@ -85,7 +90,7 @@ const attributesArrayContainer = (WrappedComponent, props) => {
     return (
       <WrappedComponent
         isPlayerLoading={loading}
-        options={options}
+        options={preppedOptions}
         attributes={attributes}
         handleDeleteItem={deleteItem}
         handleMoveItem={moveItem}

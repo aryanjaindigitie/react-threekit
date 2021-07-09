@@ -16,10 +16,13 @@ const components = {
 };
 
 export const ColorPicker = (props) => {
-  const { title, selected, options, handleClick, colorPicker } = Object.assign(
-    { options: [], colorPicker: 'chrome' },
-    props
-  );
+  const {
+    title,
+    selected,
+    additionalOptions,
+    handleClick,
+    colorPicker,
+  } = Object.assign({ additionalOptions: [], colorPicker: 'chrome' }, props);
 
   const Component = components[colorPicker] || components.chrome;
 
@@ -28,12 +31,12 @@ export const ColorPicker = (props) => {
   return (
     <Wrapper>
       {title && <Header>{title}</Header>}
-      {options.length ? (
+      {additionalOptions.length ? (
         <OptionsWrapper>
           <CirclePicker
             color={selected}
             onChangeComplete={handleSelectColor}
-            colors={options}
+            colors={additionalOptions}
           />
         </OptionsWrapper>
       ) : null}

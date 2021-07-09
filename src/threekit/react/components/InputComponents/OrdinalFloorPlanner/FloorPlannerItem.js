@@ -19,7 +19,7 @@ export const FloorPlannerItem = (props) => {
     handleSelect,
     activeAttribute,
   } = useContext(OrdinalFloorPlannerContext);
-  const { side, name, attributeName, assetId, metadata, idx } = props;
+  const { side, name, attributeName, assetId, imageUrl, metadata, idx } = props;
 
   const handleOpenConfigurator = (e) => {
     handleSelect(attributeName);
@@ -45,10 +45,9 @@ export const FloorPlannerItem = (props) => {
           className={`tk-floor-planner-item tk-floor-planner-item-${idx}`}
         >
           <div>
-            {metadata?._icon ? (
-              <img src={metadata._icon} alt="icon" draggable={false} />
+            {imageUrl ? (
+              <img src={imageUrl} alt="icon" draggable={false} />
             ) : null}
-            {/* <img src={icons[metadata._icon]} alt="icon" draggable={false} /> */}
           </div>
           {!!displayItemConfigurator ? (
             <ConfigureButton onClick={handleOpenConfigurator}>
