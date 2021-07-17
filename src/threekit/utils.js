@@ -1,3 +1,5 @@
+import { METADATA_RESERVED, ATTRIBUTE_TYPES } from './constants';
+
 const isObject = (object) => object != null && typeof object === 'object';
 
 export const shallowCompare = (value1, value2) => {
@@ -139,3 +141,96 @@ export const deflateRgb = (rgbObj) =>
         : output,
     {}
   );
+
+export const prepAttributeForComponent = (attribute, { metadataKeys }) => {
+  const {
+    imgFromMetadata,
+    imgBaseUrl,
+    colorFromMetadata,
+    priceFromMetadata,
+    descriptionFromMetadata,
+  } = { metadataKeys };
+
+  const imgKey = imgFromMetadata || METADATA_RESERVED.imageUrl;
+  const colorValKey = colorFromMetadata || METADATA_RESERVED.colorValue;
+  const priceKey = priceFromMetadata || METADATA_RESERVED.price;
+  const descriptionKey =
+    descriptionFromMetadata || METADATA_RESERVED.description;
+
+  let options = attribute.values;
+  let selected = attribute.value;
+
+  if (attribute.type === ATTRIBUTE_TYPES.arraySelector) {
+    options = Object.entries(attribute.values).reduce(
+      (output, [assetId, el]) =>
+        Object.assign(output, {
+          [assetId]: prepCatalogItem(el),
+        }),
+      {}
+    );
+  } else if (attribute.type === ATTRIBUTE_TYPES.asset) {
+    selected = attribute.value?.assetId;
+    options = attribute.values
+      ? attribute.values.map((el) => prepCatalogItem(el))
+      : [];
+  } else if (attributeData.type === ATTRIBUTE_TYPES.color)
+    selected = inflateRgb(attributeData.value);
+
+  function prepCatalogItem(item) {
+    return Object.assign(
+      {},
+      item,
+      {
+        value: item.assetId,
+      },
+      item.metadata[imgKey]
+        ? {
+            imageUrl: (imgBaseUrl || '') + item.metadata[imgKey],
+          }
+        : undefined,
+      item.metadata[colorValKey]
+        ? {
+            colorValue: item.metadata[colorValKey],
+          }
+        : undefined,
+      item.metadata[priceKey]
+        ? {
+            price: item.metadata[priceKey],
+          }
+        : undefined,
+      item.metadata[descriptionKey]
+        ? {
+            description: item.metadata[descriptionKey],
+          }
+        : undefined
+    );
+  }
+
+  return { selected, options };
+};
+
+export const selectionToConfiguration = (value, attributeType) => {
+  if (!value) return undefined;
+  let updated;
+  switch (attributeType) {
+    case ATTRIBUTE_TYPES.number:
+      updated = value;
+      break;
+    case ATTRIBUTE_TYPES.asset:
+      if (!isNaN(value))
+        updated = { assetId: attributeData.values[value].assetId };
+      else updated = { assetId: value };
+      break;
+    case ATTRIBUTE_TYPES.string:
+      if (!isNaN(value)) updated = attributeData.values[value].value;
+      else updated = value;
+      break;
+    case ATTRIBUTE_TYPES.color:
+      if ('r' in value) updated = deflateRgb(value);
+      else updated = value;
+      break;
+    default:
+      updated = value;
+  }
+  return updated;
+};

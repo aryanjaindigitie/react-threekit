@@ -1,7 +1,7 @@
 import store from '../react/store';
 import {
   setAllowInPlayerSelect,
-  setActiveAttribute,
+  setNestedAttributeAddress,
 } from '../react/store/threekit';
 import { findHitNode } from './tools-utils';
 import { attrNameToRegExp } from '../utils';
@@ -9,7 +9,7 @@ import { attrNameToRegExp } from '../utils';
 const selectOrdinalAttributes = (arrayLabel, config) => {
   const { active } = Object.assign({ active: false }, config);
 
-  store.dispatch(setAllowInPlayerSelect(!!active));
+  store.dispatch(setAllowInPlayerSelect(!active));
 
   // Sets up our attributes names RegExp
   const attributesRegExp = attrNameToRegExp(arrayLabel);
@@ -27,7 +27,7 @@ const selectOrdinalAttributes = (arrayLabel, config) => {
         const clickedAttribute = findHitNode(event.hitNodes, attributesRegExp);
 
         if (clickedAttribute)
-          store.dispatch(setActiveAttribute(clickedAttribute.name));
+          store.dispatch(setNestedAttributeAddress(clickedAttribute.name));
       },
     },
   });

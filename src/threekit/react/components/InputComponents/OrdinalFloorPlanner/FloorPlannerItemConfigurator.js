@@ -1,31 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   ConfiguratorWrapper as Wrapper,
   ConfiguratorTitle as Title,
 } from './ordinalFloorPlanner.styles';
+import { SingleProductForm } from '../../Forms';
 
-export const FloorPlannerItemConfigurator = ({ name, assetId }) => {
-  const [attributes, setAttributes] = useState([]);
-  useEffect(() => {
-    (async () => {
-      const player = window.threekit.player.enableApi('player');
-      const item = await player.getConfiguratorInstance([
-        assetId,
-        'plugs',
-        'Proxy',
-        0,
-        'asset',
-      ]);
-      setAttributes(item.getDisplayAttributes());
-    })();
-  }, []);
-
+export const FloorPlannerItemConfigurator = ({ name }) => {
   return (
     <Wrapper>
       <Title>{name}</Title>
-      {attributes.map((el, i) => (
-        <div key={i}>{el.name}</div>
-      ))}
+      <SingleProductForm nestedConfigurator />
     </Wrapper>
   );
 };

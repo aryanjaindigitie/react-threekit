@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useAttributes, useActiveAttribute } from '../../../hooks';
+import React from 'react';
+import { useAttributes, useNestedConfigurator } from '../../../hooks';
 import { Modal, Drawer } from '../../Layouts';
 
-const assetContainer = (WrappedComponent, props) => {
+const attributesContainer = (WrappedComponent, props) => {
   const [attributes] = useAttributes();
   return (
     <WrappedComponent
@@ -14,13 +14,8 @@ const assetContainer = (WrappedComponent, props) => {
   );
 };
 
-const attributesArrayContainer = (WrappedComponent, props) => {
-  const [
-    activeAttribute,
-    attribute,
-    handleSetActiveAttribute,
-  ] = useActiveAttribute();
-  const [childAttributes, setChildAttributes] = useState([]);
+const nestedAttributesContainer = (WrappedComponent, props) => {
+  const [nestedAttributes, address] = useNestedConfigurator();
 
   const DisplayComponent =
     props.display === 'drawer'
@@ -29,48 +24,33 @@ const attributesArrayContainer = (WrappedComponent, props) => {
       ? Modal
       : undefined;
 
-  useEffect(() => {
-    (async () => {
-      if (!attribute?.value?.assetId?.length) return setChildAttributes([]);
-      const player = window.threekit.player.enableApi('player');
-      const item = await player.getConfiguratorInstance([
-        attribute.value.assetId,
-        'plugs',
-        'Proxy',
-        0,
-        'asset',
-      ]);
-      setChildAttributes(item.getDisplayAttributes());
-    })();
-  }, [activeAttribute]);
-
   if (!DisplayComponent)
     return (
       <WrappedComponent
         {...props}
-        title={attribute?.name}
-        attributes={childAttributes}
+        title={address?.[0] || ''}
+        attributes={nestedAttributes}
       />
     );
 
   return (
     <DisplayComponent
-      show={!!activeAttribute}
+      show={!!address}
       handleClose={() => handleSetActiveAttribute(undefined)}
     >
       <WrappedComponent
         {...props}
-        title={attribute?.name}
-        attributes={childAttributes}
+        title={address?.[0] || ''}
+        attributes={nestedAttributes}
       />
     </DisplayComponent>
   );
 };
 
 const basicFormContainer = (WrappedComponent) => (props) => {
-  if (props.activeAttribute === true)
-    return attributesArrayContainer(WrappedComponent, props);
-  return assetContainer(WrappedComponent, props);
+  if (props.nestedConfigurator)
+    return nestedAttributesContainer(WrappedComponent, props);
+  return attributesContainer(WrappedComponent, props);
 };
 
 export default basicFormContainer;

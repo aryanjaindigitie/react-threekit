@@ -4,14 +4,20 @@ import {
   useAttributesArray,
   useThreekitInitStatus,
   usePlayerLoadingStatus,
-  useActiveAttribute,
+  useNestedConfigurator,
+  useNestedAttribute,
 } from '../../hooks';
-import { METADATA_RESERVED, ATTRIBUTE_TYPES } from '../../../constants';
-import { inflateRgb, deflateRgb } from '../../../utils';
+import { ATTRIBUTE_TYPES } from '../../../constants';
+import {
+  inflateRgb,
+  deflateRgb,
+  prepAttributeForComponent,
+} from '../../../utils';
 
 const attributesArrayContainer = (WrappedComponent, props) => {
   const {
     attributesArrayLabel,
+    imgBaseUrl,
     imgFromMetadata,
     colorFromMetadata,
     priceFromMetadata,
@@ -21,53 +27,28 @@ const attributesArrayContainer = (WrappedComponent, props) => {
   const loading = usePlayerLoadingStatus();
 
   const [
-    options,
+    optionsRaw,
     attributes,
     addItem,
     deleteItem,
     moveItem,
   ] = useAttributesArray(attributesArrayLabel);
-  const [
-    activeAttribute,
-    attribute,
-    handleSetActiveAttribute,
-  ] = useActiveAttribute();
-  if (!options) return null;
+  const [_, address, handleSetActiveAttribute] = useNestedConfigurator();
+  if (!optionsRaw) return null;
 
-  const imgKey = imgFromMetadata || METADATA_RESERVED.imageUrl;
-  const colorValKey = colorFromMetadata || METADATA_RESERVED.colorValue;
-  const priceKey = priceFromMetadata || METADATA_RESERVED.price;
-  const descriptionKey =
-    descriptionFromMetadata || METADATA_RESERVED.description;
+  const metadataKeys = {
+    imgFromMetadata,
+    imgBaseUrl,
+    colorFromMetadata,
+    priceFromMetadata,
+    descriptionFromMetadata,
+  };
 
-  let preppedOptions = Object.values(options).map((el) =>
-    Object.assign(
-      {},
-      el,
-      {
-        value: el.assetId,
-      },
-      el.metadata[imgKey]
-        ? {
-            imageUrl: (imgBaseUrl || '') + el.metadata[imgKey],
-          }
-        : undefined,
-      el.metadata[colorValKey]
-        ? {
-            colorValue: el.metadata[colorValKey],
-          }
-        : undefined,
-      el.metadata[priceKey]
-        ? {
-            price: el.metadata[priceKey],
-          }
-        : undefined,
-      el.metadata[descriptionKey]
-        ? {
-            description: el.metadata[descriptionKey],
-          }
-        : undefined
-    )
+  const { options } = prepAttributeForComponent(
+    { type: ATTRIBUTE_TYPES.arraySelector, values: optionsRaw },
+    {
+      metadataKeys,
+    }
   );
 
   if (WrappedComponent.compatibleAttributes.has(ATTRIBUTE_TYPES.arraySelector))
@@ -75,7 +56,7 @@ const attributesArrayContainer = (WrappedComponent, props) => {
       <WrappedComponent
         isPlayerLoading={loading}
         handleClick={addItem}
-        options={preppedOptions}
+        options={Object.values(options)}
         {...props}
       />
     );
@@ -90,7 +71,7 @@ const attributesArrayContainer = (WrappedComponent, props) => {
         handleDeleteItem={deleteItem}
         handleMoveItem={moveItem}
         handleSelect={handleSetActiveAttribute}
-        activeAttribute={activeAttribute}
+        activeAttribute={address?.[0]}
         {...props}
       />
     );
@@ -118,56 +99,20 @@ const attributeContainer = (WrappedComponent, props) => {
     console.log('incompatible attribute type for this component');
     return null;
   }
-  const imgKey = imgFromMetadata || METADATA_RESERVED.imageUrl;
-  const colorValKey = colorFromMetadata || METADATA_RESERVED.colorValue;
-  const priceKey = priceFromMetadata || METADATA_RESERVED.price;
-  const descriptionKey =
-    descriptionFromMetadata || METADATA_RESERVED.description;
 
-  let options = attributeData.values;
-  let selected = attributeData.value;
-
-  if (attributeData.type === ATTRIBUTE_TYPES.asset) {
-    selected = attributeData.value.assetId;
-    options = attributeData.values
-      ? attributeData.values.map((el) =>
-          Object.assign(
-            {},
-            el,
-            {
-              value: el.assetId,
-            },
-            el.metadata[imgKey]
-              ? {
-                  imageUrl: (imgBaseUrl || '') + el.metadata[imgKey],
-                }
-              : undefined,
-            el.metadata[colorValKey]
-              ? {
-                  colorValue: el.metadata[colorValKey],
-                }
-              : undefined,
-            el.metadata[priceKey]
-              ? {
-                  price: el.metadata[priceKey],
-                }
-              : undefined,
-            el.metadata[descriptionKey]
-              ? {
-                  description: el.metadata[descriptionKey],
-                }
-              : undefined
-          )
-        )
-      : [];
-  } else if (attributeData.type === ATTRIBUTE_TYPES.color)
-    selected = inflateRgb(attributeData.value);
-
-  const handleSetAttribute = (value) => {
-    if (attributeData.type === ATTRIBUTE_TYPES.color && 'r' in value)
-      return setAttribute(deflateRgb(value));
-    setAttribute(value);
+  const metadataKeys = {
+    imgFromMetadata,
+    imgBaseUrl,
+    colorFromMetadata,
+    priceFromMetadata,
+    descriptionFromMetadata,
   };
+
+  const { selected, options } = prepAttributeForComponent(attributeData, {
+    metadataKeys,
+  });
+
+  const handleSetAttribute = (value) => setAttribute(value);
 
   let preppedProps = { ...props };
   if (!hideAttributeTitle) preppedProps.title = attributeData.label;
@@ -184,8 +129,61 @@ const attributeContainer = (WrappedComponent, props) => {
   );
 };
 
+const nestedAttributeContainer = (WrappedComponent, props) => {
+  const {
+    attribute,
+    imgFromMetadata,
+    imgBaseUrl,
+    colorFromMetadata,
+    priceFromMetadata,
+    descriptionFromMetadata,
+    hideAttributeTitle,
+  } = props;
+
+  const loading = usePlayerLoadingStatus();
+
+  const [attributeData, setAttribute] = useNestedAttribute(attribute);
+  if (!attributeData) return null;
+
+  if (!WrappedComponent.compatibleAttributes.has(attributeData.type)) {
+    console.log('incompatible attribute type for this component');
+    return null;
+  }
+
+  const metadataKeys = {
+    imgFromMetadata,
+    imgBaseUrl,
+    colorFromMetadata,
+    priceFromMetadata,
+    descriptionFromMetadata,
+  };
+
+  const { selected, options } = prepAttributeForComponent(attributeData, {
+    metadataKeys,
+  });
+
+  const handleSetAttribute = (value) => setAttribute(value);
+
+  let preppedProps = { ...props };
+  if (!hideAttributeTitle)
+    preppedProps.title = attributeData.label || attributeData.name;
+
+  return (
+    <WrappedComponent
+      {...preppedProps}
+      attribute={attribute}
+      selected={selected}
+      handleClick={handleSetAttribute}
+      options={options}
+      isPlayerLoading={loading}
+    />
+  );
+};
+
 const container = (WrappedComponent) => (props) => {
   if (props.attribute) {
+    if (props.nestedConfigurator)
+      return nestedAttributeContainer(WrappedComponent, props);
     return attributeContainer(WrappedComponent, props);
   } else if (props.attributesArrayLabel) {
     return attributesArrayContainer(WrappedComponent, props);

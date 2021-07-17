@@ -6,7 +6,7 @@ import {
   ActionArea,
   StepButtons,
 } from './singleProductSteppedForm.styles';
-import componentOptions from '../../InputComponents/componentOptions';
+import { componentOptions } from '../../InputComponents';
 import container from './singleProductSteppedFormContainer';
 import { ArrowRightOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 

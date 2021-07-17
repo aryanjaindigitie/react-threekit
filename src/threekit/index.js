@@ -1,5 +1,6 @@
 import { hooks, components, experiences } from './react';
 import * as tools from './tools';
+import * as utils from './utils';
 
 const { ThreekitProvider } = components;
 
@@ -11,4 +12,5 @@ export default {
   ThreekitProvider,
   tools,
   experiences,
+  utils,
 };

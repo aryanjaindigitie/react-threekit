@@ -59,7 +59,7 @@ const reorderOrdinalAttributes = (arrayLabel, config) => {
     config
   );
 
-  store.dispatch(setAllowInPlayerReorder(!!active));
+  store.dispatch(setAllowInPlayerReorder(!active));
 
   let selectedComponent;
   let deleteButtonCreated = false;

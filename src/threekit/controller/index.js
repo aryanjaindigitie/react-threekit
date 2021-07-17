@@ -15,6 +15,9 @@ class Controller {
     this._historyPosition = 0;
     //  Tools
     this._toolsList = toolsList;
+    //  Nested Configurators
+    this._nestedConfigurator = undefined;
+    this._nestedConfiguratorAddress = undefined;
   }
 
   static createPlayerLoaderEl() {
@@ -140,6 +143,21 @@ class Controller {
       };
       resolve();
     });
+  }
+
+  _getNestedConfigurator(address) {
+    const player = window.threekit.player.enableApi('player');
+    if (JSON.stringify(address) === this._nestedConfiguratorAddress)
+      return this._nestedConfigurator;
+    this._nestedConfiguratorAddress = JSON.stringify(address);
+    this._nestedConfigurator = address.reduce((configurator, attributeName) => {
+      const itemId = configurator.getAppliedConfiguration(attributeName);
+      return window.threekit.player.scene.get({
+        id: itemId,
+        evalNode: true,
+      }).configurator;
+    }, player.getConfigurator());
+    return this._nestedConfigurator;
   }
 
   _translateAttribute(attr) {
@@ -282,6 +300,23 @@ class Controller {
     this._pushToHistory([configuration, updatedConfiguration]);
 
     return this.getAttributesState(updatedAttrNames);
+  }
+
+  getNestedAttributeState(address) {
+    if (!address?.length) return;
+    const addr = Array.isArray(address) ? address : [address];
+    const configurator = this._getNestedConfigurator(addr);
+    return configurator.getDisplayAttributes();
+  }
+
+  setNestedAttributeState(address, configuration) {
+    return new Promise(async (resolve) => {
+      if (!address?.length) return;
+      const addr = Array.isArray(address) ? address : [address];
+      const configurator = this._getNestedConfigurator(addr);
+      await configurator.setConfiguration(configuration);
+      resolve(configurator.getDisplayAttributes());
+    });
   }
 
   stepHistoryPosition(step) {

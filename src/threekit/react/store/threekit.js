@@ -5,6 +5,10 @@ import { filterAttributesArray } from '../../utils';
 import { arrayValidator } from '../validators';
 import { message } from 'antd';
 
+/*****************************************************
+ * Custom Hooks & Middlerware
+ ****************************************************/
+
 let HOOKS = {
   onSetConfiguration: undefined,
 };
@@ -13,92 +17,129 @@ let MIDDLEWARE = {
   arrayValidation: undefined,
 };
 
+/*****************************************************
+ * State
+ ****************************************************/
+
 const initialState = {
-  loaded: false,
-  attributes: undefined,
-  language: undefined,
+  //  Tracks Threekit API initialization status
+  isThreekitLoaded: false,
+  //  Initialized item's metadata
+  metadata: undefined,
+  //  Tracks configuration update
   isPlayerLoading: false,
+  //  Selected language
+  language: undefined,
+  //  Attributes State
+  attributes: undefined,
+  //  Ordinal Configurator
   allowInPlayerReorder: false,
   allowInPlayerSelect: false,
   activeAttribute: undefined,
-  metadata: undefined,
+  //  Nested Configurator
+  nestedAttributeAddress: undefined,
+  nestedAttributes: undefined,
 };
 
 const { actions, reducer } = createSlice({
   name: 'threekit',
   initialState,
   reducers: {
-    setLoaded: (state, _) => {
-      state.loaded = true;
+    //  Loading Trackers
+    setThreekitLoaded: (state, _) => {
+      state.isThreekitLoaded = true;
       state.isPlayerLoading = true;
-    },
-    setInternalAttributesState: (state, action) => {
-      state.attributes = Object.assign({}, state.attributes, action.payload);
-    },
-    updateLanguageState: (state, action) => {
-      state.language = action.payload;
     },
     setPlayerLoading: (state, action) => {
       state.isPlayerLoading = action.payload;
     },
-    setAllowInPlayerReorder: (state, action) => {
-      state.allowInPlayerReorder = !!action.payload;
-    },
-    setAllowInPlayerSelect: (state, action) => {
-      state.allowInPlayerSelect = !!action.payload;
-    },
-    setActiveAttribute: (state, action) => {
-      state.activeAttribute = action.payload;
-    },
+    //  Intialized Item's Metadata
     setMetadata: (state, action) => {
       state.metadata = action.payload;
+    },
+    //  Attributes
+    setInternalAttributesState: (state, action) => {
+      state.attributes = Object.assign({}, state.attributes, action.payload);
+    },
+    //  Language
+    updateLanguageState: (state, action) => {
+      state.language = action.payload;
+    },
+    //  Ordinal Configurators
+    setAllowInPlayerReorder: (state, action) => {
+      state.allowInPlayerReorder = action.payload;
+    },
+    setAllowInPlayerSelect: (state, action) => {
+      state.allowInPlayerSelect = action.payload;
+    },
+    //  Nested Attribute
+    setNestedAttributesState: (state, action) => {
+      state.nestedAttributes = action.payload;
+    },
+    setNestedAttributeAddressState: (state, action) => {
+      state.nestedAttributeAddress = action.payload;
     },
   },
 });
 
+/*****************************************************
+ * Actions
+ ****************************************************/
+
+//  Actions to be used only internally
 const {
   setInternalAttributesState,
   updateLanguageState,
   setPlayerLoading,
   setMetadata,
+  setNestedAttributesState,
+  setNestedAttributeAddressState,
 } = actions;
+
+//  Actions to be used only internally and externally
 export const {
-  setLoaded,
+  setThreekitLoaded,
   setAllowInPlayerReorder,
   setAllowInPlayerSelect,
-  setActiveAttribute,
 } = actions;
 
-const getInternalAttributeState = (state) => {
-  if (!state.threekit.loaded) return undefined;
-  return state.threekit.attributes;
-};
+/*****************************************************
+ * Standard Selectors
+ ****************************************************/
 
-export const isThreekitLoaded = (state) => state.threekit.loaded;
+//  Loading Trackers
+export const isThreekitLoaded = (state) => state.threekit.isThreekitLoaded;
 
 export const isPlayerLoading = (state) => state.threekit.isPlayerLoading;
+
+//  Metadata
+export const getMetadata = (state) => state.threekit.metadata;
 
 //  Languages and Translations
 export const getLanguage = (state) => state.threekit.language;
 
 export const getLanguageOptions = (state) => {
-  if (!state.threekit.loaded) return [];
+  if (!state.threekit.isThreekitLoaded) return [];
   return window.threekit.controller.getLanguageOptions();
 };
 
-export const setLanguage = (language) => async (dispatch) => {
-  if (!language) return;
-  const updatedState = window.threekit.controller.setLanguage(language);
-  dispatch(updateLanguageState(language));
-  dispatch(setInternalAttributesState(updatedState));
+//  Attributes
+const getInternalAttributeState = (state) => {
+  if (!state.threekit.isThreekitLoaded) return undefined;
+  return state.threekit.attributes;
 };
 
-//  Metadata
-export const getMetadata = (state) => state.threekit.metadata;
+//  Nested Configurations
+export const getNestedAttributes = (state) => state.threekit.nestedAttributes;
 
-//  Attribute + Configuration state
-export const getActiveAttribute = (state) => state.threekit.activeAttribute;
+export const getNestedAttributesAddress = (state) =>
+  state.threekit.nestedAttributeAddress;
 
+/*****************************************************
+ * Complex Selectors
+ ****************************************************/
+
+//  Attributes
 export const getAttributes = (attribute) =>
   createSelector(getInternalAttributeState, (attributes) => {
     if (!attributes) return undefined;
@@ -106,31 +147,16 @@ export const getAttributes = (attribute) =>
     return attributes[attribute] || undefined;
   });
 
-export const setConfiguration = (config) => async (dispatch, getState) => {
-  let preppedConfig = config;
-  if (HOOKS.onSetConfiguration) {
-    const { threekit } = getState();
-    preppedConfig = await HOOKS.onSetConfiguration(
-      preppedConfig,
-      threekit.attributes
-    );
-    if (!preppedConfig) return;
-  }
-  dispatch(setPlayerLoading(true));
-  const updatedState = await window.threekit.controller.setAttributesState(
-    preppedConfig
-  );
-  dispatch(setInternalAttributesState(updatedState));
-  dispatch(setPlayerLoading(false));
-};
+export const getAttributesArray = (arrayLabel) =>
+  createSelector(getInternalAttributeState, (attributes) => {
+    if (!attributes || !arrayLabel?.length) return undefined;
+    const attributesRegExp = new RegExp(`${arrayLabel} [0-9]`);
+    return filterAttributesArray(attributesRegExp, attributes);
+  });
 
-export const stepHistory = (step) => async (dispatch) => {
-  if (isNaN(step) || step === 0) return;
-  const updatedState = await window.threekit.controller.stepHistoryPosition(
-    step
-  );
-  if (updatedState) dispatch(setInternalAttributesState(updatedState));
-};
+/*****************************************************
+ * Complex Actions
+ ****************************************************/
 
 export const launch = (config) => async (dispatch) => {
   await Controller.launch({
@@ -142,7 +168,7 @@ export const launch = (config) => async (dispatch) => {
     additionalTools: config.additionalTools,
   });
 
-  dispatch(setLoaded(true));
+  dispatch(setThreekitLoaded(true));
   dispatch(setPlayerLoading(false));
 
   dispatch(setMetadata(window.threekit.configurator.getMetadata()));
@@ -164,13 +190,79 @@ export const launch = (config) => async (dispatch) => {
   );
 };
 
-export const getAttributesArray = (arrayLabel) =>
-  createSelector(getInternalAttributeState, (attributes) => {
-    if (!attributes || !arrayLabel?.length) return undefined;
-    const attributesRegExp = new RegExp(`${arrayLabel} [0-9]`);
-    return filterAttributesArray(attributesRegExp, attributes);
-  });
+//  History
+export const stepHistory = (step) => async (dispatch) => {
+  if (isNaN(step) || step === 0) return;
+  const updatedState = await window.threekit.controller.stepHistoryPosition(
+    step
+  );
+  if (updatedState) dispatch(setInternalAttributesState(updatedState));
+};
 
+//  Language
+export const setLanguage = (language) => async (dispatch) => {
+  if (!language) return;
+  const updatedState = window.threekit.controller.setLanguage(language);
+  dispatch(updateLanguageState(language));
+  dispatch(setInternalAttributesState(updatedState));
+};
+
+//  Configurator
+export const setConfiguration = (config) => async (dispatch, getState) => {
+  let preppedConfig = config;
+  if (HOOKS.onSetConfiguration) {
+    const { threekit } = getState();
+    preppedConfig = await HOOKS.onSetConfiguration(
+      preppedConfig,
+      threekit.attributes
+    );
+    if (!preppedConfig) return;
+  }
+  dispatch(setPlayerLoading(true));
+  const updatedState = await window.threekit.controller.setAttributesState(
+    preppedConfig
+  );
+  dispatch(setInternalAttributesState(updatedState));
+  dispatch(setPlayerLoading(false));
+};
+
+export const setNestedAttributeAddress = (address) => (dispatch, getState) => {
+  if (!address?.length) {
+    dispatch(setNestedAttributeAddressState(undefined));
+    dispatch(setNestedAttributesState(undefined));
+    return;
+  }
+
+  const addr = Array.isArray(address) ? address : [address];
+  const { threekit } = getState();
+
+  if (JSON.stringify(addr) === JSON.stringify(threekit.nestedAttributeAddress))
+    return;
+
+  dispatch(setNestedAttributeAddressState(addr));
+  const nestedAttributes = window.threekit.controller.getNestedAttributeState(
+    address
+  );
+  dispatch(setNestedAttributesState(nestedAttributes));
+};
+
+export const setNestedConfiguration = (configuration) => async (
+  dispatch,
+  getState
+) => {
+  if (!configuration || !Object.keys(configuration)?.length) return;
+  const { threekit } = getState();
+
+  if (!threekit.nestedAttributeAddress?.length) return;
+
+  const updatedNestedAttributes = await window.threekit.controller.setNestedAttributeState(
+    threekit.nestedAttributeAddress,
+    configuration
+  );
+  dispatch(setNestedAttributesState(updatedNestedAttributes));
+};
+
+//  Ordinal Configurator (Psuedo-Array type attribute)
 export const addItemToArray = (arrayLabel) => (
   assetId,
   addToIdx = undefined

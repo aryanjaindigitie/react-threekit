@@ -12,11 +12,13 @@ import {
   addItemToArray,
   deleteItemFromArray,
   moveItemWithinArray,
-  getActiveAttribute,
-  setActiveAttribute,
   getMetadata,
+  getNestedAttributesAddress,
+  setNestedAttributeAddress,
+  getNestedAttributes,
+  setNestedConfiguration,
 } from '../store/threekit';
-import { ATTRIBUTE_TYPES } from '../../constants';
+import { selectionToConfiguration } from '../../utils';
 
 export const useAttributes = () => {
   const dispatch = useDispatch();
@@ -39,31 +41,47 @@ export const useAttribute = (attribute) => {
     return [undefined, undefined];
 
   const handleChange = (value) => {
-    if (!value) return;
-    let updated;
-    switch (attributeData.type) {
-      case ATTRIBUTE_TYPES.number:
-        updated = value;
-        break;
-      case ATTRIBUTE_TYPES.asset:
-        if (!isNaN(value))
-          updated = { assetId: attributeData.values[value].assetId };
-        else updated = { assetId: value };
-        break;
-      case ATTRIBUTE_TYPES.string:
-        if (!isNaN(value)) updated = attributeData.values[value].value;
-        else updated = value;
-        break;
-      case ATTRIBUTE_TYPES.color:
-        updated = value;
-        break;
-      default:
-        updated = value;
-    }
-    dispatch(setConfiguration({ [attribute]: updated }));
+    const preppedValue = selectionToConfiguration(value, attributeData.type);
+    if (!preppedValue) return;
+    dispatch(setConfiguration({ [attribute]: preppedValue }));
   };
 
   return [attributeData, handleChange];
+};
+
+export const useNestedConfigurator = () => {
+  const dispatch = useDispatch();
+  const attributes = useSelector(getNestedAttributes);
+  const address = useSelector(getNestedAttributesAddress);
+
+  const handleSelectAttribute = (address) =>
+    dispatch(setNestedAttributeAddress(address));
+
+  const handleSetConfiguration = (attribute, value) => {
+    const preppedValue = selectionToConfiguration(value, attributeData.type);
+    if (!preppedValue) return;
+    dispatch(setNestedConfiguration({ [attribute]: preppedValue }));
+  };
+
+  return [attributes, address, handleSelectAttribute, handleSetConfiguration];
+};
+
+export const useNestedAttribute = (attributeName) => {
+  const dispatch = useDispatch();
+  const attributes = useSelector(getNestedAttributes);
+
+  if (!attributes?.length) return [undefined, undefined];
+
+  const attribute = attributes.find((el) => el.name === attributeName);
+  if (!attribute) return [undefined, undefined];
+
+  const handleChange = (value) => {
+    const preppedValue = selectionToConfiguration(value, attribute.type);
+    if (!preppedValue) return;
+    dispatch(setNestedConfiguration({ [attributeName]: preppedValue }));
+  };
+
+  return [attribute, handleChange];
 };
 
 export const useAttributesArray = (arrayLabel) => {
@@ -111,21 +129,6 @@ export const useLanguages = () => {
 export const useThreekitInitStatus = () => useSelector(isThreekitLoaded);
 
 export const usePlayerLoadingStatus = () => useSelector(isPlayerLoading);
-
-export const useActiveAttribute = () => {
-  const dispatch = useDispatch();
-  const attributesData = useSelector(getAttributes());
-  const activeAttribute = useSelector(getActiveAttribute);
-
-  const handleSetActiveAttribute = (val) =>
-    dispatch(setActiveAttribute(val) || undefined);
-
-  return [
-    activeAttribute,
-    attributesData?.[activeAttribute] || undefined,
-    handleSetActiveAttribute,
-  ];
-};
 
 export const useZoom = () => {
   const zoomIn = (step) =>

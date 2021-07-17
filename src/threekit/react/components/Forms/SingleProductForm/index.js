@@ -1,13 +1,20 @@
 import React from 'react';
 import { Wrapper, Title } from './singleProductForm.styles';
-import componentOptions from '../../InputComponents/componentOptions';
+import { componentOptions } from '../../InputComponents';
 import container from './singleProductFormContainer';
 
 export const SingleProductForm = (props) => {
-  const { title, attributes, attributeComponents } = Object.assign(
-    { attributes: [], attributeComponents: {} },
+  const {
+    title,
+    attributes,
+    attributeComponents,
+    nestedConfigurator,
+  } = Object.assign(
+    { attributes: [], attributeComponents: {}, nestedConfigurator: false },
     props
   );
+
+  if (!attributes) return null;
 
   return (
     <Wrapper>
@@ -22,7 +29,13 @@ export const SingleProductForm = (props) => {
           );
           return null;
         }
-        return <Component key={i} attribute={attr.name} />;
+        return (
+          <Component
+            key={i}
+            nestedConfigurator={nestedConfigurator}
+            attribute={attr.name}
+          />
+        );
       })}
     </Wrapper>
   );

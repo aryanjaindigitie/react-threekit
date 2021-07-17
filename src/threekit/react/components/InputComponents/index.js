@@ -1,3 +1,5 @@
+import { ATTRIBUTE_TYPES } from '../../../constants';
+
 //  container for Asset type Attributes
 import container from './attributeContainer';
 //  Asset type attributes
@@ -26,3 +28,22 @@ export const OrdinalFloorPlanner = container(OrdinalFloorPlannerComponent);
 OrdinalFloorPlanner.Item = OrdinalFloorPlannerComponent.Item;
 // export const Switch = container(SwitchComponent);
 // export const TextInput = container(TextInputComponent);
+
+export const componentOptions = {
+  [ATTRIBUTE_TYPES.asset]: {
+    //  First option is default
+    dropdown: Dropdown,
+    cards: Cards,
+    swatch: Swatch,
+    buttons: Buttons,
+    'radio-buttons': RadioButtons,
+    'color-swatch': ColorSwatch,
+  },
+  [ATTRIBUTE_TYPES.string]: {
+    //  First option is default
+    dropdown: Dropdown,
+  },
+  [ATTRIBUTE_TYPES.color]: {
+    'color-picker': ColorPicker,
+  },
+};

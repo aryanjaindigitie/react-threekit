@@ -11,7 +11,7 @@ import {
 } from '../../components';
 import { ordinalAttributesToolkit } from '../../../tools';
 import { ATTRIBUTE_TYPES } from '../../../constants';
-import componentOptions from '../../components/InputComponents/componentOptions';
+import { componentOptions } from '../../components/InputComponents';
 
 export const OrdinalComponent = (props) => {
   const {

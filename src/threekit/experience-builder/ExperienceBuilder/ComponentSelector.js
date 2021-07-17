@@ -10,7 +10,7 @@ import {
 import { message } from 'antd';
 import experiences from '../experiences';
 import { ATTRIBUTE_TYPES } from '../../constants';
-import componentOptions from '../../react/components/InputComponents/componentOptions';
+import { componentOptions } from '../../react/components/InputComponents';
 
 const DISPLAY_OPTIONS = {
   modal: 'modal',
@@ -20,7 +20,6 @@ const DISPLAY_OPTIONS = {
 export const ComponentSelector = (props) => {
   const { creds, experience, item } = props;
   const { authToken, threekitEnv, orgId } = creds;
-  // const []
   const [attributes, setAttributes] = useState(
     item.attributes.map((el) => ({
       name: el.name,
