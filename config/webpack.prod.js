@@ -8,12 +8,12 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const safePostCssParser = require('postcss-safe-parser');
 const Dotenv = require('dotenv-webpack');
 
-module.exports = (buildType) =>
+module.exports = ({ buildType, customAppIndexJs }) =>
   merge(commonConfig, {
     devtool: false,
     mode: 'production',
     bail: true,
-    entry: [paths.appIndexJs],
+    entry: [customAppIndexJs || paths.appIndexJs],
     optimization: {
       minimize: true,
       minimizer: [

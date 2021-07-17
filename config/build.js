@@ -22,10 +22,20 @@ const measureFileSizesBeforeBuild =
 
 const argv = process.argv.slice(2);
 const compactBuild = argv.indexOf('--compact') !== -1;
+const experienceBuilder = argv.indexOf('--experience-builder') !== -1;
 
-console.log('Creating an optimized production build...');
+if (experienceBuilder)
+  console.log(
+    'Creating an optimized production build of the experience builder...'
+  );
+else console.log('Creating an optimized production build...');
 
-const config = configFactory(compactBuild ? 'compact' : 'default');
+const buildType = compactBuild ? 'compact' : 'default';
+const customAppIndexJs = experienceBuilder
+  ? paths.experienceBuilderIndexJs
+  : undefined;
+
+const config = configFactory({ buildType, customAppIndexJs });
 const compiler = webpack(config);
 
 function copyPublicFolder() {
