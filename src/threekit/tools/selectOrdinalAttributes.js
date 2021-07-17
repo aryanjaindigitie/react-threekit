@@ -7,9 +7,9 @@ import { findHitNode } from './tools-utils';
 import { attrNameToRegExp } from '../utils';
 
 const selectOrdinalAttributes = (arrayLabel, config) => {
-  const { active } = Object.assign({ active: false }, config);
+  const { active } = Object.assign({ active: true }, config);
 
-  store.dispatch(setAllowInPlayerSelect(!active));
+  store.dispatch(setAllowInPlayerSelect(active));
 
   // Sets up our attributes names RegExp
   const attributesRegExp = attrNameToRegExp(arrayLabel);

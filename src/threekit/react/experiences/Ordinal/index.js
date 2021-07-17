@@ -43,7 +43,7 @@ export const OrdinalComponent = (props) => {
           </FormWrapper>
         </TwoCol>
       </Wrapper>
-      <SingleProductForm activeAttribute={true} display={display} />
+      <SingleProductForm nestedConfigurator display={display} />
     </>
   );
 };
@@ -51,9 +51,7 @@ export const OrdinalComponent = (props) => {
 export const Ordinal = (props) => {
   const { attributesArrayLabel } = props;
   if (!attributesArrayLabel) return null;
-  const additionalTools = [
-    ordinalAttributesToolkit(attributesArrayLabel, { active: true }),
-  ];
+  const additionalTools = [ordinalAttributesToolkit(attributesArrayLabel)];
   const config = Object.assign({}, props.config, {
     additionalTools,
   });

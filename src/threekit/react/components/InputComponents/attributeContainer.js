@@ -8,11 +8,7 @@ import {
   useNestedAttribute,
 } from '../../hooks';
 import { ATTRIBUTE_TYPES } from '../../../constants';
-import {
-  inflateRgb,
-  deflateRgb,
-  prepAttributeForComponent,
-} from '../../../utils';
+import { prepAttributeForComponent } from '../../../utils';
 
 const attributesArrayContainer = (WrappedComponent, props) => {
   const {

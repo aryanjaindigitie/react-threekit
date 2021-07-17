@@ -43,17 +43,13 @@ export const Cards = (props) => {
       ) : null}
       <Content className={`${className}-content`}>
         {options.map((option, i) => {
-          const { name, description, value, Icon, imageUrl, price } = option;
+          const { name, description, value, imageUrl, price } = option;
           const cls = `${className}-option option-${i + 1} ${value}`;
           return (
             <ItemWrapper key={i} className={cls}>
               <ItemContent>
                 <div className={`${cls} option-icon`}>
-                  {Icon ? (
-                    Icon
-                  ) : imageUrl ? (
-                    <img alt={name} src={imageUrl} />
-                  ) : null}
+                  {imageUrl ? <img alt={name} src={imageUrl} /> : null}
                 </div>
 
                 <Main>

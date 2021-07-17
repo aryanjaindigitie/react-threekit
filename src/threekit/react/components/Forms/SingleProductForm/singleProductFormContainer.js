@@ -15,7 +15,11 @@ const attributesContainer = (WrappedComponent, props) => {
 };
 
 const nestedAttributesContainer = (WrappedComponent, props) => {
-  const [nestedAttributes, address] = useNestedConfigurator();
+  const [
+    nestedAttributes,
+    address,
+    setNestedAttributeAddress,
+  ] = useNestedConfigurator();
 
   const DisplayComponent =
     props.display === 'drawer'
@@ -36,7 +40,7 @@ const nestedAttributesContainer = (WrappedComponent, props) => {
   return (
     <DisplayComponent
       show={!!address}
-      handleClose={() => handleSetActiveAttribute(undefined)}
+      handleClose={() => setNestedAttributeAddress(undefined)}
     >
       <WrappedComponent
         {...props}

@@ -3,7 +3,7 @@ import { setConfiguration } from '../react/store/threekit';
 import { TK_PLAYER_DIV_ID } from '../constants';
 
 const selectAttribute = (config) => {
-  const { active } = Object.assign({ active: false }, config);
+  const { active } = Object.assign({ active: true }, config);
 
   // Sets up our attributes names RegExp
   let htmlEl;

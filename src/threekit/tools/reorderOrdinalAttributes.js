@@ -55,11 +55,11 @@ const styles = `
 
 const reorderOrdinalAttributes = (arrayLabel, config) => {
   const { active, allowDelete } = Object.assign(
-    { active: false, allowDelete: true },
+    { active: true, allowDelete: true },
     config
   );
 
-  store.dispatch(setAllowInPlayerReorder(!active));
+  store.dispatch(setAllowInPlayerReorder(active));
 
   let selectedComponent;
   let deleteButtonCreated = false;
