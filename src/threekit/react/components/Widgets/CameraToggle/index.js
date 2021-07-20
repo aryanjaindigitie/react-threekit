@@ -1,28 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Wrapper } from './redo.styles';
-import { RedoOutlined } from '@ant-design/icons';
-import container from './redoContainer';
+import { Wrapper } from './cameraToggle.styles';
+import { CameraOutlined } from '@ant-design/icons';
+import container from './cameraToggleContainer';
 import defaultClassName from '../classNames';
 
-export const Redo = (props) => {
+export const CameraToggle = (props) => {
   const { handleClick, className: classNameRaw } = props;
 
-  let className = `${defaultClassName}-redo`;
+  let className = `${defaultClassName}-camera-toggle`;
   if (classNameRaw?.length) className += ` ${classNameRaw}`;
 
   return (
     <Wrapper className={className} onClick={handleClick}>
       <div>
-        <RedoOutlined />
+        <CameraOutlined />
       </div>
     </Wrapper>
   );
 };
 
-Redo.propTypes = {
+CameraToggle.propTypes = {
   /**
-   * Function to execute when user clicks 'Redo'.
+   * Function to execute when user clicks 'CameraToggle'.
    */
   handleClick: PropTypes.func,
   /**
@@ -30,9 +30,9 @@ Redo.propTypes = {
    */ className: PropTypes.string,
 };
 
-Redo.defaultProps = {
+CameraToggle.defaultProps = {
   handleClick: undefined,
   classname: '',
 };
 
-export default container(Redo);
+export default container(CameraToggle);

@@ -20,7 +20,7 @@ export const Undo = (props) => {
   );
 };
 
-Undo.PropTypes = {
+Undo.propTypes = {
   /**
    * Function to execute when user clicks 'Undo'.
    */
