@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wrapper, TitleWrapper, FormWrapper } from './minimalist.styles';
+import { Wrapper, TitleWrapper, FormWrapper } from './singleProduct.styles';
 
 import {
   Player,
@@ -22,7 +22,7 @@ const formsComponents = {
   [FORMS.stepped]: SingleProductSteppedForm,
 };
 
-export const MinimalistComponent = (props) => {
+export const SingleProductComponent = (props) => {
   const { form, attributeComponents } = Object.assign(
     { form: FORMS.basic, attributeComponents: {} },
     props
@@ -48,7 +48,7 @@ export const MinimalistComponent = (props) => {
   );
 };
 
-export const Minimalist = (props) => {
+export const SingleProduct = (props) => {
   const additionalTools = [];
   if (props.interactive) additionalTools.push(selectAttribute());
   else if (props.animated) additionalTools.push(animateItem());
@@ -57,9 +57,9 @@ export const Minimalist = (props) => {
   });
   return (
     <ThreekitProvider config={config}>
-      <MinimalistComponent {...props} />
+      <SingleProductComponent {...props} />
     </ThreekitProvider>
   );
 };
 
-export default Minimalist;
+export default SingleProduct;

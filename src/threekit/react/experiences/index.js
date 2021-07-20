@@ -1,4 +1,4 @@
-import Minimalist from './Minimalist';
+import SingleProduct from './SingleProduct';
 import Ordinal from './Ordinal';
 
-export { Minimalist, Ordinal };
+export { SingleProduct, Ordinal };
