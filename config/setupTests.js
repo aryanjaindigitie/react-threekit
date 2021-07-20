@@ -1,12 +1,4 @@
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
-import { connect } from '../src/threekit/api/connect';
-import dotenv from 'dotenv';
-dotenv.config({ path: '.env.test' });
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
-connect({
-  assetId: process.env.THREEKIT_ASSET_ID,
-  orgId: process.env.THREEKIT_ORG_ID,
-  authToken: process.env.THREEKIT_AUTH_TOKEN,
-  threekitEnv: process.env.THREEKIT_ENV,
-});
+Enzyme.configure({ adapter: new Adapter() });

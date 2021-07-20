@@ -1,71 +1,34 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 const paths = require('./paths');
+const babelConfig = require('./babel.config');
 
-// Common configuration, with extensions in webpack.dev.js and webpack.prod.js.
 module.exports = {
-  bail: true,
-  context: __dirname,
-  // entry: ['../src/index.js'],
-  // output: {
-  //   path: paths.appBuild,
-  //   filename: 'threekit-embed.js',
-  //   chunkFilename: '[id].js',
-  //   publicPath: '',
-  // },
-  resolve: {
-    extensions: ['.js', '.jsx'],
+  // Where files should be sent once they are bundled
+  output: {
+    path: paths.appBuild,
+    filename: 'threekit.bundle.js',
   },
+  // webpack 5 comes with devServer which loads in development mode
   devServer: {
-    writeToDisk: true,
+    port: 3000,
+    watchContentBase: true,
   },
+  // Rules of how webpack will take our files, complie & bundle them for the browser
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
+        exclude: /nodeModules/,
         loader: 'babel-loader',
         options: {
           babelrc: false,
-          presets: ['@babel/preset-env', '@babel/preset-react'],
-          plugins: [
-            '@babel/plugin-transform-runtime',
-            '@babel/plugin-proposal-class-properties',
-            ['import', { libraryName: 'antd', style: true }],
-          ],
+          presets: babelConfig.presets,
         },
-        exclude: /node_modules/,
       },
       {
         test: /\.css$/,
-        use: [
-          { loader: 'style-loader' },
-          {
-            loader: 'css-loader',
-            options: {
-              modules: {
-                localIdentName: '[name]__[local]___[hash:base64:5]',
-              },
-            },
-          },
-        ],
-      },
-      {
-        test: /\.less$/,
-        include: /node_modules/,
-        use: [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader: 'css-loader',
-          },
-          {
-            loader: 'less-loader',
-            options: {
-              lessOptions: {
-                javascriptEnabled: true,
-              },
-            },
-          },
-        ],
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|jpe?g|gif|webp|svg|ico)$/,
@@ -73,10 +36,24 @@ module.exports = {
       },
     ],
   },
-  performance: {
-    hints: 'warning',
-    maxAssetSize: 1024 * 300,
-    maxEntrypointSize: 1024 * 300,
-  },
-  plugins: [],
+  plugins: [
+    //  Loads in the .env file as well as CLI variables
+    new Dotenv({ path: './.env', systemvars: true }),
+    new HtmlWebpackPlugin({
+      template: paths.appIndexHtml,
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true,
+      },
+    }),
+  ],
 };
