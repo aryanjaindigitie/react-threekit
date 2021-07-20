@@ -26,7 +26,7 @@ export const Credentials = (props) => {
         />
       </div>
       <div>
-        Auth Token (localhost:3000):
+        Auth Token:
         <Input
           value={authToken}
           onChange={(e) => setAuthToken(e.target.value)}
