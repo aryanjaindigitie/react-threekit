@@ -173,8 +173,8 @@ export const prepAttributeForComponent = (attribute, { metadataKeys }) => {
     options = attribute.values
       ? attribute.values.map((el) => prepCatalogItem(el))
       : [];
-  } else if (attributeData.type === ATTRIBUTE_TYPES.color)
-    selected = inflateRgb(attributeData.value);
+  } else if (attribute.type === ATTRIBUTE_TYPES.color)
+    selected = inflateRgb(attribute.value);
 
   function prepCatalogItem(item) {
     return Object.assign(
