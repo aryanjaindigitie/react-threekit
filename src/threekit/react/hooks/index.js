@@ -19,6 +19,7 @@ import {
   setNestedConfiguration,
 } from '../store/threekit';
 import { selectionToConfiguration } from '../../utils';
+import { ATTRIBUTES_RESERVED } from '../../constants';
 
 export const useAttributes = () => {
   const dispatch = useDispatch();
@@ -149,7 +150,26 @@ export const useMetadata = () => {
   return metadata;
 };
 
-export const useCamera = () => {
-  const dispatch = useDispatch();
-  const cameraData = useSelector(getAttributes('_camera'));
+export const useCamera = (cameraAttribute = ATTRIBUTES_RESERVED.camera) =>
+  useAttribute(cameraAttribute);
+
+export const useCameraToggle = (
+  cameraAttribute = ATTRIBUTES_RESERVED.camera
+) => {
+  const [camera, setCamera] = useAttribute(cameraAttribute);
+
+  const handleToggle = (step = 1) => {
+    const selectedIdx = camera.values.findIndex(
+      (el) => el.assetId === camera.value.assetId
+    );
+    let nextIdx;
+    if (selectedIdx === -1) nextIdx = 0;
+    else if (selectedIdx === camera.values.length - 1 && !!step) nextIdx = 0;
+    else if (selectedIdx === 0 && !step) nextIdx = camera.values.length - 1;
+    else nextIdx = selectedIdx + step;
+
+    setCamera(camera.values[nextIdx].assetId);
+  };
+
+  return [camera, handleToggle];
 };
