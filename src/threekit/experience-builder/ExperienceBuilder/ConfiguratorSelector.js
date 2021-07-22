@@ -38,8 +38,8 @@ export const ConfiguratorSelector = (props) => {
         <CatalogTableRow onClick={() => handleClick(el)}>
           <div>{el.name}</div>
           <div>
-            {el.tags.map((tag) => (
-              <Tag>{tag}</Tag>
+            {el.tags.map((tag, j) => (
+              <Tag key={j}>{tag}</Tag>
             ))}
           </div>
         </CatalogTableRow>

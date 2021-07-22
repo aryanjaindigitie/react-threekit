@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-// import DemoProject from './demo-project';
-import Welcome from './Welcome';
+import ExperienceBuilder from './threekit/experience-builder/App';
 
-ReactDOM.render(<Welcome />, document.getElementById('root'));
+ReactDOM.render(<ExperienceBuilder />, document.getElementById('root'));
