@@ -6,7 +6,11 @@ import {
   getCameraPosition,
   setCameraPosition,
 } from '../utils';
-import { ATTRIBUTES_RESERVED, SNAPSHOT_OUTPUTS } from '../constants';
+import {
+  ATTRIBUTES_RESERVED,
+  SNAPSHOT_OUTPUTS,
+  DEFAULT_PLAYER_CONFIG,
+} from '../constants';
 import { dataURItoBlob } from '../utils';
 
 class Controller {
@@ -53,13 +57,15 @@ class Controller {
     });
   }
 
-  static initThreekit({ el, authToken, assetId, orgId }) {
+  static initThreekit({ el, authToken, assetId, orgId, showShare, showAR }) {
     return new Promise(async (resolve) => {
       const player = await window.threekitPlayer({
         el,
         authToken,
         assetId,
         orgId,
+        showShare,
+        showAR,
       });
       const configurator = await player.getConfigurator();
       resolve({ player, configurator });
@@ -91,6 +97,8 @@ class Controller {
     return new Promise(async (resolve) => {
       if (window.threekit) resolve();
       const {
+        showShare,
+        showAR,
         threekitEnv: threekitEnvRaw,
         authToken,
         assetId,
@@ -98,7 +106,7 @@ class Controller {
         elementId,
         language,
         additionalTools,
-      } = config;
+      } = Object.assign(DEFAULT_PLAYER_CONFIG, config);
 
       //  Connection
       connection.connect({
@@ -120,7 +128,7 @@ class Controller {
         { player, configurator },
         [translations, translationErrors],
       ] = await Promise.all([
-        this.initThreekit({ el, authToken, orgId, assetId }),
+        this.initThreekit({ el, authToken, orgId, assetId, showShare, showAR }),
         threekitAPI.products.fetchTranslations(),
       ]);
 
