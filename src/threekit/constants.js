@@ -65,3 +65,9 @@ export const ATTRIBUTE_TYPES = {
   arraySelector: 'AttributesArraySelector',
   arrayEditor: 'AttributesArrayEditor',
 };
+
+export const SNAPSHOT_OUTPUTS = {
+  data: 'data',
+  url: 'url',
+  download: 'download',
+};
