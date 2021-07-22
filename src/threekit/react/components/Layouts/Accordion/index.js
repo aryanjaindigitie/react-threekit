@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Wrapper } from './accordian.styles';
+import { Wrapper } from './accordion.styles';
 import { DownOutlined } from '@ant-design/icons';
 
-const AccordianItem = (props) => {
+const AccordionItem = (props) => {
   const { selected, handleClick, label, children } = props;
   return (
     <Wrapper selected={selected}>
@@ -25,7 +25,7 @@ const AccordianItem = (props) => {
   );
 };
 
-export const Accordian = ({ children }) => {
+export const Accordion = ({ children }) => {
   const [selected, setSelected] = useState(undefined);
 
   const handleSelect = (idx) => setSelected(idx === selected ? undefined : idx);
@@ -33,7 +33,7 @@ export const Accordian = ({ children }) => {
   if (!children) return null;
 
   return React.Children.map(children, (child, idx) => {
-    if (child.type !== AccordianItem) return null;
+    if (child.type !== AccordionItem) return null;
     return React.cloneElement(child, {
       selected: selected === idx,
       handleClick: () => handleSelect(idx),
@@ -41,6 +41,6 @@ export const Accordian = ({ children }) => {
   });
 };
 
-Accordian.AccordianItem = AccordianItem;
+Accordion.AccordionItem = AccordionItem;
 
-export default Accordian;
+export default Accordion;

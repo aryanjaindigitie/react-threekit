@@ -1,7 +1,7 @@
-import Accordian from './Accordian';
+import Accordion from './Accordion';
 import Tabs from './Tabs';
 import Modal from './Modal';
 import Drawer from './Drawer';
 import TwoCol from './TwoCol';
 
-export { Accordian, Tabs, Modal, Drawer, TwoCol };
+export { Accordion, Tabs, Modal, Drawer, TwoCol };
