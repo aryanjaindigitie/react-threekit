@@ -260,3 +260,14 @@ export const dataURItoBlob = (dataURI) => {
 
   return new Blob([ia], { type: mimeString });
 };
+
+export const copyToClipboard = (data) => {
+  if (!data) return;
+  const str = typeof data === 'string' ? data : JSON.stringify(data);
+  const el = document.createElement('textarea');
+  el.value = str;
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+};
