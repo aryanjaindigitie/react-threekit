@@ -26,7 +26,7 @@ export const RadioButtons = (props) => {
 
   let className = `${defaultClassName}-color-swatch`;
   if (attribute) className += ` ${regularToKebabCase(attribute)}`;
-  else if (title) className += ` ${regularToKebabCase(attribute)}`;
+  else if (title) className += ` ${regularToKebabCase(title)}`;
   if (classNameRaw) className += ` ${classNameRaw}`;
   className += ` ${classPrefix}-color-swatch`;
 

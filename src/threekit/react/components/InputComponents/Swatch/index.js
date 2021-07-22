@@ -24,7 +24,7 @@ export const Swatch = (props) => {
 
   let className = `${defaultClassName}-swatch`;
   if (attribute) className += ` ${regularToKebabCase(attribute)}`;
-  else if (title) className += ` ${regularToKebabCase(attribute)}`;
+  else if (title) className += ` ${regularToKebabCase(title)}`;
   if (classNameRaw) className += ` ${classNameRaw}`;
   className += ` ${classPrefix}-swatch`;
 
