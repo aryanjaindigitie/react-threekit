@@ -8,6 +8,7 @@ import {
 } from '../utils';
 import {
   ATTRIBUTES_RESERVED,
+  SNAPSHOT_FORMATS,
   SNAPSHOT_OUTPUTS,
   DEFAULT_PLAYER_CONFIG,
 } from '../constants';
@@ -409,10 +410,11 @@ class Controller {
 
   takeSnapshots(cameras, config) {
     return new Promise(async (resolve) => {
-      const { filename, size, cameraAttribute, output } = Object.assign(
+      const { filename, size, format, cameraAttribute, output } = Object.assign(
         {
           filename: 'snapshot.png',
           size: { width: 1920, height: 1080 },
+          format: SNAPSHOT_FORMATS.png,
           cameraAttribute: ATTRIBUTES_RESERVED.camera,
           output: SNAPSHOT_OUTPUTS.data,
         },
@@ -460,6 +462,7 @@ class Controller {
       function getSnapshot() {
         return window.threekit.player.snapshotAsync({
           size,
+          mimeType: `image/${SNAPSHOT_FORMATS[format]}`,
         });
       }
 

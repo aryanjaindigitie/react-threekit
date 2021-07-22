@@ -7,7 +7,8 @@ const snapshotContainer = (WrappedComponent) => (props) => {
       {},
       props.config,
       { output: props.output || SNAPSHOT_OUTPUTS.download },
-      props.filename ? { filename: props.filename } : {}
+      props.filename ? { filename: props.filename } : {},
+      props.format ? { format: props.format } : {}
     );
     window.threekit.controller.takeSnapshots(props.cameras, config);
   };

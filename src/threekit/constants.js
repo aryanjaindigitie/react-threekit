@@ -71,6 +71,11 @@ export const ATTRIBUTE_TYPES = {
   arrayEditor: 'AttributesArrayEditor',
 };
 
+export const SNAPSHOT_FORMATS = {
+  png: 'png',
+  jpeg: 'jpeg',
+};
+
 export const SNAPSHOT_OUTPUTS = {
   data: 'data',
   url: 'url',
