@@ -4,6 +4,8 @@ export const DEFAULT_CLASS_NAME = `threekit-react`;
 
 export const CLASS_NAME_PREFIX = `tk`;
 
+export const DEFAULT_SERVER_URL = `https://localhost:5000`;
+
 export const DEFAULT_PLAYER_CONFIG = {
   showShare: false,
   showAR: false,

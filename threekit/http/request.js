@@ -1,16 +1,57 @@
 import axios from 'axios';
 import connection from '../connection';
+import { objectToQueryStr } from '../utils';
 
-const objectToQueryStr = (obj) => {
-  if (!obj || !Object.keys(obj).length) return '';
-  return Object.entries(obj).reduce((output, [key, val], i) => {
-    if (i) output += '&';
-    if (val !== undefined) output += `${key}=${val}`;
-    return output;
-  }, '?');
+export const serverRequest = (request) => {
+  if (!request) throw new Error('Request missing');
+  const { url, method, data, params, config } = Object.assign(
+    {
+      method: 'GET',
+      params: {},
+    },
+    request
+  );
+
+  const { serverUrl } = connection.getConnection();
+
+  const urlRaw = `${serverUrl}${url}`;
+
+  const query = objectToQueryStr(Object.assign({}, params));
+  let urlPrepped = `${urlRaw}${query}`;
+
+  return new Promise(async (resolve) => {
+    let response;
+    try {
+      switch (method) {
+        case 'GET':
+        case 'get':
+          response = await axios.get(urlPrepped, config);
+          break;
+        case 'POST':
+        case 'post':
+          response = await axios.post(urlPrepped, data, config);
+          break;
+        case 'put':
+        case 'PUT':
+          response = await axios.put(urlPrepped, data, config);
+          break;
+        case 'delete':
+        case 'DELETE':
+          response = await axios.delete(urlPrepped, config);
+        default:
+          return resolve([
+            undefined,
+            { message: `Unknown request method: ${method}` },
+          ]);
+      }
+      resolve([response.data, undefined]);
+    } catch (e) {
+      resolve([undefined, e]);
+    }
+  });
 };
 
-const threekitRequest = (request) => {
+export const threekitRequest = (request) => {
   if (!request) throw new Error('Request missing');
   const {
     url,
@@ -94,5 +135,3 @@ const threekitRequest = (request) => {
     }
   });
 };
-
-export default threekitRequest;

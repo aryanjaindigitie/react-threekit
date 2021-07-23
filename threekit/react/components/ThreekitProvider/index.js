@@ -20,6 +20,7 @@ const App = (props) => {
         orgId: props.orgId || process.env.THREEKIT_ORG_ID,
         authToken: props.authToken || process.env.THREEKIT_AUTH_TOKEN,
         threekitEnv: props.threekitEnv || process.env.THREEKIT_ENV,
+        serverUrl: props.serverUrl || process.env.SERVER_URL,
       },
       props.config
     );

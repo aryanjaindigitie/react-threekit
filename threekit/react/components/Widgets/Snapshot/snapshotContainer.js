@@ -2,7 +2,7 @@ import React from 'react';
 import { SNAPSHOT_OUTPUTS } from '../../../../constants';
 
 const snapshotContainer = (WrappedComponent) => (props) => {
-  const handleClick = () => {
+  const handleClick = async () => {
     const config = Object.assign(
       {},
       props.config,
@@ -10,7 +10,11 @@ const snapshotContainer = (WrappedComponent) => (props) => {
       props.filename ? { filename: props.filename } : {},
       props.format ? { format: props.format } : {}
     );
-    window.threekit.controller.takeSnapshots(props.cameras, config);
+    const savedSnapshots = await window.threekit.controller.takeSnapshots(
+      props.cameras,
+      config
+    );
+    console.log(savedSnapshots);
   };
 
   return <WrappedComponent {...props} handleClick={handleClick} />;

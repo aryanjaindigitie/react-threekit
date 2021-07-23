@@ -170,6 +170,7 @@ export const launch = (config) => async (dispatch) => {
       language: config.language,
       additionalTools: config.additionalTools,
       initialConfiguration: config.initialConfiguration,
+      serverUrl: config.serverUrl,
     },
     'showShare' in config ? { showShare: config.showShare } : undefined,
     'showAR' in config ? { showAR: config.showAR } : undefined
