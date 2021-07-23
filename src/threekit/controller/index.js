@@ -1,6 +1,18 @@
 import connection from '../connection';
 import threekitAPI from '../api';
-import { shallowCompare, deepCompare } from '../utils';
+import {
+  shallowCompare,
+  deepCompare,
+  getCameraPosition,
+  setCameraPosition,
+} from '../utils';
+import {
+  ATTRIBUTES_RESERVED,
+  SNAPSHOT_FORMATS,
+  SNAPSHOT_OUTPUTS,
+  DEFAULT_PLAYER_CONFIG,
+} from '../constants';
+import { dataURItoBlob } from '../utils';
 
 class Controller {
   constructor({ player, configurator, translations, language, toolsList }) {
@@ -46,13 +58,15 @@ class Controller {
     });
   }
 
-  static initThreekit({ el, authToken, assetId, orgId }) {
+  static initThreekit({ el, authToken, assetId, orgId, showShare, showAR }) {
     return new Promise(async (resolve) => {
       const player = await window.threekitPlayer({
         el,
         authToken,
         assetId,
         orgId,
+        showShare,
+        showAR,
       });
       const configurator = await player.getConfigurator();
       resolve({ player, configurator });
@@ -84,6 +98,8 @@ class Controller {
     return new Promise(async (resolve) => {
       if (window.threekit) resolve();
       const {
+        showShare,
+        showAR,
         threekitEnv: threekitEnvRaw,
         authToken,
         assetId,
@@ -91,7 +107,7 @@ class Controller {
         elementId,
         language,
         additionalTools,
-      } = config;
+      } = Object.assign(DEFAULT_PLAYER_CONFIG, config);
 
       //  Connection
       connection.connect({
@@ -113,7 +129,7 @@ class Controller {
         { player, configurator },
         [translations, translationErrors],
       ] = await Promise.all([
-        this.initThreekit({ el, authToken, orgId, assetId }),
+        this.initThreekit({ el, authToken, orgId, assetId, showShare, showAR }),
         threekitAPI.products.fetchTranslations(),
       ]);
 
@@ -345,7 +361,7 @@ class Controller {
       thumbnail,
     } = Object.assign(
       {
-        configuration: window.threekit.configurator.getConfiguration(),
+        configuration: undefined,
         productVersion: 'v1',
         metadata: {},
         thumbnail: '',
@@ -358,9 +374,22 @@ class Controller {
       },
       options
     );
+
+    let preppedConfiguration = configuration;
+    if (!preppedConfiguration) {
+      preppedConfiguration = window.threekit.configurator.getConfiguration();
+      preppedConfiguration = Object.entries(preppedConfiguration).reduce(
+        (output, [attrName, attrData]) =>
+          attrName.startsWith('_')
+            ? output
+            : Object.assign(output, { [attrName]: attrData }),
+        {}
+      );
+    }
+
     return threekitAPI.configurations.save({
       assetId: window.threekit.player.assetId,
-      configuration,
+      configuration: preppedConfiguration,
       productVersion,
       metadata,
       thumbnail,
@@ -376,6 +405,110 @@ class Controller {
       if (error) throw new Error(error);
       await this.setAttributesState(config.variant);
       resolve();
+    });
+  }
+
+  takeSnapshots(cameras, config) {
+    return new Promise(async (resolve) => {
+      const { filename, size, format, cameraAttribute, output } = Object.assign(
+        {
+          filename: 'snapshot.png',
+          size: { width: 1920, height: 1080 },
+          format: SNAPSHOT_FORMATS.png,
+          cameraAttribute: ATTRIBUTES_RESERVED.camera,
+          output: SNAPSHOT_OUTPUTS.data,
+        },
+        config
+      );
+      let snapshots;
+
+      if (!cameras) {
+        const snapshotStr = await getSnapshot();
+        snapshots = [dataURItoBlob(snapshotStr)];
+      } else {
+        const camerasList = Array.isArray(cameras) ? cameras : [cameras];
+        const cameraPosition = getCameraPosition(window.threekit.player.camera);
+        const activeCamera = window.threekit.configurator.getConfiguration()
+          ._camera;
+
+        snapshots = await getSnapshots(camerasList);
+        await window.threekit.configurator.setConfiguration({
+          [cameraAttribute]: activeCamera,
+        });
+        setCameraPosition(window.threekit.player.camera, cameraPosition);
+      }
+
+      switch (output) {
+        case SNAPSHOT_OUTPUTS.url:
+          const responses = await Promise.all(
+            snapshots.map((snapshotBlob) =>
+              saveSnapshotToPlatform(snapshotBlob)
+            )
+          );
+          resolve(responses);
+          break;
+        case SNAPSHOT_OUTPUTS.download:
+          snapshots.forEach((snapshotBlob) =>
+            downloadSnapshotBlob(snapshotBlob, filename)
+          );
+          resolve();
+          break;
+        case SNAPSHOT_OUTPUTS.url:
+        default:
+          resolve(snapshots);
+          break;
+      }
+
+      function getSnapshot() {
+        return window.threekit.player.snapshotAsync({
+          size,
+          mimeType: `image/${SNAPSHOT_FORMATS[format]}`,
+        });
+      }
+
+      function getSnapshots(cameras) {
+        let snapshots = [];
+        return cameras.reduce((snapshotPromise, camera) => {
+          return snapshotPromise.then(
+            () =>
+              new Promise(async (resolve) => {
+                await window.threekit.configurator.setConfiguration({
+                  [cameraAttribute]: camera,
+                });
+                const snapshotStr = await getSnapshot();
+                const snapshotBlob = dataURItoBlob(snapshotStr);
+                snapshots.push(snapshotBlob);
+                resolve(snapshots);
+              })
+          );
+        }, Promise.resolve());
+      }
+
+      async function saveSnapshotToPlatform(snapshotBlob) {
+        console.log('feature is not currently implmented');
+        // const response = await threekitAPI.files.save(snapshotBlob);
+      }
+
+      async function downloadSnapshotBlob(
+        snapshotBlobl,
+        filename = 'snapshot.png'
+      ) {
+        const blobUrl = URL.createObjectURL(snapshotBlobl);
+        const link = document.createElement('a'); // Or maybe get it from the current document
+        link.href = blobUrl;
+        link.download = filename;
+        const clickHandler = () => {
+          setTimeout(() => {
+            URL.revokeObjectURL(blobUrl);
+            link.removeEventListener('click', clickHandler);
+          }, 150);
+        };
+
+        link.addEventListener('click', clickHandler);
+        document.body.appendChild(link);
+
+        link.click();
+      }
     });
   }
 

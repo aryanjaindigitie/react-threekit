@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Accordian } from './index';
-const { AccordianItem } = Accordian;
+import { Accordion } from './index';
+const { AccordionItem } = Accordion;
 
 const items = [
   {
@@ -15,18 +15,18 @@ const items = [
 ];
 
 export default {
-  title: 'Layouts/Accordian',
-  component: Accordian,
+  title: 'Layouts/Accordion',
+  component: Accordion,
 };
 
 const Template = (args) => (
-  <Accordian {...args}>
+  <Accordion {...args}>
     {items.map((el, i) => (
-      <AccordianItem key={i} label={el.label}>
+      <AccordionItem key={i} label={el.label}>
         {el.content}
-      </AccordianItem>
+      </AccordionItem>
     ))}
-  </Accordian>
+  </Accordion>
 );
 
 export const Primary = Template.bind({});

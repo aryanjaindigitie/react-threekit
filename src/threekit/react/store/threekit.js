@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 import { filterAttributesArray } from '../../utils';
 import { arrayValidator } from '../validators';
 import { message } from 'antd';
+import { DEFAULT_PLAYER_CONFIG } from '../../constants';
 
 /*****************************************************
  * Custom Hooks & Middlerware
@@ -159,14 +160,22 @@ export const getAttributesArray = (arrayLabel) =>
  ****************************************************/
 
 export const launch = (config) => async (dispatch) => {
-  await Controller.launch({
-    orgId: config.orgId,
-    authToken: config.authToken,
-    threekitEnv: config.threekitEnv,
-    assetId: config.assetId,
-    language: config.language,
-    additionalTools: config.additionalTools,
-  });
+  const launchConfig = Object.assign(
+    DEFAULT_PLAYER_CONFIG,
+    {
+      orgId: config.orgId,
+      authToken: config.authToken,
+      threekitEnv: config.threekitEnv,
+      assetId: config.assetId,
+      language: config.language,
+      additionalTools: config.additionalTools,
+      initialConfiguration: config.initialConfiguration,
+    },
+    'showShare' in config ? { showShare: config.showShare } : undefined,
+    'showAR' in config ? { showAR: config.showAR } : undefined
+  );
+
+  await Controller.launch(launchConfig);
 
   dispatch(setThreekitLoaded(true));
   dispatch(setPlayerLoading(false));

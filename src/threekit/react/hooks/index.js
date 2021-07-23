@@ -159,8 +159,9 @@ export const useCameraToggle = (
   const [camera, setCamera] = useAttribute(cameraAttribute);
 
   const handleToggle = (step = 1) => {
+    const value = camera.value?.assetId || camera.value;
     const selectedIdx = camera.values.findIndex(
-      (el) => el.assetId === camera.value.assetId
+      (el) => el.assetId === value || el.value === value
     );
     let nextIdx;
     if (selectedIdx === -1) nextIdx = 0;
@@ -168,7 +169,7 @@ export const useCameraToggle = (
     else if (selectedIdx === 0 && !step) nextIdx = camera.values.length - 1;
     else nextIdx = selectedIdx + step;
 
-    setCamera(camera.values[nextIdx].assetId);
+    setCamera(camera.values[nextIdx]?.assetId || camera.values[nextIdx].value);
   };
 
   return [camera, handleToggle];

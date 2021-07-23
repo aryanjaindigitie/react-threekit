@@ -1,0 +1,19 @@
+#   React build stage
+FROM node:15-alpine3.10 as react-build
+
+WORKDIR /app
+
+COPY ./package.json /app/
+
+RUN yarn install
+
+COPY ./ /app/
+
+ARG THREEKIT_ENV
+ARG THREEKIT_ASSET_ID
+ARG THREEKIT_ORG_ID
+ARG THREEKIT_AUTH_TOKEN
+
+RUN yarn build
+
+CMD yarn serve

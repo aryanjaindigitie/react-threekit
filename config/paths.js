@@ -7,12 +7,7 @@ const appPublic = path.join(appRoot, 'public');
 const appIndexHtml = path.join(appPublic, 'index.html');
 const appSrc = path.join(__dirname, '..', 'src');
 const appIndexJs = path.join(appSrc, 'index.js');
-const threekitRoot = path.join(appSrc, 'threekit');
-const experienceBuilderIndexJs = path.join(
-  threekitRoot,
-  'experience-builder',
-  'index.js'
-);
+
 const appYarnLock = path.join(appSrc, 'yarn.lock');
 const nodeModules = path.join(appSrc, 'node_modules');
 
@@ -23,7 +18,6 @@ module.exports = {
   appIndexHtml,
   appSrc,
   appIndexJs,
-  experienceBuilderIndexJs,
   appYarnLock,
   nodeModules,
 };

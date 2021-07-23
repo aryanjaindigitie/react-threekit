@@ -11,24 +11,18 @@ import { ThemeProvider } from 'styled-components';
 import theme from '../../theme';
 
 const App = (props) => {
-  const assetId = props.assetId || process.env.THREEKIT_ASSET_ID;
-  const orgId = props.orgId || process.env.THREEKIT_ORG_ID;
-  const authToken = props.authToken || process.env.THREEKIT_AUTH_TOKEN;
-  const threekitEnv = props.threekitEnv || process.env.THREEKIT_ENV;
-
-  const config = Object.assign(
-    {},
-    {
-      assetId,
-      orgId,
-      authToken,
-      threekitEnv,
-    },
-    props.config
-  );
-
   const dispatch = useDispatch();
+
   useEffect(() => {
+    const config = Object.assign(
+      {
+        assetId: props.assetId || process.env.THREEKIT_ASSET_ID,
+        orgId: props.orgId || process.env.THREEKIT_ORG_ID,
+        authToken: props.authToken || process.env.THREEKIT_AUTH_TOKEN,
+        threekitEnv: props.threekitEnv || process.env.THREEKIT_ENV,
+      },
+      props.config
+    );
     (() => dispatch(launch(config)))();
     return;
   }, []);
