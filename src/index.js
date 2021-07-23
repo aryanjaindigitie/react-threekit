@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-// import DemoProject from './demo-project';
-import Welcome from './Welcome';
+import DemoProject from './demo-project';
 
-ReactDOM.render(<Welcome />, document.getElementById('root'));
+ReactDOM.render(<DemoProject />, document.getElementById('root'));

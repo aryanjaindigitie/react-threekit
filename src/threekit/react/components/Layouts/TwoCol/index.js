@@ -5,8 +5,8 @@ export const TwoCol = (props) => {
   const { columnGap, leftSize, rightSize, className } = Object.assign(
     {
       columnGap: '15px',
-      leftSize: 'auto',
-      rightSize: 'max-content',
+      leftSize: '60%',
+      rightSize: '40%',
       className: '',
     },
     props
