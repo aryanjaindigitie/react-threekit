@@ -1,6 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import DemoProject from './demo-project';
+import App from './App';
+import { ThreekitProvider } from '../threekit';
 
-ReactDOM.render(<DemoProject />, document.getElementById('root'));
+const Project = () => {
+  return (
+    <ThreekitProvider>
+      <App />
+    </ThreekitProvider>
+  );
+};
+
+ReactDOM.render(<Project />, document.getElementById('root'));
