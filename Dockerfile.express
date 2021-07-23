@@ -3,11 +3,14 @@ FROM node:15-alpine3.10 as react-build
 
 WORKDIR /app
 
-COPY ../package.json /app/
+COPY ./package.json /app/
 
 RUN yarn install
 
-COPY ../ /app/
+COPY ./ /app/
+
+ARG THREEKIT_ORG_ID
+ARG THREEKIT_AUTH_TOKEN
 
 RUN yarn build
 
