@@ -1,5 +1,14 @@
 import { METADATA_RESERVED, ATTRIBUTE_TYPES } from './constants';
 
+export const objectToQueryStr = (obj) => {
+  if (!obj || !Object.keys(obj).length) return '';
+  return Object.entries(obj).reduce((output, [key, val], i) => {
+    if (i) output += '&';
+    if (val !== undefined) output += `${key}=${val}`;
+    return output;
+  }, '?');
+};
+
 const isObject = (object) => object != null && typeof object === 'object';
 
 export const shallowCompare = (value1, value2) => {

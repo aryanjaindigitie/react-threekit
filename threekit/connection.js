@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { DEFAULT_SERVER_URL } from './constants';
 
 const connectionObj = Joi.object({
   authToken: Joi.string()
@@ -9,6 +10,7 @@ const connectionObj = Joi.object({
   orgId: Joi.string().required(),
   assetId: Joi.string(),
   threekitEnv: Joi.string(),
+  serverUrl: Joi.string().allow(''),
 });
 
 const checkRuntime = new Function(
@@ -22,6 +24,7 @@ class ThreekitConnection {
     this._assetId;
     this._threekitEnv = 'https://admin.threekit.com';
     this._isServerEnv = !checkRuntime();
+    this._serverUrl = DEFAULT_SERVER_URL;
   }
 
   async connect(config) {
@@ -31,6 +34,7 @@ class ThreekitConnection {
     this._orgId = value.orgId;
     this._assetId = value.assetId;
     if (value.threekitEnv) this._threekitEnv = `https://${value.threekitEnv}`;
+    if (value.serverUrl?.length) this._serverUrl = value.serverUrl;
   }
 
   getConnection() {
@@ -42,6 +46,7 @@ class ThreekitConnection {
       assetId: this._assetId,
       threekitEnv: this._threekitEnv,
       isServerEnv: this._isServerEnv,
+      serverUrl: this._serverUrl,
     };
   }
 }

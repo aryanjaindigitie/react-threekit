@@ -8,7 +8,7 @@ import defaultClassName from '../classNames';
 export const Snapshot = (props) => {
   const { handleClick, className: classNameRaw } = props;
 
-  let className = `${defaultClassName}-undo`;
+  let className = `${defaultClassName}-snapshot`;
   if (classNameRaw?.length) className += ` ${classNameRaw}`;
 
   return (

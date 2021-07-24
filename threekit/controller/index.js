@@ -5,6 +5,7 @@ import {
   deepCompare,
   getCameraPosition,
   setCameraPosition,
+  regularToKebabCase,
 } from '../utils';
 import {
   ATTRIBUTES_RESERVED,
@@ -104,6 +105,7 @@ class Controller {
         authToken,
         assetId,
         orgId,
+        serverUrl,
         elementId,
         language,
         additionalTools,
@@ -115,6 +117,7 @@ class Controller {
         orgId,
         assetId,
         threekitEnv: threekitEnvRaw,
+        serverUrl,
       });
       const { threekitEnv } = connection.getConnection();
 
@@ -412,7 +415,7 @@ class Controller {
     return new Promise(async (resolve) => {
       const { filename, size, format, cameraAttribute, output } = Object.assign(
         {
-          filename: 'snapshot.png',
+          filename: `snapshot`,
           size: { width: 1920, height: 1080 },
           format: SNAPSHOT_FORMATS.png,
           cameraAttribute: ATTRIBUTES_RESERVED.camera,
@@ -440,20 +443,29 @@ class Controller {
 
       switch (output) {
         case SNAPSHOT_OUTPUTS.url:
-          const responses = await Promise.all(
-            snapshots.map((snapshotBlob) =>
-              saveSnapshotToPlatform(snapshotBlob)
-            )
+          const savedSnapshots = await Promise.all(
+            snapshots.map((snapshotBlob, idx) => {
+              const cameraName = regularToKebabCase(cameras[idx]);
+              return saveSnapshotToPlatform(
+                snapshotBlob,
+                `${filename}-${cameraName}.${format}`
+              );
+            })
           );
-          resolve(responses);
+          resolve(savedSnapshots);
           break;
         case SNAPSHOT_OUTPUTS.download:
-          snapshots.forEach((snapshotBlob) =>
-            downloadSnapshotBlob(snapshotBlob, filename)
-          );
+          snapshots.forEach((snapshotBlob, idx) => {
+            const cameraName = regularToKebabCase(cameras[idx]);
+            downloadSnapshotBlob(
+              snapshotBlob,
+              `${filename}-${cameraName}.${format}`
+            );
+          });
           resolve();
           break;
-        case SNAPSHOT_OUTPUTS.url:
+        case SNAPSHOT_OUTPUTS.data:
+          break;
         default:
           resolve(snapshots);
           break;
@@ -484,15 +496,21 @@ class Controller {
         }, Promise.resolve());
       }
 
-      async function saveSnapshotToPlatform(snapshotBlob) {
-        console.log('feature is not currently implmented');
-        // const response = await threekitAPI.files.save(snapshotBlob);
+      async function saveSnapshotToPlatform(snapshotBlob, filename) {
+        return new Promise(async (resolve) => {
+          const [response, error] = await threekitAPI.server.saveSnapshot(
+            snapshotBlob,
+            filename
+          );
+          if (error) {
+            console.log(error);
+            return resolve(undefined);
+          }
+          resolve(response.url);
+        });
       }
 
-      async function downloadSnapshotBlob(
-        snapshotBlobl,
-        filename = 'snapshot.png'
-      ) {
+      async function downloadSnapshotBlob(snapshotBlobl, filename) {
         const blobUrl = URL.createObjectURL(snapshotBlobl);
         const link = document.createElement('a'); // Or maybe get it from the current document
         link.href = blobUrl;

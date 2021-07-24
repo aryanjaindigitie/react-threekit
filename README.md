@@ -42,7 +42,7 @@ The Threekit React Project is a feature-rich React Development Kit, containing a
       - [Await Loader](#await-loader)
       - [Attribute](#attribute)
     - [Layouts](#layouts)
-      - [Accordian](#accordian)
+      - [Accordion](#accordion)
       - [Tabs](#tabs)
       - [Modal](#modal)
       - [Drawer](#drawer)
@@ -491,20 +491,20 @@ The `<Attribute>` is a component-oriented way to use the [`useAttribute`](#use-a
 
 Layouts are organizational components that we can use to organize the layout of our configurator. Layouts are especially useful in breaking up large sets of attributes or information into smaller, more digestible portions.
 
-#### Accordian
+#### Accordion
 
 ```javascript
 import { components } from './threekit';
 
-const { Accordian } = components;
-const { AccordianItem } = Accordian;
+const { Accordion } = components;
+const { AccordionItem } = Accordion;
 
 const App = () => {
   return (
-    <Accordian>
-      <AccordianItem label="Section 1 Heading">Section 1 content</AccordianItem>
-      <AccordianItem label="Section 2 Heading">Section 2 content</AccordianItem>
-    </Accordian>
+    <Accordion>
+      <AccordionItem label="Section 1 Heading">Section 1 content</AccordionItem>
+      <AccordionItem label="Section 2 Heading">Section 2 content</AccordionItem>
+    </Accordion>
   );
 };
 ```
