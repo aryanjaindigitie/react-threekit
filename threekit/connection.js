@@ -10,7 +10,7 @@ const connectionObj = Joi.object({
   orgId: Joi.string().required(),
   assetId: Joi.string(),
   threekitEnv: Joi.string(),
-  serverUrl: Joi.string(),
+  serverUrl: Joi.string().allow(''),
 });
 
 const checkRuntime = new Function(
@@ -34,7 +34,7 @@ class ThreekitConnection {
     this._orgId = value.orgId;
     this._assetId = value.assetId;
     if (value.threekitEnv) this._threekitEnv = `https://${value.threekitEnv}`;
-    if (value.serverUrl) this._serverUrl = value.serverUrl;
+    if (value.serverUrl?.length) this._serverUrl = value.serverUrl;
   }
 
   getConnection() {

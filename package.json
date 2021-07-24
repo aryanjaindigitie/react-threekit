@@ -8,7 +8,7 @@
     "build-react": "node config/build",
     "build-server": "node config/build-server",
     "build-storybook": "build-storybook",
-    "build": "yarn build-react & yarn build-server",
+    "build": "yarn build-react && yarn build-server",
     "serve": "node server-build",
     "storybook": "start-storybook -p 6006 -c config/storybook",
     "test": "jest --runInBand --notify --config config/jest.config.js"
