@@ -1,9 +1,9 @@
 import React from 'react';
-import { useMetadata } from '../../../hooks';
+import { useName } from '../../../hooks';
 
 const titleContainer = (WrappedComponent) => (props) => {
-  const metadata = useMetadata();
-  const title = props.title || props.value || metadata?._title;
+  const name = useName();
+  const title = props.title || name;
   if (!title) return null;
   return <WrappedComponent title={title} />;
 };

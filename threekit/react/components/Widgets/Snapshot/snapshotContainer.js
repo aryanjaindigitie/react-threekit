@@ -1,20 +1,20 @@
 import React from 'react';
 import { SNAPSHOT_OUTPUTS } from '../../../../constants';
+import { useThreekitInitStatus } from '../../../hooks';
 
 const snapshotContainer = (WrappedComponent) => (props) => {
-  const handleClick = async () => {
+  const hasLoaded = useThreekitInitStatus();
+  if (!hasLoaded) return null;
+
+  const handleClick = () => {
     const config = Object.assign(
       {},
       props.config,
-      { output: props.output || SNAPSHOT_OUTPUTS.download },
+      { output: SNAPSHOT_OUTPUTS.download },
       props.filename ? { filename: props.filename } : {},
       props.format ? { format: props.format } : {}
     );
-    const savedSnapshots = await window.threekit.controller.takeSnapshots(
-      props.cameras,
-      config
-    );
-    console.log(savedSnapshots);
+    window.threekit.controller.takeSnapshots(props.cameras, config);
   };
 
   return <WrappedComponent {...props} handleClick={handleClick} />;

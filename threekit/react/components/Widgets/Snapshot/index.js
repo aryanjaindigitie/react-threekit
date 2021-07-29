@@ -4,6 +4,7 @@ import { Wrapper } from './snapshot.styles';
 import { FileImageOutlined } from '@ant-design/icons';
 import container from './snapshotContainer';
 import defaultClassName from '../classNames';
+import { SNAPSHOT_OUTPUTS, SNAPSHOT_FORMATS } from '../../../../constants';
 
 export const Snapshot = (props) => {
   const { handleClick, className: classNameRaw } = props;
@@ -22,11 +23,15 @@ export const Snapshot = (props) => {
 
 Snapshot.propTypes = {
   /**
-   * The required output for download
+   * The name you would like to give the file (Do not include the format).
    */
-  Output: PropTypes.string,
+  filename: PropTypes.string,
   /**
    * Function to execute when user clicks 'Snapshot'.
+   */
+  format: PropTypes.string,
+  /**
+   * Format you would like the image to be saved in
    */
   handleClick: PropTypes.func,
   /**
@@ -37,6 +42,9 @@ Snapshot.propTypes = {
 Snapshot.defaultProps = {
   handleClick: undefined,
   classname: '',
+  filename: 'snapshot',
+  output: SNAPSHOT_OUTPUTS.download,
+  format: SNAPSHOT_FORMATS.png,
 };
 
 export default container(Snapshot);
