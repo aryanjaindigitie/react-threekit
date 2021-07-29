@@ -14,17 +14,19 @@ const App = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const config = Object.assign(
-      {
-        assetId: props.assetId || process.env.THREEKIT_ASSET_ID,
-        orgId: props.orgId || process.env.THREEKIT_ORG_ID,
-        authToken: props.authToken || process.env.THREEKIT_AUTH_TOKEN,
-        threekitEnv: props.threekitEnv || process.env.THREEKIT_ENV,
-        serverUrl: props.serverUrl || process.env.SERVER_URL,
-      },
-      props.config
-    );
-    (() => dispatch(launch(config)))();
+    (() => {
+      const config = Object.assign(
+        {
+          assetId: props.assetId || process.env.THREEKIT_ASSET_ID,
+          orgId: props.orgId || process.env.THREEKIT_ORG_ID,
+          authToken: props.authToken || process.env.THREEKIT_AUTH_TOKEN,
+          threekitEnv: props.threekitEnv || process.env.THREEKIT_ENV,
+          serverUrl: props.serverUrl || process.env.SERVER_URL,
+        },
+        props.config
+      );
+      dispatch(launch(config));
+    })();
     return;
   }, []);
 
