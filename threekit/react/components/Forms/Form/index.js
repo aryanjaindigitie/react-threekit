@@ -1,16 +1,23 @@
 import React from 'react';
-import { Wrapper, Title } from './singleProductForm.styles';
+import { Wrapper } from './form.styles';
+import { Title, Description } from '../../Display';
 import { componentOptions } from '../../InputComponents';
-import container from './singleProductFormContainer';
+import container from './formContainer';
 
-export const SingleProductForm = (props) => {
+export const Form = (props) => {
   const {
     title,
     attributes,
     attributeComponents,
     nestedConfigurator,
   } = Object.assign(
-    { attributes: [], attributeComponents: {}, nestedConfigurator: false },
+    {
+      title: undefined,
+      description: undefined,
+      attributes: [],
+      attributeComponents: {},
+      nestedConfigurator: false,
+    },
     props
   );
 
@@ -18,7 +25,12 @@ export const SingleProductForm = (props) => {
 
   return (
     <Wrapper>
-      {title ? <Title>{title}</Title> : null}
+      {!nestedConfigurator ? (
+        <>
+          <Title title={title} />
+          <Description description={description} />
+        </>
+      ) : null}
       {attributes.map((attr, i) => {
         const Component = Object.values(componentOptions[attr.type] || {})[
           attributeComponents[attr.name] || 0
@@ -41,4 +53,4 @@ export const SingleProductForm = (props) => {
   );
 };
 
-export default container(SingleProductForm);
+export default container(Form);

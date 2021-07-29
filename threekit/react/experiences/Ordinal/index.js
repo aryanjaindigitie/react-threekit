@@ -7,7 +7,7 @@ import {
   Title,
   Description,
   Buttons,
-  SingleProductForm,
+  Form,
 } from '../../components';
 import { ordinalAttributesToolkit } from '../../../tools';
 import { ATTRIBUTE_TYPES } from '../../../constants';
@@ -43,7 +43,7 @@ export const OrdinalComponent = (props) => {
           </FormWrapper>
         </TwoCol>
       </Wrapper>
-      <SingleProductForm nestedConfigurator display={display} />
+      <Form nestedConfigurator display={display} />
     </>
   );
 };

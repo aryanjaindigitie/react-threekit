@@ -1,34 +1,39 @@
 import React from 'react';
 import {
   Wrapper,
-  Title,
   Content,
   ActionArea,
   StepButtons,
-} from './singleProductSteppedForm.styles';
+} from './steppedForm.styles';
 import { componentOptions } from '../../InputComponents';
-import container from './singleProductSteppedFormContainer';
+import container from './steppedFormContainer';
 import { ArrowRightOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { Title, Description } from '../../Display';
 
-export const SingleProductSteppedForm = (props) => {
+export const SteppedForm = (props) => {
   const {
     title,
+    description,
     attributes,
     hasPrevious,
     hasNext,
     handleClickNext,
     handleClickPrevious,
     attributeComponents,
-  } = Object.assign({ attributes: [], attributeComponents: {} }, props);
+  } = Object.assign(
+    {
+      title: undefined,
+      description: undefined,
+      attributes: [],
+      attributeComponents: {},
+    },
+    props
+  );
 
   return (
     <Wrapper>
-      {title ? (
-        <Title>
-          {title}
-          <hr />
-        </Title>
-      ) : null}
+      {title !== false ? <Title title={title} /> : null}
+      {description !== false ? <Description description={description} /> : null}
       <Content>
         {attributes.map((attr, i) => {
           const Component = Object.values(componentOptions[attr.type])[
@@ -63,4 +68,4 @@ export const SingleProductSteppedForm = (props) => {
   );
 };
 
-export default container(SingleProductSteppedForm);
+export default container(SteppedForm);

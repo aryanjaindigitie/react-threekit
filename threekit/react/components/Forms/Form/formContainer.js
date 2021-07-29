@@ -51,10 +51,10 @@ const nestedAttributesContainer = (WrappedComponent, props) => {
   );
 };
 
-const basicFormContainer = (WrappedComponent) => (props) => {
+const formContainer = (WrappedComponent) => (props) => {
   if (props.nestedConfigurator)
     return nestedAttributesContainer(WrappedComponent, props);
   return attributesContainer(WrappedComponent, props);
 };
 
-export default basicFormContainer;
+export default formContainer;

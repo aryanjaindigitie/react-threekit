@@ -1,4 +1,4 @@
-import SingleProductForm from './SingleProductForm';
-import SingleProductSteppedForm from './SingleProductSteppedForm';
+import Form from './Form';
+import SteppedForm from './SteppedForm';
 
-export { SingleProductForm, SingleProductSteppedForm };
+export { Form, SteppedForm };
