@@ -330,6 +330,10 @@ class Controller {
     });
   }
 
+  getName() {
+    return this._player.scene.get(this._player.instanceId).name;
+  }
+
   addTool(tools) {
     if (!tools) return;
     const toolsToAdd = Array.isArray(tools) ? tools : [tools];

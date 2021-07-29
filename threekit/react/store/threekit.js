@@ -23,6 +23,8 @@ let MIDDLEWARE = {
  ****************************************************/
 
 const initialState = {
+  //  Name of the Intialized Item
+  name: undefined,
   //  Tracks Threekit API initialization status
   isThreekitLoaded: false,
   //  Initialized item's metadata
@@ -53,6 +55,10 @@ const { actions, reducer } = createSlice({
     },
     setPlayerLoading: (state, action) => {
       state.isPlayerLoading = action.payload;
+    },
+    //  Intialized Item's Name
+    setName: (state, action) => {
+      state.name = action.payload;
     },
     //  Intialized Item's Metadata
     setMetadata: (state, action) => {
@@ -92,6 +98,7 @@ const {
   setInternalAttributesState,
   updateLanguageState,
   setPlayerLoading,
+  setName,
   setMetadata,
   setNestedAttributesState,
   setNestedAttributeAddressState,
@@ -112,6 +119,9 @@ export const {
 export const isThreekitLoaded = (state) => state.threekit.isThreekitLoaded;
 
 export const isPlayerLoading = (state) => state.threekit.isPlayerLoading;
+
+//  Initialized item's name
+export const getName = (state) => state.threekit.name;
 
 //  Metadata
 export const getMetadata = (state) => state.threekit.metadata;
@@ -180,6 +190,7 @@ export const launch = (config) => async (dispatch) => {
   dispatch(setThreekitLoaded(true));
   dispatch(setPlayerLoading(false));
 
+  dispatch(setName(window.threekit.controller.getName()));
   dispatch(setMetadata(window.threekit.configurator.getMetadata()));
 
   if (config.hooks) HOOKS = Object.assign(HOOKS, config.hooks);

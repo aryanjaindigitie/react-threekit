@@ -12,6 +12,7 @@ import {
   addItemToArray,
   deleteItemFromArray,
   moveItemWithinArray,
+  getName,
   getMetadata,
   getNestedAttributesAddress,
   setNestedAttributeAddress,
@@ -20,6 +21,8 @@ import {
 } from '../store/threekit';
 import { selectionToConfiguration } from '../../utils';
 import { ATTRIBUTES_RESERVED } from '../../constants';
+
+export const useName = () => useSelector(getName);
 
 export const useAttributes = () => {
   const dispatch = useDispatch();
