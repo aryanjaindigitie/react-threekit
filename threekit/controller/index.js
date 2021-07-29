@@ -12,8 +12,9 @@ import {
   SNAPSHOT_FORMATS,
   SNAPSHOT_OUTPUTS,
   DEFAULT_PLAYER_CONFIG,
+  TK_CONFIG_PARAMS_KEY,
 } from '../constants';
-import { dataURItoBlob } from '../utils';
+import { dataURItoBlob, getParams, objectToQueryStr } from '../utils';
 
 class Controller {
   constructor({ player, configurator, translations, language, toolsList }) {
@@ -31,6 +32,8 @@ class Controller {
     //  Nested Configurators
     this._nestedConfigurator = undefined;
     this._nestedConfiguratorAddress = undefined;
+    //  Resume Link
+    this._savedConfiguration;
   }
 
   static createPlayerLoaderEl() {
@@ -59,16 +62,9 @@ class Controller {
     });
   }
 
-  static initThreekit({ el, authToken, assetId, orgId, showShare, showAR }) {
+  static initThreekit(config) {
     return new Promise(async (resolve) => {
-      const player = await window.threekitPlayer({
-        el,
-        authToken,
-        assetId,
-        orgId,
-        showShare,
-        showAR,
-      });
+      const player = await window.threekitPlayer(config);
       const configurator = await player.getConfigurator();
       resolve({ player, configurator });
     });
@@ -95,19 +91,46 @@ class Controller {
     addPlayer();
   }
 
+  static getConfiguration(configurationId) {
+    return new Promise(async (resolve) => {
+      if (!configurationId) return resolve();
+      const [config, error] = await threekitAPI.configurations.fetch(
+        configurationId
+      );
+      if (error) throw new Error(error);
+      resolve(config);
+    });
+  }
+
   static async launch(config) {
     return new Promise(async (resolve) => {
       if (window.threekit) resolve();
       const {
-        showShare,
-        showAR,
-        threekitEnv: threekitEnvRaw,
+        //  Threekit Player Init
         authToken,
-        assetId,
         orgId,
-        serverUrl,
         elementId,
+        cache,
+        stageId,
+        assetId,
+        showConfigurator,
+        initialConfiguration: initialConfigurationRaw,
+        showLoadingThumbnail,
+        showLoadingProgress,
+        onLoadingProgress,
+        showAR,
+        showShare,
+        locale,
+        allowMobileVerticalOrbit,
+        publishStage,
+        //  Threekit Env (e.g. preview, admin-fts)
+        threekitEnv: threekitEnvRaw,
+        //  Base URL to express.js backend on which the built app is served
+        serverUrl,
+        //  Language to use for the configuration experience where the
+        //  language has to be created and setup on the Threekit Platform
         language,
+        //  Additional tools to attach to the Threekit Player
         additionalTools,
       } = Object.assign(DEFAULT_PLAYER_CONFIG, config);
 
@@ -119,7 +142,26 @@ class Controller {
         threekitEnv: threekitEnvRaw,
         serverUrl,
       });
+
+      //  We use the threekitEnv returned by the connection object
+      //  As it ensures the env base url starts with 'https://'
       const { threekitEnv } = connection.getConnection();
+
+      //  Initial Configuration from Params
+      let initialConfiguration = { ...initialConfigurationRaw };
+      const params = getParams();
+
+      if (params[TK_CONFIG_PARAMS_KEY]?.length) {
+        const configuration = await this.getConfiguration(
+          params[TK_CONFIG_PARAMS_KEY]
+        );
+        if (configuration)
+          initialConfiguration = Object.assign(
+            {},
+            initialConfigurationRaw,
+            configuration.variant
+          );
+      }
 
       //  We get or create the player HTML element
       let el = document.getElementById(elementId);
@@ -132,7 +174,25 @@ class Controller {
         { player, configurator },
         [translations, translationErrors],
       ] = await Promise.all([
-        this.initThreekit({ el, authToken, orgId, assetId, showShare, showAR }),
+        this.initThreekit({
+          el,
+          authToken,
+          orgId,
+          cache,
+          stageId,
+          assetId,
+          threekitEnv,
+          showConfigurator,
+          initialConfiguration,
+          showLoadingThumbnail,
+          showLoadingProgress,
+          onLoadingProgress,
+          showAR,
+          showShare,
+          locale,
+          allowMobileVerticalOrbit,
+          publishStage,
+        }),
         threekitAPI.products.fetchTranslations(),
       ]);
 
@@ -265,6 +325,7 @@ class Controller {
       await this._configurator.setConfiguration(configuration);
       const updatedState = this._configurator.getDisplayAttributes();
       const updatedAttrs = this._compareAttributes(currentState, updatedState);
+      if (updatedAttrs.length) this._savedConfiguration = undefined;
       resolve(updatedAttrs);
     });
   }
@@ -334,6 +395,7 @@ class Controller {
       const addr = Array.isArray(address) ? address : [address];
       const configurator = this._getNestedConfigurator(addr);
       await configurator.setConfiguration(configuration);
+      this._savedConfiguration = undefined;
       resolve(configurator.getDisplayAttributes());
     });
   }
@@ -356,58 +418,72 @@ class Controller {
     });
   }
 
-  saveConfiguration(data = {}, options = {}) {
-    const {
-      configuration,
-      productVersion,
-      metadata,
-      thumbnail,
-    } = Object.assign(
-      {
-        configuration: undefined,
-        productVersion: 'v1',
-        metadata: {},
-        thumbnail: '',
-      },
-      data
-    );
-    const { returnResumeLink } = Object.assign(
-      {
-        returnResumeLink: false,
-      },
-      options
-    );
-
-    let preppedConfiguration = configuration;
-    if (!preppedConfiguration) {
-      preppedConfiguration = window.threekit.configurator.getConfiguration();
-      preppedConfiguration = Object.entries(preppedConfiguration).reduce(
-        (output, [attrName, attrData]) =>
-          attrName.startsWith('_')
-            ? output
-            : Object.assign(output, { [attrName]: attrData }),
-        {}
+  saveConfiguration(data = {}) {
+    return new Promise(async (resolve) => {
+      if (this._savedConfiguration)
+        resolve(JSON.parse(this._savedConfiguration));
+      const {
+        configuration,
+        productVersion,
+        metadata,
+        thumbnail,
+      } = Object.assign(
+        {
+          configuration: undefined,
+          productVersion: 'v1',
+          metadata: {},
+          thumbnail: '',
+        },
+        data
       );
-    }
 
-    return threekitAPI.configurations.save({
-      assetId: window.threekit.player.assetId,
-      configuration: preppedConfiguration,
-      productVersion,
-      metadata,
-      thumbnail,
+      let preppedConfiguration = configuration;
+      if (!preppedConfiguration) {
+        preppedConfiguration = window.threekit.configurator.getConfiguration();
+        preppedConfiguration = Object.entries(preppedConfiguration).reduce(
+          (output, [attrName, attrData]) =>
+            attrName.startsWith('_')
+              ? output
+              : Object.assign(output, { [attrName]: attrData }),
+          {}
+        );
+      }
+
+      const [response, error] = await threekitAPI.configurations.save({
+        assetId: window.threekit.player.assetId,
+        configuration: preppedConfiguration,
+        productVersion,
+        metadata,
+        thumbnail,
+      });
+
+      if (error) resolve(undefined);
+
+      const params = Object.assign(getParams(), {
+        [TK_CONFIG_PARAMS_KEY]: response.shortId,
+      });
+      const url = window.location.href.replace(window.location.search, '');
+
+      const output = {
+        ...response,
+        resumableUrl: `${url}${objectToQueryStr(params)}`,
+      };
+
+      this._savedConfiguration = JSON.stringify(output);
+
+      resolve(output);
     });
   }
 
   resumeConfiguration(configurationId) {
     return new Promise(async (resolve) => {
-      if (!configurationId) return;
-      const [config, error] = await threekitAPI.configurations.fetch(
-        configurationId
-      );
-      if (error) throw new Error(error);
-      await this.setAttributesState(config.variant);
-      resolve();
+      try {
+        const config = await Controller.getConfiguration(configurationId);
+        await this.setAttributesState(config.variant);
+        resolve();
+      } catch (e) {
+        throw new Error(e);
+      }
     });
   }
 

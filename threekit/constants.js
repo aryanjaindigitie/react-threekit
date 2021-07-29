@@ -6,6 +6,8 @@ export const CLASS_NAME_PREFIX = `tk`;
 
 export const DEFAULT_SERVER_URL = `https://localhost:5000`;
 
+export const TK_CONFIG_PARAMS_KEY = 'tkConfigId';
+
 export const DEFAULT_PLAYER_CONFIG = {
   authToken: undefined,
   elementId: undefined,
