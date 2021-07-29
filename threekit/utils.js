@@ -83,6 +83,7 @@ export const getParams = () => {
   let query = window.location.search.substr(1);
   return query.split('&').reduce((output, part) => {
     let [key, value] = part.split('=');
+    if (!key?.length) return output;
     const preppedValue = decodeURIComponent(value);
     output[decodeURIComponent(key)] = IsJsonString(preppedValue)
       ? JSON.parse(preppedValue)
