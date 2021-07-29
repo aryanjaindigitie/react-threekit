@@ -161,19 +161,18 @@ export const getAttributesArray = (arrayLabel) =>
 
 export const launch = (config) => async (dispatch) => {
   const launchConfig = Object.assign(
+    {},
     DEFAULT_PLAYER_CONFIG,
+    Object.keys(DEFAULT_PLAYER_CONFIG).reduce((output, key) => {
+      if (config[key] === undefined) return output;
+      return Object.assign(output, { [key]: config[key] });
+    }, {}),
     {
       orgId: config.orgId,
-      authToken: config.authToken,
       threekitEnv: config.threekitEnv,
-      assetId: config.assetId,
-      language: config.language,
-      additionalTools: config.additionalTools,
-      initialConfiguration: config.initialConfiguration,
       serverUrl: config.serverUrl,
-    },
-    'showShare' in config ? { showShare: config.showShare } : undefined,
-    'showAR' in config ? { showAR: config.showAR } : undefined
+      language: config.language,
+    }
   );
 
   await Controller.launch(launchConfig);

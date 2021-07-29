@@ -7,8 +7,21 @@ export const CLASS_NAME_PREFIX = `tk`;
 export const DEFAULT_SERVER_URL = `https://localhost:5000`;
 
 export const DEFAULT_PLAYER_CONFIG = {
-  showShare: false,
+  authToken: undefined,
+  elementId: undefined,
+  cache: undefined,
+  stageId: undefined,
+  assetId: undefined,
+  showConfigurator: false,
+  initialConfiguration: undefined,
+  showLoadingThumbnail: false,
+  showLoadingProgress: true,
+  onLoadingProgress: undefined,
   showAR: false,
+  showShare: false,
+  locale: undefined,
+  allowMobileVerticalOrbit: false,
+  publishStage: undefined,
 };
 
 const arrayValidations = {

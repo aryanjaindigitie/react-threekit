@@ -6,12 +6,18 @@ import defaultClassName from '../classNames';
 
 export const Zoom = (props) => {
   const {
+    step,
     orientation,
     zoomIn,
     zoomOut,
     className: classNameRaw,
   } = Object.assign(
-    { orientation: 'horizontal', zoomIn: undefined, zoomOut: undefined },
+    {
+      step: 1,
+      orientation: 'horizontal',
+      zoomIn: undefined,
+      zoomOut: undefined,
+    },
     props
   );
 
@@ -20,10 +26,10 @@ export const Zoom = (props) => {
 
   return (
     <Wrapper className={className} orientation={orientation}>
-      <Button className={`${className} zoom-in`} onClick={() => zoomIn()}>
+      <Button className={`${className} zoom-in`} onClick={() => zoomIn(step)}>
         <div>+</div>
       </Button>
-      <Button className={`${className} zoom-out`} onClick={() => zoomOut()}>
+      <Button className={`${className} zoom-out`} onClick={() => zoomOut(step)}>
         <div>-</div>
       </Button>
     </Wrapper>
@@ -31,6 +37,10 @@ export const Zoom = (props) => {
 };
 
 Zoom.propTypes = {
+  /**
+   * The number of steps, for both zoom-in and out, that we want to increment the zoom by.
+   */
+  step: PropTypes.number,
   /**
    * Used to the set the orientation/alignment of the buttons.
    */
