@@ -7,6 +7,7 @@ import container from './formContainer';
 export const Form = (props) => {
   const {
     title,
+    description,
     attributes,
     attributeComponents,
     nestedConfigurator,
@@ -32,9 +33,15 @@ export const Form = (props) => {
         </>
       ) : null}
       {attributes.map((attr, i) => {
-        const Component = Object.values(componentOptions[attr.type] || {})[
-          attributeComponents[attr.name] || 0
-        ];
+        let Component;
+        if (attr.name in attributeComponents) {
+          Component = Object.entries(componentOptions[attr.type] || {}).find(
+            ([key]) => key === attributeComponents[attr.name].toLowerCase()
+          )?.[1];
+        }
+        if (!Component) {
+          Component = Object.values(componentOptions[attr.type] || {})?.[0];
+        }
         if (!Component) {
           console.log(
             `No default component available for ${attr.type} type Attributes`
