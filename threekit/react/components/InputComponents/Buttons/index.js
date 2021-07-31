@@ -4,8 +4,8 @@ import {
   Wrapper,
   ButtonsHeader as Header,
   ButtonsWrapper,
-  ButtonWrapper,
 } from './buttons.styles';
+import { ButtonWrapper } from '../inputComponents.styles';
 import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 import defaultClassName, { classPrefix } from '../classNames';
