@@ -18,6 +18,7 @@ const App = (props) => {
       const config = Object.assign(
         {
           assetId: props.assetId || process.env.THREEKIT_ASSET_ID,
+          stageId: props.stageId || process.env.THREEKIT_STAGE_ID,
           orgId: props.orgId || process.env.THREEKIT_ORG_ID,
           authToken: props.authToken || process.env.THREEKIT_AUTH_TOKEN,
           threekitEnv: props.threekitEnv || process.env.THREEKIT_ENV,
