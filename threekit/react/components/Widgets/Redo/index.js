@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Wrapper } from './redo.styles';
+import { ButtonWrapper } from '../widgets.styles';
 import { RedoOutlined } from '@ant-design/icons';
 import container from './redoContainer';
 import defaultClassName from '../classNames';
@@ -12,11 +12,11 @@ export const Redo = (props) => {
   if (classNameRaw?.length) className += ` ${classNameRaw}`;
 
   return (
-    <Wrapper className={className} onClick={handleClick}>
+    <ButtonWrapper className={className} onClick={handleClick}>
       <div>
         <RedoOutlined />
       </div>
-    </Wrapper>
+    </ButtonWrapper>
   );
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Wrapper } from './cameraToggle.styles';
+import { ButtonWrapper } from '../widgets.styles';
 import { CameraOutlined } from '@ant-design/icons';
 import container from './cameraToggleContainer';
 import defaultClassName from '../classNames';
@@ -12,11 +12,11 @@ export const CameraToggle = (props) => {
   if (classNameRaw?.length) className += ` ${classNameRaw}`;
 
   return (
-    <Wrapper className={className} onClick={handleClick}>
+    <ButtonWrapper className={className} onClick={handleClick}>
       <div>
         <CameraOutlined />
       </div>
-    </Wrapper>
+    </ButtonWrapper>
   );
 };
 

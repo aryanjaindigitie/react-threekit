@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Wrapper } from './undo.styles';
+import { ButtonWrapper } from '../widgets.styles';
 import { UndoOutlined } from '@ant-design/icons';
 import container from './undoContainer';
 import defaultClassName from '../classNames';
@@ -12,11 +12,11 @@ export const Undo = (props) => {
   if (classNameRaw?.length) className += ` ${classNameRaw}`;
 
   return (
-    <Wrapper className={className} onClick={handleClick}>
+    <ButtonWrapper className={className} onClick={handleClick}>
       <div>
         <UndoOutlined />
       </div>
-    </Wrapper>
+    </ButtonWrapper>
   );
 };
 

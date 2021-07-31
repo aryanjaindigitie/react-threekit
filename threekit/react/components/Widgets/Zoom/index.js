@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Wrapper, Button } from './zoom.styles';
+import { ButtonWrapper } from '../widgets.styles';
 import container from './zoomContainer';
 import defaultClassName from '../classNames';
 
@@ -26,9 +27,12 @@ export const Zoom = (props) => {
 
   return (
     <Wrapper className={className} orientation={orientation}>
-      <Button className={`${className} zoom-in`} onClick={() => zoomIn(step)}>
+      <ButtonWrapper
+        className={`${className} zoom-in`}
+        onClick={() => zoomIn(step)}
+      >
         <div>+</div>
-      </Button>
+      </ButtonWrapper>
       <Button className={`${className} zoom-out`} onClick={() => zoomOut(step)}>
         <div>-</div>
       </Button>

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+export const ButtonWrapper = styled.div`
   height: 36px;
   width: 36px;
   border: 1px solid grey;

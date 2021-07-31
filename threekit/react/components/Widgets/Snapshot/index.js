@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Wrapper } from './snapshot.styles';
+import { ButtonWrapper } from '../widgets.styles';
 import { FileImageOutlined } from '@ant-design/icons';
 import container from './snapshotContainer';
 import defaultClassName from '../classNames';
@@ -13,15 +13,20 @@ export const Snapshot = (props) => {
   if (classNameRaw?.length) className += ` ${classNameRaw}`;
 
   return (
-    <Wrapper className={className} onClick={handleClick}>
+    <ButtonWrapper className={className} onClick={handleClick}>
       <div>
         <FileImageOutlined />
       </div>
-    </Wrapper>
+    </ButtonWrapper>
   );
 };
 
 Snapshot.propTypes = {
+  /**
+   * The list of cameras we want snapshots from. Takes either an array of string
+   * or optionally a string for a single camera
+   */
+  cameras: PropTypes.array,
   /**
    * The name you would like to give the file (Do not include the format).
    */
@@ -40,10 +45,10 @@ Snapshot.propTypes = {
 };
 
 Snapshot.defaultProps = {
+  cameras: undefined,
   handleClick: undefined,
   classname: '',
   filename: 'snapshot',
-  output: SNAPSHOT_OUTPUTS.download,
   format: SNAPSHOT_FORMATS.png,
 };
 

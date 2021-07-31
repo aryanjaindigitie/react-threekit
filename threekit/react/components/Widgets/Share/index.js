@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Wrapper } from './share.styles';
+import { ButtonWrapper } from '../widgets.styles';
 import { ShareAltOutlined } from '@ant-design/icons';
 import container from './shareContainer';
 import defaultClassName from '../classNames';
@@ -12,11 +12,11 @@ export const Share = (props) => {
   if (classNameRaw?.length) className += ` ${classNameRaw}`;
 
   return (
-    <Wrapper className={className} onClick={handleClick}>
+    <ButtonWrapper className={className} onClick={handleClick}>
       <div>
         <ShareAltOutlined />
       </div>
-    </Wrapper>
+    </ButtonWrapper>
   );
 };
 
