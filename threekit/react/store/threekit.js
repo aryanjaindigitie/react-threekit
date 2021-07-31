@@ -42,6 +42,8 @@ const initialState = {
   //  Nested Configurator
   nestedAttributeAddress: undefined,
   nestedAttributes: undefined,
+  //  Price
+  price: undefined,
 };
 
 const { actions, reducer } = createSlice({
@@ -86,6 +88,10 @@ const { actions, reducer } = createSlice({
     setNestedAttributeAddressState: (state, action) => {
       state.nestedAttributeAddress = action.payload;
     },
+    //  Price
+    setPrice: (state, action) => {
+      state.price = action.payload;
+    },
   },
 });
 
@@ -102,6 +108,7 @@ const {
   setMetadata,
   setNestedAttributesState,
   setNestedAttributeAddressState,
+  setPrice,
 } = actions;
 
 //  Actions to be used only internally and externally
@@ -122,6 +129,9 @@ export const isPlayerLoading = (state) => state.threekit.isPlayerLoading;
 
 //  Initialized item's name
 export const getName = (state) => state.threekit.name;
+
+//  Price
+export const getPrice = (state) => state.threekit.price;
 
 //  Metadata
 export const getMetadata = (state) => state.threekit.metadata;
@@ -192,6 +202,7 @@ export const launch = (config) => async (dispatch) => {
 
   dispatch(setName(window.threekit.controller.getName()));
   dispatch(setMetadata(window.threekit.configurator.getMetadata()));
+  dispatch(setPrice(window.threekit.controller.getPrice()));
 
   if (config.hooks) HOOKS = Object.assign(HOOKS, config.hooks);
 
@@ -243,6 +254,7 @@ export const setConfiguration = (config) => async (dispatch, getState) => {
     preppedConfig
   );
   dispatch(setInternalAttributesState(updatedState));
+  dispatch(setPrice(window.threekit.controller.getPrice()));
   dispatch(setPlayerLoading(false));
 };
 

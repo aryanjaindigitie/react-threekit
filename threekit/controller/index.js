@@ -17,7 +17,14 @@ import {
 import { dataURItoBlob, getParams, objectToQueryStr } from '../utils';
 
 class Controller {
-  constructor({ player, configurator, translations, language, toolsList }) {
+  constructor({
+    player,
+    configurator,
+    translations,
+    language,
+    toolsList,
+    priceConfig,
+  }) {
     //  Threekit API
     this._player = player;
     this._configurator = configurator;
@@ -34,6 +41,8 @@ class Controller {
     this._nestedConfiguratorAddress = undefined;
     //  Resume Link
     this._savedConfiguration;
+    //  Pricebooks
+    this._priceConfig = priceConfig;
   }
 
   static createPlayerLoaderEl() {
@@ -209,6 +218,8 @@ class Controller {
 
       if (translationErrors) console.log(translationErrors);
 
+      const pricebook = await threekitAPI.price.getPricebooksList();
+
       window.threekit = {
         player,
         configurator,
@@ -218,6 +229,12 @@ class Controller {
           translations: translations,
           language,
           toolsList,
+          priceConfig: pricebook[0].length
+            ? {
+                id: pricebook[0][0].id,
+                currency: pricebook[0][0].currencies[0],
+              }
+            : undefined,
         }),
       };
       resolve();
@@ -332,6 +349,14 @@ class Controller {
 
   getName() {
     return this._player.scene.get(this._player.instanceId).name;
+  }
+
+  getPrice() {
+    const price = this._configurator.getPrice(
+      this._priceConfig.id,
+      this._priceConfig.currency
+    );
+    return { price, currency: this._priceConfig.currency };
   }
 
   addTool(tools) {

@@ -18,11 +18,14 @@ import {
   setNestedAttributeAddress,
   getNestedAttributes,
   setNestedConfiguration,
+  getPrice,
 } from '../store/threekit';
 import { selectionToConfiguration } from '../../utils';
 import { ATTRIBUTES_RESERVED } from '../../constants';
 
 export const useName = () => useSelector(getName);
+
+export const usePrice = () => useSelector(getPrice);
 
 export const useAttributes = () => {
   const dispatch = useDispatch();
