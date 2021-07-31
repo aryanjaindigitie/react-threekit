@@ -1,7 +1,12 @@
 const configFactory = require('./webpack.prod');
 const webpack = require('webpack');
 
-const config = configFactory();
+const argv = process.argv.slice(2);
+const compactBuild = argv.indexOf('--compact') !== -1;
+
+if (compactBuild) console.log('[Compact] Bundling app to single file.');
+
+const config = configFactory(compactBuild ? 'compact' : undefined);
 const compiler = webpack(config);
 
 compiler.run(async (err, stats) => {

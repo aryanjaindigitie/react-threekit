@@ -4,11 +4,6 @@ const paths = require('./paths');
 const babelConfig = require('./babel.config');
 
 module.exports = {
-  // Where files should be sent once they are bundled
-  output: {
-    path: paths.appBuild,
-    filename: 'threekit-bundle.js',
-  },
   // Rules of how webpack will take our files, complie & bundle them for the browser
   module: {
     rules: [
