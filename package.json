@@ -4,13 +4,15 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node config/start",
+    "start-react": "node config/start",
+    "start-server": "",
+    "start-storybook": "start-storybook -p 6006 -c config/storybook",
     "build-react": "node config/build",
     "build-server": "node config/build-server",
-    "build-storybook": "build-storybook",
+    "build-storybook": "build-storybook -c config/storybook",
     "build": "yarn build-react && yarn build-server",
+    "publish-storybook": "yarn build-storybook && gh-pages -b storybook -d storybook-static",
     "serve": "node server-build",
-    "storybook": "start-storybook -p 6006 -c config/storybook",
     "test": "jest --runInBand --notify --config config/jest.config.js"
   },
   "dependencies": {
@@ -55,6 +57,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "file-loader": "^6.2.0",
+    "gh-pages": "^3.2.3",
     "html-webpack-plugin": "^5.3.2",
     "jest": "^27.0.6",
     "node-notifier": "^10.0.0",
