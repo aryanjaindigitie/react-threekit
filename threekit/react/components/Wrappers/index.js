@@ -1,4 +1,3 @@
-import AwaitPlayerLoad from './AwaitPlayerLoad'
-import Attribute from './Attribute'
+import AwaitPlayerLoad from './AwaitPlayerLoad';
 
-export { Attribute, AwaitPlayerLoad }
+export { AwaitPlayerLoad };
