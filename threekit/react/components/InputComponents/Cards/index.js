@@ -59,7 +59,7 @@ export const Cards = (props) => {
                   </div>
                 </Main>
 
-                <Price className={`${cls} option-price`}>${price}</Price>
+                <Price className={`${cls} option-price`}>{price}</Price>
               </ItemContent>
 
               <ActionButton
