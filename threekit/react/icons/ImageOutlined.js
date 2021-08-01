@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const SVG = styled.svg`
   .tk-icon {
     stroke: black;
-    stroke-width: 2;
+    stroke-width: 1;
   }
 
   .thin-stroke {
