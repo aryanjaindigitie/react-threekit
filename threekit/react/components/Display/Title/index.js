@@ -6,8 +6,8 @@ import defaultClassName from '../classNames';
 import { regularToKebabCase } from '../../../../utils';
 
 export const Title = (props) => {
-  const { title, className: classNameRaw } = Object.assign(
-    { title: undefined, className: '' },
+  const { title, className: classNameRaw, align } = Object.assign(
+    { title: undefined, className: '', align: 'left' },
     props
   );
   if (!title?.length) return null;
@@ -15,7 +15,11 @@ export const Title = (props) => {
   let className = `${defaultClassName}-title ${regularToKebabCase(title)}`;
   if (classNameRaw?.length) className += ` ${classNameRaw}`;
 
-  return <Wrapper className={className}>{title}</Wrapper>;
+  return (
+    <Wrapper align={align} className={className}>
+      {title}
+    </Wrapper>
+  );
 };
 
 Title.propTypes = {
@@ -27,11 +31,16 @@ Title.propTypes = {
    * Custom classNames applied to the HTML Element to apply custom CSS styling.
    */
   className: PropTypes.string,
+  /**
+   * The CSS Text alignment property. Options: 'left' | 'center' | 'right'
+   */
+  align: PropTypes.string,
 };
 
 Title.defaultProps = {
   title: undefined,
   className: '',
+  align: 'left',
 };
 
 export default container(Title);

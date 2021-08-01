@@ -7,6 +7,7 @@ import container from './formContainer';
 export const Form = (props) => {
   const {
     title,
+    alignTitle,
     description,
     attributes,
     attributeComponents,
@@ -14,6 +15,7 @@ export const Form = (props) => {
   } = Object.assign(
     {
       title: undefined,
+      alignTitle: 'center',
       description: undefined,
       attributes: [],
       attributeComponents: {},
@@ -28,7 +30,7 @@ export const Form = (props) => {
     <Wrapper>
       {!nestedConfigurator ? (
         <>
-          <Title title={title} />
+          <Title align={alignTitle} title={title} />
           <Description description={description} />
         </>
       ) : null}
