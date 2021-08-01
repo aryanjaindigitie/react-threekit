@@ -192,6 +192,7 @@ export const launch = (config) => async (dispatch) => {
       threekitEnv: config.threekitEnv,
       serverUrl: config.serverUrl,
       language: config.language,
+      additionalTools: config.additionalTools,
     }
   );
 
