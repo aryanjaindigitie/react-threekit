@@ -44,6 +44,7 @@ export const TrashWrapper = styled.div`
     transform: translateY(-50%);
     text-align: center;
     font-size: 25px;
+    pointer-events: none;
   }
 `;
 
@@ -57,7 +58,8 @@ export const ConfigureButton = styled.div`
   background: ${(props) => props.theme.secondaryColor || 'orange'};
   border-radius: 50%;
   opacity: 0;
-  transition: all 0.3s;
+  display: none;
+  transition: opacity 0.3s;
   cursor: pointer;
   color: white;
   font-size: 10px;
@@ -88,12 +90,17 @@ export const ItemWrapper = styled.div`
   &:hover {
     ${ConfigureButton} {
       opacity: 1;
+      display: block;
     }
+  }
+
+  & > div {
   }
 
   & > div:nth-child(1) {
     height: 44px;
     width: 44px;
+    pointer-events: none;
 
     position: absolute;
     top: 50%;

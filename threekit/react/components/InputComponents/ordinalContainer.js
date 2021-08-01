@@ -2,60 +2,55 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from 'styled-components';
 
 const ordinalContianer = (WrappedComponent) => (props) => {
-  const [activeItemIdx, setActiveItemIdx] = useState(null);
-  const moveToIdx = useRef(null);
+  const activeId = useRef(null);
   const currentEl = useRef(null);
   const theme = useTheme();
 
   const { options, attributes, handleMoveItem, handleDeleteItem } = props;
 
-  const handleMouseDown = (idx) => {
-    moveToIdx.current = null;
-    setActiveItemIdx(idx);
+  const handleDragStart = (id) => {
+    activeId.current = id;
   };
 
-  const handleMouseEnter = (idx) => {
-    if (activeItemIdx === null) return;
-    moveToIdx.current = idx;
+  const handleDragEnter = (id) => {
+    if (activeId.current === null) return;
     currentEl.current = document.getElementsByClassName(
-      `tk-floor-planner-item-${idx}`
+      `tk-floor-planner-item-${id}`
     )[0];
-    if (currentEl.current && idx !== activeItemIdx)
-      currentEl.current.style.background = theme.secondaryColor;
+    if (id === 'delete') {
+      currentEl.current.style.background = theme.secondaryColor || 'orange';
+      currentEl.current.style.border = `1px solid ${
+        theme.secondaryColor || 'orange'
+      }`;
+      currentEl.current.style.color = '#fff';
+    } else if (id !== activeId.current)
+      currentEl.current.style.background = theme.secondaryColor || 'orange';
   };
 
-  const handleMouseLeave = () => {
-    if (activeItemIdx === null) return;
-    moveToIdx.current = null;
-    if (currentEl.current)
-      currentEl.current.style.background = theme.primaryColor;
+  const handleDragLeave = (id) => {
+    if (activeId.current === null) return;
+    if (id === 'delete') {
+      currentEl.current.style.background = 'none';
+      currentEl.current.style.border = `1px solid grey`;
+      currentEl.current.style.color = 'grey';
+    } else currentEl.current.style.background = theme.primaryColor;
   };
 
-  const handleMouseUp = () => {
-    let fromIdx = activeItemIdx;
-    let toIdx = moveToIdx.current;
-    if (currentEl.current)
-      currentEl.current.style.background = theme.primaryColor;
+  const handleDrop = (id) => {
+    if (id === 'delete') {
+      currentEl.current.style.background = 'none';
+      currentEl.current.style.border = `1px solid grey`;
+      currentEl.current.style.color = 'grey';
+    } else currentEl.current.style.background = theme.primaryColor;
+
+    if (id === 'delete') return handleDeleteItem(activeId.current);
+
+    if (activeId.current !== null && id !== null && activeId.current !== id)
+      handleMoveItem(activeId.current, id, { method: 'move' });
+
+    activeId.current = null;
     currentEl.current = null;
-
-    setActiveItemIdx(null);
-    moveToIdx.current = null;
-
-    if (toIdx === 'delete') return handleDeleteItem(fromIdx);
-
-    if (fromIdx !== null && toIdx !== null && fromIdx !== toIdx)
-      handleMoveItem(fromIdx, toIdx, { method: 'move' });
   };
-
-  useEffect(() => {
-    (() => {
-      document.addEventListener('mouseup', handleMouseUp);
-    })();
-    return () => {
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-    // eslint-disable-next-line
-  }, [activeItemIdx, moveToIdx]);
 
   const items = Object.values(attributes || []).reduce((output, attribute) => {
     if (!attribute.value?.assetId?.length) return output;
@@ -72,9 +67,10 @@ const ordinalContianer = (WrappedComponent) => (props) => {
     <WrappedComponent
       {...props}
       items={items}
-      handleMouseDown={handleMouseDown}
-      handleMouseEnter={handleMouseEnter}
-      handleMouseLeave={handleMouseLeave}
+      handleDragStart={handleDragStart}
+      handleDragEnter={handleDragEnter}
+      handleDragLeave={handleDragLeave}
+      handleDrop={handleDrop}
     />
   );
 };

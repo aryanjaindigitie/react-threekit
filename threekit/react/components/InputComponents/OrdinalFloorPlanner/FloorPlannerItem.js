@@ -12,9 +12,10 @@ import { OrdinalFloorPlannerContext } from './index';
 export const FloorPlannerItem = (props) => {
   const {
     displayItemConfigurator,
-    handleMouseEnter,
-    handleMouseLeave,
-    handleMouseDown,
+    handleDragEnter,
+    handleDragLeave,
+    handleDragStart,
+    handleDrop,
     handleSelect,
     activeAttribute,
   } = useContext(OrdinalFloorPlannerContext);
@@ -38,10 +39,32 @@ export const FloorPlannerItem = (props) => {
     <>
       <Tooltip title={name} placement={side}>
         <Wrapper
-          onMouseDown={() => handleMouseDown(idx)}
-          onMouseEnter={() => handleMouseEnter(idx)}
-          onMouseLeave={handleMouseLeave}
+          draggable
           className={`tk-floor-planner-item tk-floor-planner-item-${idx}`}
+          onDragStart={(e) => {
+            // e.preventDefault();
+            // e.stopPropagation();
+            handleDragStart(idx);
+          }}
+          onDrop={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleDrop(idx);
+          }}
+          onDragEnter={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleDragEnter(idx);
+          }}
+          onDragOver={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+          onDragLeave={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleDragLeave(idx);
+          }}
         >
           <div>
             {imageUrl ? (

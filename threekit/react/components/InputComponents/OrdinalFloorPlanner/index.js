@@ -16,9 +16,10 @@ export const OrdinalFloorPlannerComponent = (props) => {
     children,
     items,
     handleSelect,
-    handleMouseEnter,
-    handleMouseLeave,
-    handleMouseDown,
+    handleDragEnter,
+    handleDragLeave,
+    handleDragStart,
+    handleDrop,
     displayItemConfigurator,
     activeAttribute,
   } = Object.assign({ displayItemConfigurator: 'modal' }, props);
@@ -27,9 +28,10 @@ export const OrdinalFloorPlannerComponent = (props) => {
     <OrdinalFloorPlannerContext.Provider
       value={{
         displayItemConfigurator,
-        handleMouseDown,
-        handleMouseEnter,
-        handleMouseLeave,
+        handleDragStart,
+        handleDragEnter,
+        handleDragLeave,
+        handleDrop,
         handleSelect,
         activeAttribute,
       }}
@@ -42,8 +44,25 @@ export const OrdinalFloorPlannerComponent = (props) => {
         </Content>
         <TrashWrapper
           className={`tk-floor-planner-item-delete`}
-          onMouseEnter={() => handleMouseEnter('delete')}
-          onMouseLeave={() => handleMouseLeave()}
+          onDrop={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleDrop('delete');
+          }}
+          onDragEnter={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleDragEnter('delete');
+          }}
+          onDragOver={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+          onDragLeave={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleDragLeave('delete');
+          }}
         >
           <div>
             <DeleteOutlined />
