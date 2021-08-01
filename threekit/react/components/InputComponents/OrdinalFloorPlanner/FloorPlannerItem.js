@@ -4,7 +4,7 @@ import {
   ConfigureButton,
 } from './ordinalFloorPlanner.styles';
 import { Tooltip } from 'antd';
-import { SettingOutlined } from '@ant-design/icons';
+import { SettingsOutlined } from '../../../icons';
 import ItemConfigurator from './FloorPlannerItemConfigurator';
 import { Modal, Drawer } from '../../Layouts';
 import { OrdinalFloorPlannerContext } from './index';
@@ -74,7 +74,7 @@ export const FloorPlannerItem = (props) => {
           {!!displayItemConfigurator ? (
             <ConfigureButton onClick={handleOpenConfigurator}>
               <div>
-                <SettingOutlined />
+                <SettingsOutlined />
               </div>
             </ConfigureButton>
           ) : null}

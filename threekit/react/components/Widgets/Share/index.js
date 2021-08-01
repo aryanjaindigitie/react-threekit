@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ButtonWrapper } from '../widgets.styles';
-import { ShareAltOutlined } from '@ant-design/icons';
+import { ShareOutlined } from '../../../icons';
 import container from './shareContainer';
 import defaultClassName from '../classNames';
 
@@ -14,7 +14,7 @@ export const Share = (props) => {
   return (
     <ButtonWrapper className={className} onClick={handleClick}>
       <div>
-        <ShareAltOutlined />
+        <ShareOutlined />
       </div>
     </ButtonWrapper>
   );

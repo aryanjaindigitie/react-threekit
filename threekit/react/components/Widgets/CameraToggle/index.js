@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ButtonWrapper } from '../widgets.styles';
-import { CameraOutlined } from '@ant-design/icons';
+import { CameraOutlined } from '../../../icons';
 import container from './cameraToggleContainer';
 import defaultClassName from '../classNames';
 

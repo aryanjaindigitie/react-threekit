@@ -1,17 +1,19 @@
 import styled from 'styled-components';
-import { chart } from '../../../assets';
+import { chart } from '../../../icons';
 
 /***********************************************
  * index.js
  **********************************************/
 
 export const CanvasWrapper = styled.div`
-  height: 400px;
-  width: 400px;
-  background: url(${chart});
+  width: 100%;
   border-radius: ${(props) => props.theme.borderRadius};
 
   position: relative;
+
+  svg {
+    width: 100%;
+  }
 `;
 
 export const Content = styled.div`
@@ -43,8 +45,9 @@ export const TrashWrapper = styled.div`
     top: 50%;
     transform: translateY(-50%);
     text-align: center;
-    font-size: 25px;
+    height: max-content;
     pointer-events: none;
+    font-size: 0px;
   }
 `;
 
@@ -62,13 +65,23 @@ export const ConfigureButton = styled.div`
   transition: opacity 0.3s;
   cursor: pointer;
   color: white;
-  font-size: 10px;
+  font-size: 0px;
   text-align: center;
 
   & > div {
     position: relative;
     top: 50%;
     transform: translateY(-50%);
+
+    svg {
+      height: 14px;
+      width: 14px;
+    }
+
+    .tk-icon.stroke {
+      stroke: white;
+      stroke-width: 1;
+    }
   }
 
   position: absolute;

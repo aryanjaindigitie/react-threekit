@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ButtonWrapper } from '../widgets.styles';
-import { FileImageOutlined } from '@ant-design/icons';
 import container from './snapshotContainer';
 import defaultClassName from '../classNames';
 import { SNAPSHOT_OUTPUTS, SNAPSHOT_FORMATS } from '../../../../constants';
+import { DownloadOutlined, ImageOutlined } from '../../../icons';
 
 export const Snapshot = (props) => {
   const { handleClick, className: classNameRaw } = props;
@@ -15,7 +15,7 @@ export const Snapshot = (props) => {
   return (
     <ButtonWrapper className={className} onClick={handleClick}>
       <div>
-        <FileImageOutlined />
+        <ImageOutlined />
       </div>
     </ButtonWrapper>
   );

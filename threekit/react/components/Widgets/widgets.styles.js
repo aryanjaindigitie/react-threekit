@@ -10,6 +10,14 @@ export const ButtonWrapper = styled.div`
   &:hover {
     border: 1px solid ${(props) => props.theme.primaryColor};
     color: ${(props) => props.theme.primaryColor};
+
+    .tk-icon.fill {
+      fill: ${(props) => props.theme.primaryColor};
+    }
+
+    .tk-icon.stroke {
+      stroke: ${(props) => props.theme.primaryColor};
+    }
   }
 
   & > div {
@@ -22,6 +30,6 @@ export const ButtonWrapper = styled.div`
     transform: translate(-50%, -50%);
 
     /* font-size: ${(props) => `calc(${props.theme.widgetSize} * 0.45)`}; */
-    font-size: 16px;
+    font-size: 0px;
   }
 `;

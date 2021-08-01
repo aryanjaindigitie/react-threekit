@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Wrapper } from './zoom.styles';
 import { ButtonWrapper } from '../widgets.styles';
 import container from './zoomContainer';
+import { ZoomInOutlined, ZoomOutOutlined } from '../../../icons';
 import defaultClassName from '../classNames';
 
 export const Zoom = (props) => {
@@ -31,13 +32,17 @@ export const Zoom = (props) => {
         className={`${className} zoom-in`}
         onClick={() => zoomIn(step)}
       >
-        <div>+</div>
+        <div>
+          <ZoomInOutlined />
+        </div>
       </ButtonWrapper>
       <ButtonWrapper
         className={`${className} zoom-out`}
         onClick={() => zoomOut(step)}
       >
-        <div>-</div>
+        <div>
+          <ZoomOutOutlined />
+        </div>
       </ButtonWrapper>
     </Wrapper>
   );

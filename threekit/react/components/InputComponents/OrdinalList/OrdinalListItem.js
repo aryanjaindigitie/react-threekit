@@ -5,9 +5,9 @@ import {
   PrimaryItemContent as PrimaryContent,
   ItemSecondaryWrapper as SecondaryWrapper,
 } from './ordinalList.styles';
-import { drag } from '../../../assets';
 import { Modal, Drawer } from '../../Layouts';
-import { DeleteOutlined, CaretDownOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DragOutlined } from '../../../icons';
+import { CaretDownOutlined } from '@ant-design/icons';
 
 export const OrdinalListItem = (props) => {
   const {
@@ -55,7 +55,7 @@ export const OrdinalListItem = (props) => {
           className={`tk-floor-planner-item tk-floor-planner-item-${idx}`}
         >
           <div onMouseDown={() => handleMouseDown(idx)}>
-            <img src={drag} alt="drag" draggable="false" />
+            <DragOutlined />
           </div>
           <PrimaryContent>
             {name ? <div>{name}</div> : null}

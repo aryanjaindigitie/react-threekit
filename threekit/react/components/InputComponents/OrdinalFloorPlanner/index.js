@@ -5,8 +5,8 @@ import {
   TrashWrapper,
 } from './ordinalFloorPlanner.styles';
 import Item from './FloorPlannerItem';
-import { DeleteOutlined } from '@ant-design/icons';
 import container from '../ordinalContainer';
+import { DeleteOutlined, GridBackground } from '../../../icons';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 
 export const OrdinalFloorPlannerContext = createContext();
@@ -37,6 +37,7 @@ export const OrdinalFloorPlannerComponent = (props) => {
       }}
     >
       <CanvasWrapper>
+        <GridBackground />
         <Content>
           {children
             ? children(items)
