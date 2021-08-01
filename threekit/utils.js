@@ -154,15 +154,15 @@ export const deflateRgb = (rgbObj) =>
 
 export const prepAttributeForComponent = (attribute, { metadataKeys }) => {
   const {
-    imgFromMetadata,
     imgBaseUrl,
-    colorFromMetadata,
+    thumbnailFromMetadata,
     priceFromMetadata,
     descriptionFromMetadata,
-  } = { metadataKeys };
+  } = {
+    metadataKeys,
+  };
 
-  const imgKey = imgFromMetadata || METADATA_RESERVED.imageUrl;
-  const colorValKey = colorFromMetadata || METADATA_RESERVED.colorValue;
+  const thumbnailKey = thumbnailFromMetadata || METADATA_RESERVED.thumbnail;
   const priceKey = priceFromMetadata || METADATA_RESERVED.price;
   const descriptionKey =
     descriptionFromMetadata || METADATA_RESERVED.description;
@@ -193,15 +193,16 @@ export const prepAttributeForComponent = (attribute, { metadataKeys }) => {
       {
         value: item.assetId,
       },
-      item.metadata[imgKey]
-        ? {
-            imageUrl: (imgBaseUrl || '') + item.metadata[imgKey],
-          }
-        : undefined,
-      item.metadata[colorValKey]
-        ? {
-            colorValue: item.metadata[colorValKey],
-          }
+      item.metadata[thumbnailKey]
+        ? !imgBaseUrl?.length &&
+          (item.metadata[thumbnailKey].startsWith('#') ||
+            item.metadata[thumbnailKey].startsWith('rgb'))
+          ? {
+              colorValue: item.metadata[colorValKey],
+            }
+          : {
+              imageUrl: (imgBaseUrl || '') + item.metadata[thumbnailKey],
+            }
         : undefined,
       item.metadata[priceKey]
         ? {

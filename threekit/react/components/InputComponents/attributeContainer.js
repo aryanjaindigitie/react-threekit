@@ -14,8 +14,7 @@ const attributesArrayContainer = (WrappedComponent, props) => {
   const {
     attributesArrayLabel,
     imgBaseUrl,
-    imgFromMetadata,
-    colorFromMetadata,
+    thumbnailFromMetadata,
     priceFromMetadata,
     descriptionFromMetadata,
   } = props;
@@ -33,9 +32,8 @@ const attributesArrayContainer = (WrappedComponent, props) => {
   if (!optionsRaw) return null;
 
   const metadataKeys = {
-    imgFromMetadata,
+    thumbnailFromMetadata,
     imgBaseUrl,
-    colorFromMetadata,
     priceFromMetadata,
     descriptionFromMetadata,
   };
@@ -78,9 +76,8 @@ const attributesArrayContainer = (WrappedComponent, props) => {
 const attributeContainer = (WrappedComponent, props) => {
   const {
     attribute,
-    imgFromMetadata,
+    thumbnailFromMetadata,
     imgBaseUrl,
-    colorFromMetadata,
     priceFromMetadata,
     descriptionFromMetadata,
     hideAttributeTitle,
@@ -97,9 +94,8 @@ const attributeContainer = (WrappedComponent, props) => {
   }
 
   const metadataKeys = {
-    imgFromMetadata,
+    thumbnailFromMetadata,
     imgBaseUrl,
-    colorFromMetadata,
     priceFromMetadata,
     descriptionFromMetadata,
   };
@@ -128,9 +124,8 @@ const attributeContainer = (WrappedComponent, props) => {
 const nestedAttributeContainer = (WrappedComponent, props) => {
   const {
     attribute,
-    imgFromMetadata,
+    thumbnailFromMetadata,
     imgBaseUrl,
-    colorFromMetadata,
     priceFromMetadata,
     descriptionFromMetadata,
     hideAttributeTitle,
@@ -147,9 +142,8 @@ const nestedAttributeContainer = (WrappedComponent, props) => {
   }
 
   const metadataKeys = {
-    imgFromMetadata,
+    thumbnailFromMetadata,
     imgBaseUrl,
-    colorFromMetadata,
     priceFromMetadata,
     descriptionFromMetadata,
   };

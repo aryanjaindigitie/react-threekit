@@ -54,8 +54,7 @@ export const METADATA_RESERVED = Object.assign(
   {
     title: '_title',
     description: '_description',
-    imageUrl: '_imageUrl',
-    colorValue: '_colorValue',
+    thumbnail: '_thumbnail',
     sku: '_sku',
     filters: '_filters',
     tooltip: '_tooltip',
