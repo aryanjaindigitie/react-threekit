@@ -13,3 +13,6 @@ const Template = (args) => <Snapshot {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {};
+
+export const WithTitle = Template.bind({});
+WithTitle.args = { showLabel: true };

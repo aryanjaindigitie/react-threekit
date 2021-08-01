@@ -3,20 +3,25 @@ import PropTypes from 'prop-types';
 import { ButtonWrapper } from '../widgets.styles';
 import container from './snapshotContainer';
 import defaultClassName from '../classNames';
-import { SNAPSHOT_OUTPUTS, SNAPSHOT_FORMATS } from '../../../../constants';
-import { DownloadOutlined, ImageOutlined } from '../../../icons';
+import { SNAPSHOT_FORMATS } from '../../../../constants';
+import { DownloadOutlined } from '../../../icons';
 
 export const Snapshot = (props) => {
-  const { handleClick, className: classNameRaw } = props;
+  const { handleClick, className: classNameRaw, showLabel } = props;
 
   let className = `${defaultClassName}-snapshot`;
   if (classNameRaw?.length) className += ` ${classNameRaw}`;
 
   return (
-    <ButtonWrapper className={className} onClick={handleClick}>
+    <ButtonWrapper
+      showLabel={showLabel}
+      className={className}
+      onClick={handleClick}
+    >
       <div>
-        <ImageOutlined />
+        <DownloadOutlined />
       </div>
+      <div>Download image</div>
     </ButtonWrapper>
   );
 };

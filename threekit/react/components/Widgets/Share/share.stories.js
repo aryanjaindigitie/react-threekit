@@ -13,3 +13,6 @@ const Template = (args) => <Share {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {};
+
+export const WithTitle = Template.bind({});
+WithTitle.args = { showLabel: true };

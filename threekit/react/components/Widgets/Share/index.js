@@ -6,16 +6,21 @@ import container from './shareContainer';
 import defaultClassName from '../classNames';
 
 export const Share = (props) => {
-  const { handleClick, className: classNameRaw } = props;
+  const { handleClick, className: classNameRaw, showLabel } = props;
 
   let className = `${defaultClassName}-share`;
   if (classNameRaw?.length) className += ` ${classNameRaw}`;
 
   return (
-    <ButtonWrapper className={className} onClick={handleClick}>
+    <ButtonWrapper
+      showLabel={showLabel}
+      className={className}
+      onClick={handleClick}
+    >
       <div>
         <ShareOutlined />
       </div>
+      <div>Share</div>
     </ButtonWrapper>
   );
 };
