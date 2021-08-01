@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const ButtonWrapper = styled.div`
-  height: 36px;
-  width: 36px;
+  height: ${(props) => props.theme.widgetSize};
+  width: ${(props) => props.theme.widgetSize};
   border: 1px solid grey;
   border-radius: 50%;
   cursor: pointer;
@@ -21,6 +21,7 @@ export const ButtonWrapper = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
 
+    /* font-size: ${(props) => `calc(${props.theme.widgetSize} * 0.45)`}; */
     font-size: 16px;
   }
 `;
