@@ -1,11 +1,10 @@
 {
-  "name": "threekit-react",
+  "name": "threekit-react-dev-kit",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT",
   "scripts": {
     "start-react": "node config/start",
-    "start-server": "",
+    "start-server": "node config/start-server",
     "start-storybook": "start-storybook -p 6006 -c config/storybook",
     "build-react": "node config/build",
     "build-server": "node config/build-server",

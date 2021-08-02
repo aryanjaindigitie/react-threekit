@@ -7,6 +7,7 @@ module.exports = {
   // Makes sure errors in console map to the correct file
   // and line number
   // devtool: 'eval',
+  watch: true,
   mode: 'production',
   entry: paths.serverIndexJs,
   output: {
