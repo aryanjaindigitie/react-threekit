@@ -3,9 +3,9 @@ import { positions } from './index';
 
 const padding = '10px';
 
-export const PopOutFormWrapper = styled.div``;
+export const Wrapper = styled.div``;
 
-export const ToggleWrapper = styled.div`
+export const Button = styled.div`
   min-width: 100px;
   width: max-content;
   display: grid;
@@ -32,7 +32,7 @@ export const ToggleWrapper = styled.div`
   }
 `;
 
-export const FormWrapper = styled.div`
+export const ContentWrapper = styled.div`
   position: absolute;
   ${(props) => {
     switch (props.position) {

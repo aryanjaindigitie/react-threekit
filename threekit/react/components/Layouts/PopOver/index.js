@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  PopOutFormWrapper,
-  ToggleWrapper,
-  FormWrapper,
-} from './popOutForm.styles';
+import { Wrapper, Button, ContentWrapper } from './popOver.styles';
 import { MaterialsIcon } from '../../../icons';
 
 export const positions = {
@@ -17,7 +13,7 @@ export const positions = {
   'bottom-left': 'bottom-left',
 };
 
-export const PopOutForm = (props) => {
+export const PopOver = (props) => {
   const [showForm, setShowForm] = useState(false);
   const formRef = useRef(null);
   const toggleRef = useRef(null);
@@ -46,20 +42,20 @@ export const PopOutForm = (props) => {
   };
 
   return (
-    <PopOutFormWrapper>
-      <ToggleWrapper ref={toggleRef} onClick={handleTogglePopOut}>
+    <Wrapper>
+      <Button ref={toggleRef} onClick={handleTogglePopOut}>
         <div>
           <MaterialsIcon />
         </div>
         <div>{label}</div>
-      </ToggleWrapper>
+      </Button>
       {showForm ? (
-        <FormWrapper ref={formRef} position={position}>
+        <ContentWrapper ref={formRef} position={position}>
           {children}
-        </FormWrapper>
+        </ContentWrapper>
       ) : null}
-    </PopOutFormWrapper>
+    </Wrapper>
   );
 };
 
-export default PopOutForm;
+export default PopOver;

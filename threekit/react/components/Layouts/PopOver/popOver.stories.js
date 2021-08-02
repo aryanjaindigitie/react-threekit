@@ -1,17 +1,17 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 
-import { PopOutForm } from './index';
+import { PopOver } from './index';
 
 export default {
-  title: 'Widgets/Pop-out Form',
-  component: PopOutForm,
+  title: 'Widgets/Pop-over',
+  component: PopOver,
   //   argTypes: { handleClick: { action: 'clicked' } },
 };
 
-const Template = (args) => <PopOutForm {...args} />;
+const Template = (args) => <PopOver {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  orientation: 'bottom-left',
+  position: 'bottom-left',
 };
