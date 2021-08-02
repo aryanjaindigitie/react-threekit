@@ -31,7 +31,11 @@ app.use(morgan('tiny'));
 app.use(express.json());
 app.use(cors());
 
-app.use('/api/snapshot', upload.single('files'), async (req, res) => {
+app.get('/api/health', (req, res) => {
+  res.status(200).send({ message: 'server healthy!' });
+});
+
+app.post('/api/snapshot', upload.single('files'), async (req, res) => {
   const file = req.file;
   const [response, error] = await api.files.save(file);
   if (error) {
