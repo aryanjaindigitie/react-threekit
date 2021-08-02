@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   ColorSwatchContent as Content,
-  ColorSwatchHeader as Header,
   ColorOption as Option,
 } from './colorSwatch.styles';
+import { InputComponentTitle as Title } from '../inputComponents.styles';
 import { Tooltip } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 import { regularToKebabCase } from '../../../../utils';
@@ -13,6 +13,7 @@ import defaultClassName, { classPrefix } from '../classNames';
 
 export const ColorSwatch = (props) => {
   const {
+    size,
     attribute,
     title,
     className: classNameRaw,
@@ -31,7 +32,7 @@ export const ColorSwatch = (props) => {
 
   return (
     <div className={`${className}-component`}>
-      {title && <Header className={`${className}-header`}>{title}</Header>}
+      {title && <Title className={`${className}-header`}>{title}</Title>}
       <Content className={`${className}-content`}>
         {options.map((option, i) => {
           if (option.disabled && hideDisabled) return null;
@@ -39,6 +40,7 @@ export const ColorSwatch = (props) => {
           return (
             <Tooltip key={i} placement="top" title={option.label}>
               <Option
+                size={size}
                 className={cls}
                 isPlayerLoading={isPlayerLoading}
                 color={option.colorValue}
@@ -103,6 +105,7 @@ ColorSwatch.propTypes = {
 };
 
 ColorSwatch.defaultProps = {
+  size: '32px',
   attribute: undefined,
   title: undefined,
   className: undefined,

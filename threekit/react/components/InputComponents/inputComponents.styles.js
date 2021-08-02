@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 
+export const InputComponentTitle = styled.div`
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 600;
+`;
+
 export const ButtonWrapper = styled.div`
   width: max-content;
   height: max-content;

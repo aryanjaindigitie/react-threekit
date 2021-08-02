@@ -12,15 +12,13 @@ export const ColorSwatchContent = styled.div`
   }
 `;
 
-export const ColorSwatchHeader = styled.div`
-  padding-bottom: 5px;
-`;
-
 export const ColorOption = styled.div`
-  height: 30px;
-  width: 30px;
+  height: ${(props) => props.size || '30px'};
+  width: ${(props) => props.size || '30px'};
   border-radius: 50%;
   background: ${(props) => props.color};
+
+  border: ${(props) => (props.color ? '0px' : '1px solid lightgrey')};
 
   margin-right: 12px;
   margin-bottom: 25px;

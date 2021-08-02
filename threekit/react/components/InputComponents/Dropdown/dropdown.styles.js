@@ -3,10 +3,6 @@ import styled from 'styled-components';
 const HEIGHT = '32px';
 const MAX_HEIGHT = '200px';
 
-export const DropdownHeader = styled.div`
-  padding-bottom: 5px;
-`;
-
 export const DropdownWrapper = styled.div`
   position: relative;
   background-color: #fff;
@@ -26,7 +22,7 @@ export const DropdownWrapper = styled.div`
     border-color: ${(props) => props.theme.primaryColor};
   }
 
-  cursor: ${(props) => (props.loading ? 'wait' : 'pointer')};
+  cursor: ${(props) => (props.isLoading ? 'wait' : 'pointer')};
 `;
 
 export const DropdownMain = styled.div`

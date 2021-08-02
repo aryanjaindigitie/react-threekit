@@ -8,10 +8,6 @@ export const SwatchWrapper = styled.div`
   min-width: 120px;
 `;
 
-export const SwatchHeader = styled.div`
-  padding-bottom: 5px;
-`;
-
 export const SwatchContent = styled.div`
   display: grid;
   grid-template-columns: repeat(5, max-content);

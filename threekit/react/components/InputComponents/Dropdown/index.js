@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-  DropdownHeader as Header,
   DropdownMain as Main,
   DropdownWrapper as Wrapper,
   DropdownOptions as Options,
   DropdownOptionsContent as OptionsContent,
   DropdownOption as Option,
 } from './dropdown.styles';
+import { InputComponentTitle as Title } from '../inputComponents.styles';
 import { DownOutlined } from '@ant-design/icons';
 import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
@@ -54,11 +54,9 @@ export const Dropdown = (props) => {
 
   return (
     <div className={`${className}-component`}>
-      {title ? (
-        <Header className={`${className}-header`}>{title}</Header>
-      ) : null}
+      {title ? <Title className={`${className}-header`}>{title}</Title> : null}
       <Wrapper
-        loading={isPlayerLoading}
+        isLoading={isPlayerLoading}
         active={!hide}
         ref={ref}
         className={`${className}-dropdown`}

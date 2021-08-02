@@ -2,10 +2,6 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div``;
 
-export const RadioButtonsHeader = styled.div`
-  padding-bottom: 5px;
-`;
-
 export const Buttons = styled.div`
   display: flex;
   flex-direction: column;

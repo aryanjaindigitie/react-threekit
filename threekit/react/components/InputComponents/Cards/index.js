@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Wrapper,
-  Header,
   Content,
   ItemWrapper,
   ItemContent,
@@ -10,6 +9,7 @@ import {
   Price,
   ActionButton,
 } from './cards.styles';
+import { InputComponentTitle as Title } from '../inputComponents.styles';
 import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 import defaultClassName, { classPrefix } from '../classNames';
@@ -38,9 +38,7 @@ export const Cards = (props) => {
 
   return (
     <Wrapper className={`${className}-component`}>
-      {title ? (
-        <Header className={`${className}-header`}>{title}</Header>
-      ) : null}
+      {title ? <Title className={`${className}-header`}>{title}</Title> : null}
       <Content className={`${className}-content`}>
         {options.map((option, i) => {
           const { name, description, value, imageUrl, price } = option;

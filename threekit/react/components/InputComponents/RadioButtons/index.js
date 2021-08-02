@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Wrapper,
-  RadioButtonsHeader as Header,
   Buttons,
   ButtonWrapper,
   IconWrapper,
   Label,
 } from './radioButtons.styles';
+import { InputComponentTitle as Title } from '../inputComponents.styles';
 import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 import defaultClassName, { classPrefix } from '../classNames';
@@ -32,7 +32,7 @@ export const RadioButtons = (props) => {
 
   return (
     <Wrapper className={`${className}-component`}>
-      {title && <Header className={`${className}-header`}>{title}</Header>}
+      {title && <Title className={`${className}-header`}>{title}</Title>}
       <Buttons className={`${className}-content`}>
         {options.map((option, i) => {
           if (option.disabled && hideDisabled) return null;

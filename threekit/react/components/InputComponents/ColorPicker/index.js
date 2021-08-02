@@ -5,6 +5,7 @@ import {
   MaterialPicker,
   ChromePicker,
 } from 'react-color';
+import { InputComponentTitle as Title } from '../inputComponents.styles';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 
 const components = {
@@ -14,7 +15,7 @@ const components = {
   chrome: ChromePicker,
 };
 
-import { Wrapper, Header } from './colorPicker.styles';
+import { Wrapper } from './colorPicker.styles';
 
 export const ColorPicker = (props) => {
   const { title, selected, handleClick, colorPicker } = Object.assign(
@@ -28,7 +29,7 @@ export const ColorPicker = (props) => {
 
   return (
     <Wrapper>
-      {title && <Header>{title}</Header>}
+      {title && <Title>{title}</Title>}
       <Component color={selected} onChangeComplete={handleSelectColor} />
     </Wrapper>
   );

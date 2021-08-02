@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Wrapper,
-  Header,
-  SwitchBackground,
-  SwitchToggle,
-} from './switch.styles';
+import { Wrapper, SwitchBackground, SwitchToggle } from './switch.styles';
+import { InputComponentTitle as Title } from '../inputComponents.styles';
 import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 
@@ -31,13 +27,13 @@ export const Switch = (props) => {
       className={`tk-switch-input ${className ? `tk-input-${className}` : ''}`}
     >
       {title && (
-        <Header
+        <Title
           className={`tk-switch-header ${
             className ? `tk-input-${className}` : ''
           }`}
         >
           {title}
-        </Header>
+        </Title>
       )}
       <SwitchBackground
         disabled={disabled}
