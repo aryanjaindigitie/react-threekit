@@ -561,10 +561,11 @@ class Controller {
           break;
         case SNAPSHOT_OUTPUTS.download:
           snapshots.forEach((snapshotBlob, idx) => {
-            const cameraName = regularToKebabCase(cameras[idx]);
+            let cameraName = '';
+            if (cameras) cameraName = `-${regularToKebabCase(cameras[idx])}`;
             downloadSnapshotBlob(
               snapshotBlob,
-              `${filename}-${cameraName}.${format}`
+              `${filename}${cameraName}.${format}`
             );
           });
           resolve();
