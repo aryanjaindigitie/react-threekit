@@ -9,10 +9,11 @@ const attributesContainer = (WrappedComponent, props) => {
     props
   );
 
-  const filterAttributes = Object.values(attributes || {}).filter((el) => {
-    if (!includeReservedAttributes && el?.name?.[0] === '_') return false;
-    if (el?.name in attributeComponents) {
-      if ([undefined, false].includes(attributeComponents[el.name]))
+  const filterAttributes = Object.values(attributes || {}).filter((attr) => {
+    if (!attr) return false;
+    if (!includeReservedAttributes && attr?.name?.[0] === '_') return false;
+    if (attr?.name in attributeComponents) {
+      if ([undefined, false].includes(attributeComponents[attr.name]))
         return false;
     }
     return true;
