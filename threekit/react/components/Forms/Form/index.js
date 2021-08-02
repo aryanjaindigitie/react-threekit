@@ -38,7 +38,7 @@ export const Form = (props) => {
         let Component;
         if (attr.name in attributeComponents) {
           Component = Object.entries(componentOptions[attr.type] || {}).find(
-            ([key]) => key === attributeComponents[attr.name].toLowerCase()
+            ([key]) => key === attributeComponents[attr.name]?.toLowerCase()
           )?.[1];
         }
         if (!Component) {

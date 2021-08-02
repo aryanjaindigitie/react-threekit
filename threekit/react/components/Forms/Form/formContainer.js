@@ -4,14 +4,21 @@ import { Modal, Drawer } from '../../Layouts';
 
 const attributesContainer = (WrappedComponent, props) => {
   const [attributes] = useAttributes();
-  return (
-    <WrappedComponent
-      {...props}
-      attributes={Object.values(attributes || {}).filter(
-        (el) => el && el.name[0] !== '_'
-      )}
-    />
+  const { includeReservedAttributes, attributeComponents } = Object.assign(
+    { includeReservedAttributes: false, attributeComponents: {} },
+    props
   );
+
+  const filterAttributes = Object.values(attributes || {}).filter((el) => {
+    if (!includeReservedAttributes && el?.name?.[0] === '_') return false;
+    if (el?.name in attributeComponents) {
+      if ([undefined, false].includes(attributeComponents[el.name]))
+        return false;
+    }
+    return true;
+  });
+
+  return <WrappedComponent {...props} attributes={filterAttributes} />;
 };
 
 const nestedAttributesContainer = (WrappedComponent, props) => {
