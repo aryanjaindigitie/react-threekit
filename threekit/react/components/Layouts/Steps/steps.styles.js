@@ -19,4 +19,5 @@ export const ActionArea = styled.div`
   justify-content: space-between;
 
   padding: 20px;
+  background: #f2f2f2;
 `;

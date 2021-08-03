@@ -2,8 +2,9 @@ import React from 'react';
 import { Wrapper } from './twoCol.styles';
 
 export const TwoCol = (props) => {
-  const { columnGap, leftSize, rightSize, className } = Object.assign(
+  const { columnGap, width, leftSize, rightSize, className } = Object.assign(
     {
+      width: '100%',
       columnGap: '15px',
       leftSize: '60%',
       rightSize: '40%',
@@ -15,6 +16,7 @@ export const TwoCol = (props) => {
     <Wrapper
       className={`tk-two-cols ${className}`}
       columnGap={columnGap}
+      width={width}
       leftSize={leftSize}
       rightSize={rightSize}
     >

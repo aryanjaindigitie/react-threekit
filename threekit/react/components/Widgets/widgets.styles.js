@@ -7,6 +7,7 @@ export const ButtonWrapper = styled.div`
   border: 1px solid grey;
   cursor: pointer;
   padding: ${(props) => (props.showLabel ? '0 10px' : '0')};
+  background: #ffffff55;
 
   border-top-left-radius: ${(props) => `calc(${props.theme.widgetSize} / 2)`};
   border-top-right-radius: ${(props) => `calc(${props.theme.widgetSize} / 2)`};
@@ -17,10 +18,12 @@ export const ButtonWrapper = styled.div`
 
   display: flex;
   flex-direction: row;
+  transition: all 0.2s;
 
   &:hover {
     border: 1px solid ${(props) => props.theme.primaryColor};
     color: ${(props) => props.theme.primaryColor};
+    background: #fff;
 
     .tk-icon.fill {
       fill: ${(props) => props.theme.primaryColor};
