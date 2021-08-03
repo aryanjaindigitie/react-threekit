@@ -2,16 +2,23 @@ import { METADATA_RESERVED } from '../constants';
 import { easeInOutCubic } from './tools-utils';
 
 const animateItem = (config) => {
-  const { topItemOnly, translateMetadataField, duration } = Object.assign(
+  const {
+    topItemOnly,
+    translateMetadataField,
+    rotateMetadataField,
+    duration,
+  } = Object.assign(
     {
       topItemOnly: true,
       translateMetadataField: METADATA_RESERVED.translate,
+      rotateMetadataField: METADATA_RESERVED.rotate,
       duration: 1000,
     },
     config
   );
 
   let originalPosition = {};
+  let originalRotation = {};
   let isTransformed = {};
   let animationInProgress = {};
 
@@ -31,6 +38,7 @@ const animateItem = (config) => {
         let item;
         let nullId;
         let translateDelta;
+        let rotateDelta;
         if (topItemOnly) {
           for (let node of hierarchy) {
             if (itemId) continue;
@@ -49,71 +57,127 @@ const animateItem = (config) => {
           const translate = item.configurator?.metadata.find(
             (el) => el.name === translateMetadataField
           );
+          const rotate = item.configurator?.metadata.find(
+            (el) => el.name === rotateMetadataField
+          );
 
-          if (!translate) return;
+          if (!translate && !rotate) return;
 
-          try {
-            translateDelta = Object.assign(
-              { x: 0, y: 0, z: 0, duration },
-              JSON.parse(translate?.defaultValue)
-            );
-          } catch (e) {}
+          if (translate) {
+            try {
+              translateDelta = Object.assign(
+                { x: 0, y: 0, z: 0, duration },
+                JSON.parse(translate?.defaultValue)
+              );
+            } catch (e) {}
 
-          originalPosition[nullId] = window.threekit.player.scene.get({
-            id: nullId,
-            plug: 'Transform',
-            property: 'translation',
-          });
+            originalPosition[nullId] = window.threekit.player.scene.get({
+              id: nullId,
+              plug: 'Transform',
+              property: 'translation',
+            });
+          }
+          if (rotate) {
+            try {
+              rotateDelta = Object.assign(
+                { x: 0, y: 0, z: 0, duration },
+                JSON.parse(rotate?.defaultValue)
+              );
+            } catch (e) {}
+
+            originalRotation[nullId] = window.threekit.player.scene.get({
+              id: nullId,
+              plug: 'Transform',
+              property: 'rotation',
+            });
+          }
         }
 
         if (!(nullId in isTransformed)) isTransformed[nullId] = false;
 
         let start;
         const animateFrame = (timestamp) => {
-          let updatedPosition = { x: undefined, y: undefined, z: undefined };
+          let axisList = ['x', 'y', 'z'];
           if (start === undefined) start = timestamp;
           const elapsed = timestamp - start;
-          const progress = elapsed / translateDelta.duration;
-          const animPercent = easeInOutCubic(progress);
 
-          if (!isTransformed[nullId]) {
-            updatedPosition.x = Math.min(
-              originalPosition[nullId].x + translateDelta.x * animPercent,
-              translateDelta.x
+          if (translateDelta) {
+            //  Translate Setup
+            let updatedPosition = { x: undefined, y: undefined, z: undefined };
+            const tProgress = elapsed / translateDelta.duration;
+            const tAnimPercent = easeInOutCubic(tProgress);
+            if (!isTransformed[nullId]) {
+              updatedPosition = axisList.reduce((output, axis) => {
+                return Object.assign(output, {
+                  [axis]: Math.min(
+                    originalPosition[nullId][axis] +
+                      translateDelta[axis] * tAnimPercent,
+                    translateDelta[axis]
+                  ),
+                });
+              }, updatedPosition);
+            } else {
+              updatedPosition = axisList.reduce((output, axis) => {
+                return Object.assign(output, {
+                  [axis]: Math.min(
+                    originalPosition[nullId][axis] -
+                      translateDelta[axis] * tAnimPercent,
+                    translateDelta[axis]
+                  ),
+                });
+              }, updatedPosition);
+            }
+
+            window.threekit.player.scene.set(
+              {
+                id: nullId,
+                plug: 'Transform',
+                property: 'translation',
+              },
+              updatedPosition
             );
-            updatedPosition.y = Math.min(
-              originalPosition[nullId].y + translateDelta.y * animPercent,
-              translateDelta.y
-            );
-            updatedPosition.z = Math.min(
-              originalPosition[nullId].z + translateDelta.z * animPercent,
-              translateDelta.z
-            );
-          } else {
-            updatedPosition.x = Math.min(
-              originalPosition[nullId].x - translateDelta.x * animPercent,
-              translateDelta.x
-            );
-            updatedPosition.y = Math.min(
-              originalPosition[nullId].y - translateDelta.y * animPercent,
-              translateDelta.y
-            );
-            updatedPosition.z = Math.min(
-              originalPosition[nullId].z - translateDelta.z * animPercent,
-              translateDelta.z
+          }
+          if (rotateDelta) {
+            //  Rotation Setup
+            let updatedRotation = { x: undefined, y: undefined, z: undefined };
+            const rProgress = elapsed / rotateDelta.duration;
+            const rAnimPercent = easeInOutCubic(rProgress);
+            if (!isTransformed[nullId]) {
+              updatedRotation = axisList.reduce((output, axis) => {
+                return Object.assign(output, {
+                  [axis]: Math.min(
+                    originalRotation[nullId][axis] +
+                      rotateDelta[axis] * rAnimPercent,
+                    rotateDelta[axis]
+                  ),
+                });
+              }, updatedRotation);
+            } else {
+              updatedRotation = axisList.reduce((output, axis) => {
+                return Object.assign(output, {
+                  [axis]: Math.min(
+                    originalRotation[nullId][axis] -
+                      rotateDelta[axis] * rAnimPercent,
+                    rotateDelta[axis]
+                  ),
+                });
+              }, updatedRotation);
+            }
+
+            window.threekit.player.scene.set(
+              {
+                id: nullId,
+                plug: 'Transform',
+                property: 'rotation',
+              },
+              updatedRotation
             );
           }
 
-          window.threekit.player.scene.set(
-            {
-              id: nullId,
-              plug: 'Transform',
-              property: 'translation',
-            },
-            updatedPosition
-          );
-
-          if (elapsed < translateDelta.duration) {
+          if (
+            elapsed <
+            Math.max(translateDelta?.duration || 0, rotateDelta?.duration || 0)
+          ) {
             window.requestAnimationFrame(animateFrame);
           } else {
             animationInProgress[nullId] = false;

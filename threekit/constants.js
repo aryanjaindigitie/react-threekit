@@ -61,7 +61,7 @@ export const METADATA_RESERVED = Object.assign(
     price: '_price',
     description: '_description',
     translate: '_translate',
-    rotation: '_rotation',
+    rotate: '_rotate',
     scale: '_scale',
   },
   //  Array type related metadata
@@ -75,6 +75,7 @@ export const ATTRIBUTES_RESERVED = {
   step: '_step',
   stepTo: '_stepTo',
   camera: '_camera',
+  dimensions: '_dimensions',
 };
 
 export const ATTRIBUTE_TYPES = {
