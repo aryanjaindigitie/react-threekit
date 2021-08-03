@@ -1,9 +1,5 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div``;
-
-export const Title = styled.div``;
-
 export const ListWrapper = styled.div`
   background: #f9f9f9;
   border-radius: ${(props) => props.theme.borderRadius};

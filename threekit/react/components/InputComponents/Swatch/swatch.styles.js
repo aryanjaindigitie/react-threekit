@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import { InputComponentWrapper } from '../inputComponents.styles';
 
-export const SwatchWrapper = styled.div`
+export const SwatchWrapper = styled(InputComponentWrapper)`
   display: flex;
   flex-direction: column;
   height: max-content;

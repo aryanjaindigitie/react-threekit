@@ -1,13 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Wrapper,
   Buttons,
   ButtonWrapper,
   IconWrapper,
   Label,
 } from './radioButtons.styles';
-import { InputComponentTitle as Title } from '../inputComponents.styles';
+import {
+  InputComponentWrapper as Wrapper,
+  InputComponentDescription as Description,
+  InputComponentTitle as Title,
+} from '../inputComponents.styles';
 import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 import defaultClassName, { classPrefix } from '../classNames';
@@ -16,6 +19,7 @@ export const RadioButtons = (props) => {
   const {
     attribute,
     title,
+    description,
     options,
     selected,
     className: classNameRaw,
@@ -24,15 +28,20 @@ export const RadioButtons = (props) => {
     isPlayerLoading,
   } = props;
 
-  let className = `${defaultClassName}-color-swatch`;
+  let className = `${defaultClassName}-radio-buttons`;
   if (attribute) className += ` ${regularToKebabCase(attribute)}`;
   else if (title) className += ` ${regularToKebabCase(title)}`;
   if (classNameRaw) className += ` ${classNameRaw}`;
-  className += ` ${classPrefix}-color-swatch`;
+  className += ` ${classPrefix}-radio-buttons`;
 
   return (
     <Wrapper className={`${className}-component`}>
       {title && <Title className={`${className}-header`}>{title}</Title>}
+      {description ? (
+        <Description className={`${className}-description`}>
+          {description}
+        </Description>
+      ) : null}
       <Buttons className={`${className}-content`}>
         {options.map((option, i) => {
           if (option.disabled && hideDisabled) return null;

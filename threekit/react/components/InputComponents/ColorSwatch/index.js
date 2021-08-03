@@ -4,7 +4,11 @@ import {
   ColorSwatchContent as Content,
   ColorOption as Option,
 } from './colorSwatch.styles';
-import { InputComponentTitle as Title } from '../inputComponents.styles';
+import {
+  InputComponentWrapper as Wrapper,
+  InputComponentTitle as Title,
+  InputComponentDescription as Description,
+} from '../inputComponents.styles';
 import { Tooltip } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 import { regularToKebabCase } from '../../../../utils';
@@ -16,6 +20,7 @@ export const ColorSwatch = (props) => {
     size,
     attribute,
     title,
+    description,
     className: classNameRaw,
     options,
     selected,
@@ -31,8 +36,13 @@ export const ColorSwatch = (props) => {
   className += ` ${classPrefix}-color-swatch`;
 
   return (
-    <div className={`${className}-component`}>
+    <Wrapper className={`${className}-component`}>
       {title && <Title className={`${className}-header`}>{title}</Title>}
+      {description ? (
+        <Description className={`${className}-description`}>
+          {description}
+        </Description>
+      ) : null}
       <Content className={`${className}-content`}>
         {options.map((option, i) => {
           if (option.disabled && hideDisabled) return null;
@@ -56,7 +66,7 @@ export const ColorSwatch = (props) => {
           );
         })}
       </Content>
-    </div>
+    </Wrapper>
   );
 };
 

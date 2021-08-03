@@ -1,5 +1,10 @@
 import React from 'react';
-import { Wrapper, Title, ListWrapper } from './ordinalList.styles';
+import { ListWrapper } from './ordinalList.styles';
+import {
+  InputComponentWrapper as Wrapper,
+  InputComponentTitle as Title,
+  InputComponentDescription as Description,
+} from '../inputComponents.styles';
 import Item from './OrdinalListItem';
 import container from '../ordinalContainer';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
@@ -7,6 +12,7 @@ import { ATTRIBUTE_TYPES } from '../../../../constants';
 export const OrdinalListComponent = (props) => {
   const {
     title,
+    description,
     items,
     handleSelect,
     handleDeleteItem,
@@ -20,6 +26,7 @@ export const OrdinalListComponent = (props) => {
   return (
     <Wrapper>
       {title ? <Title>{title}</Title> : null}
+      {description ? <Description>{description}</Description> : null}
       <ListWrapper>
         {items.map((item, i) => (
           <Item

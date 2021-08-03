@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Wrapper, Input } from './textInput.styles';
-import { InputComponentTitle as Title } from '../inputComponents.styles';
+import { Input } from './textInput.styles';
+import {
+  InputComponentWrapper as Wrapper,
+  InputComponentTitle as Title,
+} from '../inputComponents.styles';
 import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
+import defaultClassName, { classPrefix } from '../classNames';
 
 export const TextInput = (props) => {
   const {
@@ -12,29 +16,25 @@ export const TextInput = (props) => {
     className: classNameRaw,
     value,
     handleChange,
+    className: classNameRaw,
     isPlayerLoading,
     disabled,
   } = props;
 
-  const className = attribute
-    ? regularToKebabCase(attribute)
-    : title
-    ? regularToKebabCase(title)
-    : classNameRaw;
+  let className = `${defaultClassName}-text-input`;
+  if (attribute) className += ` ${regularToKebabCase(attribute)}`;
+  else if (title) className += ` ${regularToKebabCase(title)}`;
+  if (classNameRaw) className += ` ${classNameRaw}`;
+  className += ` ${classPrefix}-text-input`;
 
   return (
-    <Wrapper
-      className={`tk-text-input ${className ? `tk-input-${className}` : ''}`}
-    >
-      {title && (
-        <Title
-          className={`tk-text-input-header ${
-            className ? `tk-input-${className}` : ''
-          }`}
-        >
-          {title}
-        </Title>
-      )}
+    <Wrapper className={`${className}-component`}>
+      {title ? <Title className={`${className}-header`}>{title}</Title> : null}
+      {description ? (
+        <Description className={`${className}-description`}>
+          {description}
+        </Description>
+      ) : null}
       <Input
         type="text"
         value={value}

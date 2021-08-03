@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div``;
-
 export const SwitchBackground = styled.div`
   height: 20px;
   width: 50px;

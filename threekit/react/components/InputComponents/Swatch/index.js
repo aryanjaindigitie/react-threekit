@@ -5,7 +5,10 @@ import {
   SwatchContent as Content,
   SwatchOption as Option,
 } from './swatch.styles';
-import { InputComponentTitle as Title } from '../inputComponents.styles';
+import {
+  InputComponentTitle as Title,
+  InputComponentDescription as Description,
+} from '../inputComponents.styles';
 import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
 import defaultClassName, { classPrefix } from '../classNames';
@@ -14,6 +17,7 @@ export const Swatch = (props) => {
   const {
     attribute,
     title,
+    description,
     options,
     className: classNameRaw,
     handleClick,
@@ -31,6 +35,11 @@ export const Swatch = (props) => {
   return (
     <Wrapper className={`${className}-component`}>
       {title && <Title className={`${className}-header`}>{title}</Title>}
+      {description ? (
+        <Description className={`${className}-description`}>
+          {description}
+        </Description>
+      ) : null}
       <Content className={`${className}-content`}>
         {options.map((option, i) => {
           if (option.disabled && hideDisabled) return null;

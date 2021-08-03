@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Wrapper, ButtonsWrapper } from './buttons.styles';
+import { ButtonsWrapper } from './buttons.styles';
 import {
+  InputComponentWrapper as Wrapper,
   ButtonWrapper,
   InputComponentTitle as Title,
+  InputComponentDescription as Description,
 } from '../inputComponents.styles';
 import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
@@ -13,6 +15,7 @@ export const Buttons = (props) => {
   const {
     attribute,
     title,
+    description,
     options,
     selected,
     className: classNameRaw,
@@ -30,6 +33,11 @@ export const Buttons = (props) => {
   return (
     <Wrapper className={`${className}-component`}>
       {title ? <Title className={`${className}-header`}>{title}</Title> : null}
+      {description ? (
+        <Description className={`${className}-description`}>
+          {description}
+        </Description>
+      ) : null}
       <ButtonsWrapper className={`${className}-content`}>
         {options.map((option, i) => {
           if (option.disabled && hideDisabled) return null;

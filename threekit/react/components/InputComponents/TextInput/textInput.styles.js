@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div``;
-
 export const Input = styled.input`
   width: 100%;
   margin: 0;

@@ -1,9 +1,10 @@
 import styled from 'styled-components';
+import { InputComponentWrapper } from '../inputComponents.styles';
 
 const HEIGHT = '32px';
 const MAX_HEIGHT = '200px';
 
-export const DropdownWrapper = styled.div`
+export const DropdownWrapper = styled(InputComponentWrapper)`
   position: relative;
   background-color: #fff;
   width: max-content;

@@ -7,7 +7,10 @@ import {
   DropdownOptionsContent as OptionsContent,
   DropdownOption as Option,
 } from './dropdown.styles';
-import { InputComponentTitle as Title } from '../inputComponents.styles';
+import {
+  InputComponentTitle as Title,
+  InputComponentDescription as Description,
+} from '../inputComponents.styles';
 import { DownOutlined } from '@ant-design/icons';
 import { regularToKebabCase } from '../../../../utils';
 import { ATTRIBUTE_TYPES } from '../../../../constants';
@@ -17,6 +20,7 @@ export const Dropdown = (props) => {
   const {
     attribute,
     title,
+    description,
     placeholder,
     options,
     className: classNameRaw,
@@ -55,6 +59,11 @@ export const Dropdown = (props) => {
   return (
     <div className={`${className}-component`}>
       {title ? <Title className={`${className}-header`}>{title}</Title> : null}
+      {description ? (
+        <Description className={`${className}-description`}>
+          {description}
+        </Description>
+      ) : null}
       <Wrapper
         isLoading={isPlayerLoading}
         active={!hide}
