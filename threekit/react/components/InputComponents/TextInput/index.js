@@ -16,7 +16,6 @@ export const TextInput = (props) => {
     className: classNameRaw,
     value,
     handleChange,
-    className: classNameRaw,
     isPlayerLoading,
     disabled,
   } = props;
