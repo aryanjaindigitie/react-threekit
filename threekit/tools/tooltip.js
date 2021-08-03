@@ -136,8 +136,8 @@ const tooltip = (config = {}) => {
 
               //  Updates the tooltip
               tooltipEl.style.display = 'block';
-              tooltipEl.style.top = event.clientY + 'px';
-              tooltipEl.style.left = event.clientX + 'px';
+              tooltipEl.style.top = event.originalEvent.pageY + 'px';
+              tooltipEl.style.left = event.originalEvent.pageX + 'px';
               tooltipInnerEl.innerHTML = prepOutput
                 ? prepOutput(tooltip.defaultValue)
                 : tooltip.defaultValue;
