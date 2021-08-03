@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Wrapper, Button, ContentWrapper } from './popOver.styles';
-import { MaterialsIcon } from '../../../icons';
+import icons from '../../../icons';
 
 export const positions = {
   'top-right': 'top-right',
@@ -17,10 +17,16 @@ export const PopOver = (props) => {
   const [showForm, setShowForm] = useState(false);
   const formRef = useRef(null);
   const toggleRef = useRef(null);
-  const { label, position, children } = Object.assign(
-    { label: 'Form', position: positions['top-right'] },
+  const { label, position, thumbnail, children, icon } = Object.assign(
+    {
+      label: 'Form',
+      position: positions['top-right'],
+      thumbnail: undefined,
+      icon: undefined,
+    },
     props
   );
+  const Icon = icon ? icons[icon] : undefined;
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -44,9 +50,7 @@ export const PopOver = (props) => {
   return (
     <Wrapper>
       <Button ref={toggleRef} onClick={handleTogglePopOut}>
-        <div>
-          <MaterialsIcon />
-        </div>
+        <div>{Icon ? <Icon /> : thumbnail || null}</div>
         <div>{label}</div>
       </Button>
       {showForm ? (
