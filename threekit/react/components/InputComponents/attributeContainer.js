@@ -107,7 +107,8 @@ const attributeContainer = (WrappedComponent, props) => {
   const handleSetAttribute = (value) => setAttribute(value);
 
   let preppedProps = { ...props };
-  if (!hideAttributeTitle) preppedProps.title = attributeData.label;
+  if (!hideAttributeTitle && !preppedProps.title)
+    preppedProps.title = attributeData.label;
 
   return (
     <WrappedComponent
@@ -155,7 +156,7 @@ const nestedAttributeContainer = (WrappedComponent, props) => {
   const handleSetAttribute = (value) => setAttribute(value);
 
   let preppedProps = { ...props };
-  if (!hideAttributeTitle)
+  if (!hideAttributeTitle && !preppedProps.title)
     preppedProps.title = attributeData.label || attributeData.name;
 
   return (
