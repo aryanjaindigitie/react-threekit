@@ -23,3 +23,17 @@ export {
   GridBackground,
   MaterialsIcon,
 };
+
+export default {
+  drag: DragOutlined,
+  download: DownloadOutlined,
+  delete: DeleteOutlined,
+  camera: CameraOutlined,
+  image: ImageOutlined,
+  'zoom-in': ZoomInOutlined,
+  'zoom-out': ZoomOutOutlined,
+  share: ShareOutlined,
+  settings: SettingsOutlined,
+  gridBackground: GridBackground,
+  materials: MaterialsIcon,
+};
