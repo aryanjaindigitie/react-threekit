@@ -198,7 +198,7 @@ export const prepAttributeForComponent = (attribute, { metadataKeys }) => {
           (item.metadata[thumbnailKey].startsWith('#') ||
             item.metadata[thumbnailKey].startsWith('rgb'))
           ? {
-              colorValue: item.metadata[colorValKey],
+              colorValue: item.metadata[thumbnailKey],
             }
           : {
               imageUrl: (imgBaseUrl || '') + item.metadata[thumbnailKey],
