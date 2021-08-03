@@ -20,9 +20,10 @@ import {
 const className = `${DEFAULT_CLASS_NAME} ${CLASS_NAME_PREFIX}-player`;
 
 const Player = (props) => {
-  const { height, width, children } = Object.assign(
+  const { height, width, minHeight, children } = Object.assign(
     {
-      height: '500px',
+      height: '70vh',
+      minHeight: '500px',
       width: '100%',
     },
     props
@@ -36,7 +37,12 @@ const Player = (props) => {
   }, []);
 
   return (
-    <Wrapper height={height} width={width} className={className}>
+    <Wrapper
+      height={height}
+      width={width}
+      minHeight={minHeight}
+      className={className}
+    >
       <div id={TK_PLAYER_DIV_ID} />
       {children}
     </Wrapper>

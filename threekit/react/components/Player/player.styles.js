@@ -3,6 +3,7 @@ import { TK_PLAYER_DIV_ID } from '../../../constants';
 
 export const Wrapper = styled.div`
   height: ${(props) => props.height};
+  min-height: ${(props) => props.minHeight};
   width: ${(props) => props.width};
   position: relative;
 
@@ -10,6 +11,7 @@ export const Wrapper = styled.div`
 
   #${TK_PLAYER_DIV_ID} {
     height: ${(props) => props.height};
+    min-height: ${(props) => props.minHeight};
     width: ${(props) => props.width};
     position: absolute;
     top: 0;
